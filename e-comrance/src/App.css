@@ -13,3 +13,11 @@
 #navitem {
   margin: 20px;
 }
+#search {
+  margin: 20px;
+  cursor: pointer;
+}
+
+#searchInput {
+  border-radius: 5px;
+}

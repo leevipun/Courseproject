@@ -1,6 +1,6 @@
 import { FaHeart } from "react-icons/fa";
 
-const Favoritepage = () => {
+const Favoritepage = (): JSX.Element => {
   return (
     <div>
       User Profile <FaHeart />

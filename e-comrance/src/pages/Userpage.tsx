@@ -1,6 +1,6 @@
 import { FaUser } from "react-icons/fa";
 
-const Userpage = () => {
+const Userpage = (): JSX.Element => {
   return (
     <div>
       User Profile <FaUser />

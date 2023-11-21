@@ -1,6 +1,6 @@
 import { FaHome } from "react-icons/fa";
 
-const Homepage = () => {
+const Homepage = (): JSX.Element => {
   return (
     <div>
       Home <FaHome />

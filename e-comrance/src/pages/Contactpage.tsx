@@ -1,6 +1,6 @@
 import { FaFileContract } from "react-icons/fa";
 
-const Contactpage = () => {
+const Contactpage = (): JSX.Element => {
   return (
     <div>
       Contacts <FaFileContract />

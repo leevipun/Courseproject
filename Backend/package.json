@@ -1,0 +1,31 @@
+{
+  "name": "backend",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.ts",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "ts-node": "ts-node"
+  },
+  "author": "Leevi Puntanen",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/express": "^4.17.21",
+    "@types/jest": "^29.5.9",
+    "@types/lodash": "^4.14.202",
+    "@types/mongoose": "^5.11.97",
+    "@types/react": "^18.2.38",
+    "ts-node": "^10.9.1",
+    "typescript": "^5.3.2"
+  },
+  "dependencies": {
+    "bcrypt": "^5.1.1",
+    "cors": "^2.8.5",
+    "express": "^4.18.2",
+    "express-async-errors": "^3.1.1",
+    "install": "^0.13.0",
+    "mongoose": "^7.5.1",
+    "mongoose-unique-validator": "^4.0.0",
+    "npm": "^10.2.4"
+  }
+}

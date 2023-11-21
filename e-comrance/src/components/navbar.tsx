@@ -1,11 +1,20 @@
-import { FaUser, FaShoppingBasket, FaHeart } from "react-icons/fa";
+import {
+  FaUser,
+  FaShoppingBasket,
+  FaHeart,
+  FaQuestionCircle,
+  FaHome,
+  FaAddressCard,
+} from "react-icons/fa";
 import { BrowserRouter, Link, Route, Routes } from "react-router-dom";
+import { FaMagnifyingGlass } from "react-icons/fa6";
 import Homepage from "../pages/Homepage";
 import Userpage from "../pages/Userpage";
 import Favoritepage from "../pages/Favorites";
 import Cartpage from "../pages/Cartpage";
 import Contactpage from "../pages/Contactpage";
 import Aboutpage from "../pages/Aboutpage";
+import { useState } from "react";
 
 const Home = () => <Homepage />;
 const About = () => <Aboutpage />;
@@ -15,18 +24,33 @@ const Favorites = () => <Favoritepage />;
 const UserProfile = () => <Userpage />;
 
 const Navbar = () => {
+  const [showInput, setShowInput] = useState(false);
+  const handleClick = () => {
+    setShowInput((prevShowInput) => !prevShowInput);
+  };
+
   return (
     <BrowserRouter>
       <nav>
         <ul id="navbar">
           <li id="navitem">
-            <Link to="/">Home</Link>
+            <Link to="/">
+              <FaHome />
+            </Link>
           </li>
           <li id="navitem">
-            <Link to="/about-us">About</Link>
+            <Link to="/about-us">
+              <FaQuestionCircle />
+            </Link>
           </li>
           <li id="navitem">
-            <Link to="/contacts">Contacts</Link>
+            <Link to="/contacts">
+              <FaAddressCard />
+            </Link>
+          </li>
+          {showInput && <input id="searchInput" placeholder="Search" />}
+          <li id="search" onClick={() => handleClick()}>
+            <FaMagnifyingGlass />
           </li>
           <li id="navitem">
             <Link to="/shopping-cart">
