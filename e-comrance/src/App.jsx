@@ -5,12 +5,12 @@ import Loginpage from "./pages/Loginpage";
 import "./App.css";
 
 const App = () => {
-  const [user, setUser] = useState("silja");
+  const [user, setUser] = useState("");
 
-  if (!user || user.length === 0) {
+  if (!user) {
     return (
       <div>
-        <Loginpage />
+        <Loginpage setUser={setUser} />
       </div>
     );
   }
