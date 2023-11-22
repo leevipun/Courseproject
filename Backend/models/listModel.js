@@ -1,18 +1,22 @@
 const mongoose = require("mongoose");
-const uniqueValidator = require("mongoose-unique-validator");
 
 const listSchema = mongoose.Schema({
-  username: {
+  itemname: {
     type: String,
     required: true,
-    unique: true,
     minlength: 3,
   },
-  name: String,
-  passwordHash: {
+  category: {
     type: String,
-    minlength: 3,
     required: true,
+  },
+  price: {
+    type: String,
+    required: true,
+  },
+  seller: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "User",
   },
 });
 
