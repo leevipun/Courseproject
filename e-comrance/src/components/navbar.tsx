@@ -15,6 +15,7 @@ import Cartpage from "../pages/Cartpage";
 import Contactpage from "../pages/Contactpage";
 import Aboutpage from "../pages/Aboutpage";
 import { useState } from "react";
+import "../App.css";
 
 const Home = () => <Homepage />;
 const About = () => <Aboutpage />;
@@ -35,17 +36,17 @@ const Navbar = () => {
         <ul id="navbar">
           <li id="navitem">
             <Link to="/">
-              <FaHome />
+              Home <FaHome />
             </Link>
           </li>
           <li id="navitem">
             <Link to="/about-us">
-              <FaQuestionCircle />
+              About-us <FaQuestionCircle />
             </Link>
           </li>
           <li id="navitem">
             <Link to="/contacts">
-              <FaAddressCard />
+              Contacts <FaAddressCard />
             </Link>
           </li>
           {showInput && <input id="searchInput" placeholder="Search" />}
@@ -53,7 +54,7 @@ const Navbar = () => {
             <FaMagnifyingGlass />
           </li>
           <li id="navitem">
-            <Link to="/shopping-cart">
+            <Link to="/cart">
               <FaShoppingBasket />
             </Link>
           </li>
@@ -73,7 +74,7 @@ const Navbar = () => {
         <Route path="/" element={<Home />} />
         <Route path="/about-us" element={<About />} />
         <Route path="/contacts" element={<Contacts />} />
-        <Route path="/shopping-cart" element={<ShoppingCart />} />
+        <Route path="/cart" element={<ShoppingCart />} />
         <Route path="/favorites" element={<Favorites />} />
         <Route path="/user" element={<UserProfile />} />
       </Routes>
