@@ -1,9 +1,6 @@
-import { BrowserRouter, Routes, Route, Link } from "react-router-dom";
-import Registerypage from "./Reqisterypage";
+import { Link } from "react-router-dom";
 import { useState } from "react";
 import { Login } from "../services/Services";
-
-const Registery = () => <Registerypage />;
 
 const Loginpage = ({ setUser }) => {
   const [password, setPassword] = useState("");
@@ -16,31 +13,26 @@ const Loginpage = ({ setUser }) => {
   };
 
   return (
-    <BrowserRouter>
-      <div>
-        <input
-          type="text"
-          placeholder="Username"
-          value={username}
-          onChange={(e) => setUsername(e.target.value)}
-        />
-        <input
-          type="password"
-          placeholder="Password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-        />
-      </div>
+    <div>
+      <input
+        type="text"
+        placeholder="Username"
+        value={username}
+        onChange={(e) => setUsername(e.target.value)}
+      />
+      <input
+        type="password"
+        placeholder="Password"
+        value={password}
+        onChange={(e) => setPassword(e.target.value)}
+      />
       <button onClick={handleLogin}>Log in</button>
       <div>
         <button>
           <Link to="/register">Register</Link>
         </button>
       </div>
-      <Routes>
-        <Route path="/register" element={<Registery />} />
-      </Routes>
-    </BrowserRouter>
+    </div>
   );
 };
 

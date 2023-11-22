@@ -5,24 +5,13 @@ import {
   FaQuestionCircle,
   FaHome,
   FaAddressCard,
+  FaPlus,
 } from "react-icons/fa";
-import { BrowserRouter, Link, Route, Routes } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { FaMagnifyingGlass } from "react-icons/fa6";
-import Homepage from "../pages/Homepage";
-import Userpage from "../pages/Userpage";
-import Favoritepage from "../pages/Favorites";
-import Cartpage from "../pages/Cartpage";
-import Contactpage from "../pages/Contactpage";
-import Aboutpage from "../pages/Aboutpage";
 import { useState } from "react";
 import "../App.css";
-
-const Home = () => <Homepage />;
-const About = () => <Aboutpage />;
-const Contacts = () => <Contactpage />;
-const ShoppingCart = () => <Cartpage />;
-const Favorites = () => <Favoritepage />;
-const UserProfile = () => <Userpage />;
+import React from "react";
 
 const Navbar = () => {
   const [showInput, setShowInput] = useState(false);
@@ -31,7 +20,7 @@ const Navbar = () => {
   };
 
   return (
-    <BrowserRouter>
+    <div>
       <nav>
         <ul id="navbar">
           <li id="navitem">
@@ -40,7 +29,7 @@ const Navbar = () => {
             </Link>
           </li>
           <li id="navitem">
-            <Link to="/about-us">
+            <Link to="/about">
               About-us <FaQuestionCircle />
             </Link>
           </li>
@@ -52,6 +41,11 @@ const Navbar = () => {
           {showInput && <input id="searchInput" placeholder="Search" />}
           <li id="search" onClick={() => handleClick()}>
             <FaMagnifyingGlass />
+          </li>
+          <li id="navitem">
+            <Link to="/add">
+              <FaPlus />
+            </Link>
           </li>
           <li id="navitem">
             <Link to="/cart">
@@ -70,15 +64,7 @@ const Navbar = () => {
           </li>
         </ul>
       </nav>
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/about-us" element={<About />} />
-        <Route path="/contacts" element={<Contacts />} />
-        <Route path="/cart" element={<ShoppingCart />} />
-        <Route path="/favorites" element={<Favorites />} />
-        <Route path="/user" element={<UserProfile />} />
-      </Routes>
-    </BrowserRouter>
+    </div>
   );
 };
 
