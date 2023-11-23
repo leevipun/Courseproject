@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { registery } from "../services/Services";
 import { Input, Button, Radio } from "antd";
+
 import "../styles/registeryStyles.css";
 
 const Registerypage = () => {

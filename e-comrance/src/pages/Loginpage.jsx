@@ -3,9 +3,12 @@ import { useState } from "react";
 import { Login } from "../services/Services";
 import "../styles/loginStyles.css";
 import { Button, Input } from "antd";
+import { useDispatch } from "react-redux";
+import { appendUser } from "../../reducer/userReducer";
 
 const Loginpage = () => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const [password, setPassword] = useState("");
   const [email, setEmail] = useState("");
 
@@ -14,6 +17,7 @@ const Loginpage = () => {
     try {
       const user = await Login(email, password);
       console.log(user);
+      dispatch(appendUser(user));
       navigate("/");
     } catch (error) {
       console.error("Login failed", error.message);
@@ -41,9 +45,12 @@ const Loginpage = () => {
             autoComplete="current-password"
             onChange={(e) => setPassword(e.target.value)}
           />
-          <Button type="primary" id="button" htmlType="submit">
-            Log in
-          </Button>
+          <div id="login">
+            <Button type="primary" id="button" htmlType="submit">
+              Log in
+            </Button>
+            <p>Forgot password?</p>
+          </div>
         </form>
         <div>
           <Button type="primary" id="button">

@@ -13,3 +13,12 @@
   justify-content: center;
   background-color: aqua;
 }
+
+#login {
+  display: flex;
+  align-items: center;
+}
+
+p {
+  display: flex;
+}
