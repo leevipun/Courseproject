@@ -4,9 +4,15 @@
 
 #previewContainer {
   flex: 1;
+  background-color: aqua;
+  align-items: center;
+  justify-content: center;
   margin-right: 20px;
 }
 
 #editingOptionsContainer {
+  background-color: bisque;
+  align-items: center;
+  justify-content: center;
   flex: 1;
 }
