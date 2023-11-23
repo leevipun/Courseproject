@@ -7,14 +7,6 @@ require("express-async-errors");
 const User = require("../models/userModel");
 const blog = require("../models/blog");
 
-listingRouter.get("/", async (req, res) => {
-  const listings = await List.find({}).populate("user", {
-    username: 1,
-    name: 1,
-  });
-  res.json(listings);
-});
-
 listingRouter.get("/:id", async (req, res, next) => {
   const listings = await List.findById(req.params.id);
   if (listings) {

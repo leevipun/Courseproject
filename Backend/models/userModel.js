@@ -2,16 +2,25 @@ const mongoose = require("mongoose");
 const uniqueValidator = require("mongoose-unique-validator");
 
 const userSchema = mongoose.Schema({
-  username: {
+  email: {
     type: String,
     required: true,
     unique: true,
-    minlength: 3,
+    trim: true,
+    match: [/^\S+@\S+\.\S+$/, "Please enter a valid email address"],
   },
   name: String,
   passwordHash: {
     type: String,
     minlength: 3,
+    required: true,
+  },
+  style: {
+    type: String,
+    enum: ["buyer", "seller", "both"],
+  },
+  id: {
+    type: String,
     required: true,
   },
 });

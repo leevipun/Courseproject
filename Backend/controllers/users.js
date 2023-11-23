@@ -4,15 +4,17 @@ const usersRouter = require("express").Router();
 require("express-async-errors");
 
 usersRouter.post("/", async (req, res) => {
-  const { username, name, password } = req.body;
+  const { email, name, password, style, id } = req.body;
 
   const saltRounds = 10;
   const passwordHash = await bcrypt.hash(password, saltRounds);
 
   const user = new User({
-    username,
-    name,
-    passwordHash,
+    email: email,
+    name: name,
+    passwordHash: passwordHash,
+    style: style,
+    id: id,
   });
 
   const savedUser = await user.save();

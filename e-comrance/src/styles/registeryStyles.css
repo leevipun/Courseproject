@@ -1,0 +1,17 @@
+#input {
+  margin: 5px;
+}
+
+#button {
+  margin: 5px;
+}
+
+#div {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+p {
+  margin: 5px;
+}

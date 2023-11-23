@@ -1,11 +1,14 @@
 import axios from "axios";
+import { v4 as uuidv4 } from "uuid";
 
-export const Login = async (username, password) => {
-  console.log(username, password);
+const baseURL = "http://localhost:3003/";
+
+export const Login = async (email, password) => {
+  console.log(email, password);
   try {
-    const response = await axios.post(`http://localhost:3003/api/login`, {
-      username,
-      password,
+    const response = await axios.post(`${baseURL}/api/login`, {
+      email: email,
+      password: password,
     });
     return response.data;
   } catch (error) {
@@ -13,13 +16,18 @@ export const Login = async (username, password) => {
   }
 };
 
-export const registery = async (username, name, password) => {
-  console.log(username, name, password);
+export const registery = async (email, name, password, style) => {
+  console.log(email, name, password, style);
+
+  const id = uuidv4();
+
   try {
-    const response = await axios.post(`http://localhost:3003/api/users`, {
-      username,
-      name,
-      password,
+    const response = await axios.post(`${baseURL}/api/users`, {
+      email: email,
+      name: name,
+      password: password,
+      style: style,
+      id: id,
     });
     return response.data;
   } catch (error) {
