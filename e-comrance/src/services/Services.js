@@ -1,7 +1,7 @@
 import axios from "axios";
 import { v4 as uuidv4 } from "uuid";
 
-const baseURL = "http://localhost:3003/";
+const baseURL = "http://localhost:3003";
 
 export const Login = async (email, password) => {
   console.log(email, password);
