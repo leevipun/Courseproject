@@ -14,8 +14,8 @@ import Userpage from "./pages/Userpage";
 import Notfound from "./pages/Notfound";
 import Contactpage from "./pages/Contactpage";
 import AddingPage from "./pages/Addingpage";
-import { appendlisting } from "../reducer/listingReducer.js";
 import { useDispatch } from "react-redux";
+import { appendUser } from "../reducer/userReducer.js";
 
 const App = () => {
   const dispatch = useDispatch();
@@ -24,15 +24,10 @@ const App = () => {
     if (loggerUser) {
       const user = JSON.parse(loggerUser);
       Services.setToken(`${user.token}`);
+      dispatch(appendUser(user));
       console.log("Lisättiin token");
     }
   });
-
-  useEffect(() => {
-    const listings = Services.getAllListings();
-    console.log("Listings", listings);
-    dispatch(appendlisting(listings));
-  }, []);
 
   return (
     <Router>

@@ -1,8 +1,8 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import Navbar from "./../components/navbar";
 import "../styles/AddingPage.css";
 import { UploadOutlined } from "@ant-design/icons";
-import { Space, Select, Input, Button, Upload } from "antd";
+import { Space, Select, Input, Button, Upload, message } from "antd";
 const { TextArea } = Input;
 import currencyOptions from "../../Data/currencyData.js";
 import CountriesData from "./../../Data/countryData";
@@ -41,7 +41,10 @@ const AddingPage = () => {
   const id = uuidv4();
 
   const onAdding = async () => {
+    console.log(selectedCountry, price, currencyCode);
     try {
+      console.log("Mentiin tänne");
+      navigate("/");
       const response = await Adding(
         name,
         selectedCountry,
@@ -52,16 +55,10 @@ const AddingPage = () => {
         id
       );
       dispatch(appendlisting(response));
-      navigate("/");
       console.log("Navigoidaan");
     } catch (error) {
       console.error("Adding failed", error.message);
     }
-  };
-
-  const onChange = (e) => {
-    console.log("Change:", e.target.value);
-    setDescription(e.target.value);
   };
 
   const handlePreview = () => {
@@ -142,7 +139,7 @@ const AddingPage = () => {
               showCount
               style={{ width: 350, margin: 10 }}
               maxLength={300}
-              onChange={onChange}
+              onChange={(e) => setDescription(e.target.value)}
               placeholder="Description"
             />
           </div>

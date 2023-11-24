@@ -26,7 +26,13 @@ loginRouter.post("/", async (req, res) => {
 
   res
     .status(200)
-    .send({ token, email: user.email, name: user.name, id: user._id });
+    .send({
+      token,
+      email: user.email,
+      name: user.name,
+      id: user._id,
+      style: user.style,
+    });
 });
 
 module.exports = loginRouter;

@@ -1,47 +1,73 @@
 import { FaHome } from "react-icons/fa";
 import Navbar from "./../components/navbar";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { useEffect } from "react";
+import Services from "../services/Services";
+import { initializeListing } from "../../reducer/listingReducer";
 
 const Homepage = () => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const user = useSelector((state) => {
-    console.log(state);
-    console.log("User state näyttää tältä", state.user);
     return state.user;
   });
 
-  const listings = useSelector((state) => {
-    return state.listings;
+  const listing = useSelector((state) => {
+    return state.listing;
   });
 
   useEffect(() => {
-    if (!user || user.length === 0 || user[0].name === undefined) {
+    if (!window.localStorage.getItem("loggedNoteappUser")) {
       navigate("/login");
     }
   }, []);
 
-  useEffect(() => {});
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const listings = await Services.getAllListings();
+        dispatch(initializeListing(listings));
+        console.log("Listings", listings);
+      } catch (error) {
+        console.error("Error fetching listings:", error);
+      }
+    };
 
-  console.log(user);
-  console.log("user[0]", user && user[0] && user[0].name);
+    fetchData();
+  }, []);
 
-  return (
-    <div>
+  if (!listing) {
+    return (
       <div>
-        <Navbar />
+        <div>
+          <Navbar />
+        </div>
+        Welcome back {user && user[0] && user[0].name} <FaHome />
+        <div>
+          <h1>No listings</h1>
+        </div>
       </div>
-      Welcome back {user && user[0] && user[0].name} <FaHome />
+    );
+  } else {
+    return (
       <div>
-        {listings.map((listing) => (
-          <div key={listing.id}>
-            <div>{listing.name}</div>
-          </div>
-        ))}
+        <div>
+          <Navbar />
+        </div>
+        Welcome back {user && user[0] && user[0].name} <FaHome />
+        <div>
+          {listing.map((listing) => (
+            <div key={listing.id}>
+              <div>
+                {listing.name} Country: {listing.country}
+              </div>
+            </div>
+          ))}
+        </div>
       </div>
-    </div>
-  );
+    );
+  }
 };
 
 export default Homepage;

@@ -89,12 +89,8 @@ export const Adding = async (
 };
 
 const getAllListings = async () => {
-  const config = {
-    headers: { Authorization: token },
-  };
-
   try {
-    const response = await axios.get(`${baseURL}/api/listings`, config);
+    const response = await axios.get(`${baseURL}/api/get`);
     return response.data;
   } catch (error) {
     throw new Error(error.response.data.message);

@@ -3,6 +3,10 @@ const jwt = require("jsonwebtoken");
 const List = require("../models/listModel");
 require("express-async-errors");
 const User = require("../models/userModel");
+const middleware = require("../utils/middleware");
+
+const extractUser = middleware.extractUser;
+const extractToken = middleware.extractToken;
 
 listingRouter.get("/:id", async (req, res, next) => {
   const listings = await List.findById(req.params.id);
@@ -14,15 +18,20 @@ listingRouter.get("/:id", async (req, res, next) => {
 });
 
 listingRouter.get("/", async (req, res, next) => {
-  const listings = await List.find({});
-  if (listings) {
-    res.json(listings);
-  } else {
-    response.status(404).end();
+  try {
+    const listings = await List.find({});
+    console.log(listings);
+    if (listings) {
+      res.json(listings);
+    } else {
+      res.status(404).end();
+    }
+  } catch (error) {
+    next(error); // Pass the error to the error handling middleware
   }
 });
 
-listingRouter.post("/", async (req, res, next) => {
+listingRouter.post("/", extractUser, extractToken, async (req, res, next) => {
   const body = req.body;
 
   console.log(req.token);

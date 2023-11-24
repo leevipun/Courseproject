@@ -17,7 +17,7 @@ const Loginpage = () => {
     e.preventDefault();
     try {
       const user = await Login(email, password);
-      console.log(user);
+      console.log("User Loginissa", user);
       dispatch(appendUser(user));
       console.log(user.token);
       Services.setToken(user.token);

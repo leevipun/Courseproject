@@ -8,6 +8,7 @@ const mongoose = require("mongoose");
 const usersRouter = require("./controllers/users");
 const loginRouter = require("./controllers/login.js");
 const listingRouter = require("./controllers/listings.js");
+const getRouter = require("./controllers/getlists.js");
 
 mongoose.set("strictQuery", false);
 
@@ -30,12 +31,9 @@ app.use(middleware.extractToken);
 
 app.use("/api/users", usersRouter);
 app.use("/api/login", loginRouter);
-app.use(
-  "/api/listings",
-  middleware.extractUser,
-  middleware.extractToken,
-  listingRouter
-);
+app.use("/api/listings", listingRouter);
+
+app.use("/api/get", getRouter);
 
 app.use(middleware.unknownEndpoint);
 app.use(middleware.errorHandler);
