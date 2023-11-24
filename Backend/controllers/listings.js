@@ -1,6 +1,7 @@
 const listingRouter = require("express").Router();
 import { response } from "express";
 import UserType from "../types";
+import Pic from "../models/picModel";
 const jwt = require("jsonwebtoken");
 const List = require("../models/listModel");
 require("express-async-errors");

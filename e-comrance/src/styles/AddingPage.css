@@ -16,3 +16,7 @@
   justify-content: center;
   flex: 1;
 }
+
+#prevButton {
+  margin: 10px;
+}
