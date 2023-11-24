@@ -1,13 +1,7 @@
-.flex-container {
-  display: flex;
-}
-
 #previewContainer {
-  flex: 1;
   background-color: aqua;
   align-items: center;
-  justify-content: center;
-  margin-right: 20px;
+  justify-content: right;
 }
 
 #editingOptionsContainer {

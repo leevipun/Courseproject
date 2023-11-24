@@ -5,6 +5,7 @@ import "../styles/loginStyles.css";
 import { Button, Input } from "antd";
 import { useDispatch } from "react-redux";
 import { appendUser } from "../../reducer/userReducer";
+import Services from "../services/Services";
 
 const Loginpage = () => {
   const navigate = useNavigate();
@@ -18,6 +19,9 @@ const Loginpage = () => {
       const user = await Login(email, password);
       console.log(user);
       dispatch(appendUser(user));
+      console.log(user.token);
+      Services.setToken(user.token);
+      window.localStorage.setItem("loggedNoteappUser", JSON.stringify(user));
       navigate("/");
     } catch (error) {
       console.error("Login failed", error.message);

@@ -1,22 +1,13 @@
 const mongoose = require("mongoose");
 
 const listSchema = mongoose.Schema({
-  itemname: {
-    type: String,
-    required: true,
-    minlength: 3,
-  },
-  category: {
+  name: {
     type: String,
     required: true,
   },
-  price: {
+  country: {
     type: String,
     required: true,
-  },
-  seller: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "User",
   },
 });
 
