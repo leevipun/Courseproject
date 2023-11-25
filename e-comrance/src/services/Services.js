@@ -90,11 +90,36 @@ export const Adding = async (
 
 const getAllListings = async () => {
   try {
-    const response = await axios.get(`${baseURL}/api/get`);
+    const response = await axios.get(`${baseURL}/api/listings`);
     return response.data;
   } catch (error) {
     throw new Error(error.response.data.message);
   }
 };
 
-export default { setToken, getAllListings };
+export const addToCart = async (id) => {
+  const config = {
+    headers: { Authorization: token },
+  };
+  try {
+    console.log(id);
+    const response = await axios.post(`${baseURL}/api/cart`, { id }, config);
+    return response.data;
+  } catch (error) {
+    throw new Error(error.response.data.message);
+  }
+};
+
+const getAllCartItems = async () => {
+  const config = {
+    headers: { Authorization: token },
+  };
+  try {
+    const response = await axios.get(`${baseURL}/api/cart`, config);
+    return response.data;
+  } catch (error) {
+    throw new Error(error.response.data.message);
+  }
+};
+
+export default { setToken, getAllListings, getAllCartItems };

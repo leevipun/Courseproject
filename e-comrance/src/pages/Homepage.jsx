@@ -3,8 +3,10 @@ import Navbar from "./../components/navbar";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { useEffect } from "react";
-import Services from "../services/Services";
+import Services, { addToCart } from "../services/Services";
 import { initializeListing } from "../../reducer/listingReducer";
+import { Button } from "antd";
+import { appendcart } from "../../reducer/cartReducer";
 
 const Homepage = () => {
   const navigate = useNavigate();
@@ -12,6 +14,12 @@ const Homepage = () => {
   const user = useSelector((state) => {
     return state.user;
   });
+
+  const handleAddToCart = async (id) => {
+    const response = await addToCart(id);
+    console.log(response);
+    dispatch(appendcart(response));
+  };
 
   const listing = useSelector((state) => {
     return state.listing;
@@ -61,6 +69,12 @@ const Homepage = () => {
             <div key={listing.id}>
               <div>
                 {listing.name} Country: {listing.country}
+                <Button
+                  type="primary"
+                  onClick={() => handleAddToCart(listing.id)}
+                >
+                  Add to cart
+                </Button>
               </div>
             </div>
           ))}

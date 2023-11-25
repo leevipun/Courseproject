@@ -25,6 +25,12 @@ const userSchema = mongoose.Schema({
       ref: "List",
     },
   ],
+  cart: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "List",
+    },
+  ],
   id: {
     type: String,
     required: true,
