@@ -66,7 +66,7 @@ listingRouter.post("/", extractUser, extractToken, async (req, res, next) => {
     console.log("onnistui!");
   } else {
     console.log("Täällä päin");
-    res.sendStatus(400).send("Add missing information to continue");
+    res.status(400).send("Add missing information to continue");
   }
 });
 

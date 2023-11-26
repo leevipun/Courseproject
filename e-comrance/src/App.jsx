@@ -16,6 +16,8 @@ import Contactpage from "./pages/Contactpage";
 import AddingPage from "./pages/Addingpage";
 import { useDispatch } from "react-redux";
 import { appendUser } from "../reducer/userReducer.js";
+import PurchaseHistory from "./pages/Purchasepage.jsx";
+import Notification from "./components/notification.jsx";
 
 const App = () => {
   const dispatch = useDispatch();
@@ -30,20 +32,24 @@ const App = () => {
   });
 
   return (
-    <Router>
-      <Routes>
-        <Route path="/" exact Component={Homepage} />
-        <Route path="/about" Component={Aboutpage} />
-        <Route path="/cart" Component={Cartpage} />
-        <Route path="/login" Component={Loginpage} />
-        <Route path="/register" Component={Registerypage} />
-        <Route path="/favorites" Component={Favoritepage} />
-        <Route path="/user" Component={Userpage} />
-        <Route path="/contacts" Component={Contactpage} />
-        <Route path="/add" Component={AddingPage} />
-        <Route path="/*" Component={Notfound} />
-      </Routes>
-    </Router>
+    <div>
+      <Notification />
+      <Router>
+        <Routes>
+          <Route path="/" exact Component={Homepage} />
+          <Route path="/about" Component={Aboutpage} />
+          <Route path="/cart" Component={Cartpage} />
+          <Route path="/login" Component={Loginpage} />
+          <Route path="/register" Component={Registerypage} />
+          <Route path="/favorites" Component={Favoritepage} />
+          <Route path="/user" Component={Userpage} />
+          <Route path="/contacts" Component={Contactpage} />
+          <Route path="/add" Component={AddingPage} />
+          <Route path="/history" Component={PurchaseHistory} />
+          <Route path="/*" Component={Notfound} />
+        </Routes>
+      </Router>
+    </div>
   );
 };
 

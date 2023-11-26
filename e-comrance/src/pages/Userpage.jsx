@@ -7,7 +7,7 @@ const Userpage = () => {
       <div>
         <Navbar />
       </div>
-      <FaUser />
+      User Info <FaUser />
     </div>
   );
 };

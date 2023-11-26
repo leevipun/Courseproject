@@ -7,6 +7,8 @@ import Services, { addToCart } from "../services/Services";
 import { initializeListing } from "../../reducer/listingReducer";
 import { Button } from "antd";
 import { appendcart } from "../../reducer/cartReducer";
+import { addNotification } from "../../reducer/notificationReducer";
+import Notification from "../components/notification";
 
 const Homepage = () => {
   const navigate = useNavigate();
@@ -17,8 +19,14 @@ const Homepage = () => {
 
   const handleAddToCart = async (id) => {
     const response = await addToCart(id);
-    console.log(response);
-    dispatch(appendcart(response));
+    if (response === "Already in cart") {
+      dispatch(addNotification("Item added to your cart"));
+      console.log("Hah");
+    } else {
+      console.log(response);
+      dispatch(appendcart(response));
+      dispatch(addNotification(response.name, "was added to your cart"));
+    }
   };
 
   const listing = useSelector((state) => {
@@ -50,6 +58,9 @@ const Homepage = () => {
       <div>
         <div>
           <Navbar />
+        </div>
+        <div>
+          <Notification />
         </div>
         Welcome back {user && user[0] && user[0].name} <FaHome />
         <div>

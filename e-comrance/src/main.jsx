@@ -6,12 +6,14 @@ import userReducer from "../reducer/userReducer.js";
 import listingReducer from "../reducer/listingReducer.js";
 import App from "./App.jsx";
 import cartReducer from "../reducer/cartReducer.js";
+import notificationReducer from "../reducer/notificationReducer.js";
 
 const store = configureStore({
   reducer: {
     user: userReducer,
     listing: listingReducer,
     cart: cartReducer,
+    notification: notificationReducer,
   },
 });
 

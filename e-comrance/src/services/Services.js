@@ -58,7 +58,8 @@ export const Adding = async (
   currency,
   description,
   pics,
-  id
+  id,
+  token
 ) => {
   const newObject = {
     name,
@@ -74,7 +75,7 @@ export const Adding = async (
     headers: { Authorization: token },
   };
 
-  console.log("Token before request:", token); // Add this line
+  console.log("Token before request:", token);
 
   try {
     const response = await axios.post(
@@ -84,7 +85,8 @@ export const Adding = async (
     );
     return response.data;
   } catch (error) {
-    throw new Error(error.response.data.message);
+    // Modify the error handling to include an "error" field in the response
+    return { error: error.response.data.message };
   }
 };
 

@@ -21,8 +21,12 @@ cartRouter.post("/", extractUser, extractToken, async (req, res, next) => {
   }
   const user = req.user;
   if (body.id) {
+    const cartlistings = await user.cart;
+    console.log("Cartlistings", cartlistings);
     const listing = await List.findById(body.id);
-    if (listing) {
+    if (cartlistings.includes(body.id)) {
+      res.json("Already in cart");
+    } else if (listing) {
       console.log("Läytyi listaus");
       user.cart = user.cart.concat(listing._id);
       await user.save();

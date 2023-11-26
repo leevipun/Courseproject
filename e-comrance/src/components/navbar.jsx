@@ -32,16 +32,26 @@ const Navbar = () => {
     navigate("/login");
   };
 
+  const handlePurchaseHistory = () => {
+    navigate("/history");
+  };
+
+  const handleUserInfo = () => {
+    navigate("/user");
+  };
+
   const items = [
     {
       label: "User info",
       key: "1",
       icon: <UserOutlined />,
+      onClick: handleUserInfo,
     },
     {
       label: "Purchase history",
       key: "2",
       icon: <TransactionOutlined />,
+      onClick: handlePurchaseHistory,
     },
     {
       label: "Log out",

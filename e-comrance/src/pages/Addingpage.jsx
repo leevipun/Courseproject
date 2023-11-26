@@ -11,6 +11,7 @@ import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { appendlisting } from "../../reducer/listingReducer.js";
 import { v4 as uuidv4 } from "uuid";
+import { addNotification } from "../../reducer/notificationReducer.js";
 
 const props = {
   beforeUpload: (file) => {
@@ -41,10 +42,7 @@ const AddingPage = () => {
   const id = uuidv4();
 
   const onAdding = async () => {
-    console.log(selectedCountry, price, currencyCode);
     try {
-      console.log("Mentiin tänne");
-      navigate("/");
       const response = await Adding(
         name,
         selectedCountry,
@@ -54,10 +52,20 @@ const AddingPage = () => {
         selectedFile,
         id
       );
-      dispatch(appendlisting(response));
-      console.log("Navigoidaan");
+
+      if (response.error) {
+        console.error("Adding failed", response.error);
+        dispatch(addNotification(response.error));
+      } else {
+        navigate("/");
+        dispatch(appendlisting(response));
+        console.log(response);
+        dispatch(addNotification(response.name, "was listed"));
+        console.log("Navigoidaan");
+      }
     } catch (error) {
       console.error("Adding failed", error.message);
+      dispatch(addNotification(error.message));
     }
   };
 
