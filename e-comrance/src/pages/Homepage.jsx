@@ -17,6 +17,15 @@ const Homepage = () => {
     return state.user;
   });
 
+  const listingStyle = {
+    paddingTop: 10,
+    paddingLeft: 2,
+    border: "solid",
+    borderWidth: 1,
+    marginBottom: 5,
+    marginTop: 5,
+  };
+
   const handleAddToCart = async (id) => {
     const response = await addToCart(id);
     if (response === "Already in cart") {
@@ -77,11 +86,17 @@ const Homepage = () => {
         Welcome back {user && user[0] && user[0].name} <FaHome />
         <div>
           {listing.map((listing) => (
-            <div key={listing.id}>
+            <div key={listing.id} style={listingStyle}>
+              <div>Name: {listing.name}</div>
+              <div>Country: {listing.country}</div>
               <div>
-                {listing.name} Country: {listing.country}
+                Price: {listing.price} {listing.currency}
+              </div>
+              <div>Description: {listing.description}</div>
+              <div>
                 <Button
                   type="primary"
+                  style={{ margin: 10 }}
                   onClick={() => handleAddToCart(listing.id)}
                 >
                   Add to cart

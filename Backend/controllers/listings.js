@@ -1,8 +1,8 @@
 const listingRouter = require("express").Router();
 const jwt = require("jsonwebtoken");
-const List = require("../models/listModel");
+const List = require("../models/list");
 require("express-async-errors");
-const User = require("../models/userModel");
+const User = require("../models/user");
 const middleware = require("../utils/middleware");
 
 const extractUser = middleware.extractUser;
@@ -35,9 +35,7 @@ listingRouter.post("/", extractUser, extractToken, async (req, res, next) => {
   const body = req.body;
 
   console.log(req.token);
-
   console.log("Request user", req.user);
-
   console.log("Authorization Header:", req.headers.authorization);
 
   const deCodedToken = jwt.verify(req.token, process.env.SECRET);
@@ -45,17 +43,22 @@ listingRouter.post("/", extractUser, extractToken, async (req, res, next) => {
   if (!deCodedToken.id) {
     return res.status(401).json({ error: "Invalid token" });
   }
+
   const user = req.user;
 
   const listing = new List({
     name: body.name,
     country: body.country,
     description: body.description,
+    price: body.price,
+    currency: body.currency,
+    pics: body.pics,
+    status: false,
   });
 
   console.log(listing);
 
-  if (body.name && body.country && body.description) {
+  if (body) {
     console.log("Täällä");
     const savedListing = await listing.save();
     console.log(user._id);

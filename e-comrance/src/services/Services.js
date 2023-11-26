@@ -57,9 +57,7 @@ export const Adding = async (
   price,
   currency,
   description,
-  pics,
-  id,
-  token
+  pics
 ) => {
   const newObject = {
     name,
@@ -68,7 +66,6 @@ export const Adding = async (
     currency,
     description,
     pics,
-    id,
   };
 
   const config = {
@@ -85,7 +82,6 @@ export const Adding = async (
     );
     return response.data;
   } catch (error) {
-    // Modify the error handling to include an "error" field in the response
     return { error: error.response.data.message };
   }
 };

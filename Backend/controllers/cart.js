@@ -1,8 +1,8 @@
 const cartRouter = require("express").Router();
 const jwt = require("jsonwebtoken");
-const List = require("../models/listModel");
+const List = require("../models/list");
 require("express-async-errors");
-const User = require("../models/userModel");
+const User = require("../models/user");
 const middleware = require("../utils/middleware");
 
 const extractUser = middleware.extractUser;

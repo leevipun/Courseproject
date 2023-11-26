@@ -1,7 +1,7 @@
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
 const loginRouter = require("express").Router();
-const UserType = require("../models/userModel");
+const UserType = require("../models/user");
 
 loginRouter.post("/", async (req, res) => {
   const { email, password } = req.body;
@@ -24,15 +24,13 @@ loginRouter.post("/", async (req, res) => {
     expiresIn: 60 * 60,
   });
 
-  res
-    .status(200)
-    .send({
-      token,
-      email: user.email,
-      name: user.name,
-      id: user._id,
-      style: user.style,
-    });
+  res.status(200).send({
+    token,
+    email: user.email,
+    name: user.name,
+    id: user._id,
+    style: user.style,
+  });
 });
 
 module.exports = loginRouter;

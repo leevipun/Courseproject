@@ -1,8 +1,7 @@
 import { useState } from "react";
 import Navbar from "./../components/navbar";
 import "../styles/AddingPage.css";
-import { UploadOutlined } from "@ant-design/icons";
-import { Space, Select, Input, Button, Upload, message } from "antd";
+import { Space, Select, Input, Button } from "antd";
 const { TextArea } = Input;
 import currencyOptions from "../../Data/currencyData.js";
 import CountriesData from "./../../Data/countryData";
@@ -12,19 +11,6 @@ import { useDispatch } from "react-redux";
 import { appendlisting } from "../../reducer/listingReducer.js";
 import { v4 as uuidv4 } from "uuid";
 import { addNotification } from "../../reducer/notificationReducer.js";
-
-const props = {
-  beforeUpload: (file) => {
-    const isPNG = file.type === "image/png";
-    if (!isPNG) {
-      message.error(`${file.name} is not a png file`);
-    }
-    return isPNG || Upload.LIST_IGNORE;
-  },
-  onChange: (info) => {
-    console.log(info.fileList);
-  },
-};
 
 const AddingPage = () => {
   const countryData = CountriesData;
@@ -71,6 +57,11 @@ const AddingPage = () => {
 
   const handlePreview = () => {
     setShowPreview((prevValue) => !prevValue);
+  };
+
+  const handleFileChange = (e) => {
+    const files = e.target.files;
+    setSelectedFile(Array.from(files));
   };
 
   const filterOption = (input, option) =>
@@ -152,11 +143,12 @@ const AddingPage = () => {
             />
           </div>
           <div id="ainputdiv">
-            <Upload {...props}>
-              <Button style={{ margin: 10 }} icon={<UploadOutlined />}>
-                Upload png only
-              </Button>
-            </Upload>
+            <Input
+              type="file"
+              multiple
+              onChange={handleFileChange}
+              style={{ width: 350, margin: 10 }}
+            />
           </div>
           <div id="ainputdiv">
             <Button type="primary" style={{ margin: 10 }} htmlType="submit">

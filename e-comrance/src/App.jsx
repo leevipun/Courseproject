@@ -29,7 +29,14 @@ const App = () => {
       dispatch(appendUser(user));
       console.log("Lisättiin token");
     }
-  });
+    const handleWindowClose = () => {
+      localStorage.clear();
+    };
+    window.addEventListener("beforeunload", handleWindowClose);
+    return () => {
+      window.removeEventListener("beforeunload", handleWindowClose);
+    };
+  }, []);
 
   return (
     <div>
