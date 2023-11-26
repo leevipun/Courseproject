@@ -87,12 +87,14 @@ const Homepage = () => {
         <div>
           {listing.map((listing) => (
             <div key={listing.id} style={listingStyle}>
-              <div>Name: {listing.name}</div>
-              <div>Country: {listing.country}</div>
-              <div>
+              <div style={{ margin: 5 }}>Name: {listing.name}</div>
+              <div style={{ margin: 5 }}>Country: {listing.country}</div>
+              <div style={{ margin: 5 }}>
                 Price: {listing.price} {listing.currency}
               </div>
-              <div>Description: {listing.description}</div>
+              <div style={{ margin: 5 }}>
+                Description: {listing.description}
+              </div>
               <div>
                 <Button
                   type="primary"

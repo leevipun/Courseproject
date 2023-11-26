@@ -25,6 +25,15 @@ const Cartpage = () => {
     fetchData();
   }, []);
 
+  const listingStyle = {
+    paddingTop: 10,
+    paddingLeft: 2,
+    border: "solid",
+    borderWidth: 1,
+    marginBottom: 5,
+    marginTop: 5,
+  };
+
   return (
     <div>
       <div>
@@ -32,9 +41,14 @@ const Cartpage = () => {
         User Profile <FaShoppingBasket />
       </div>
 
-      {cartItems.map((item) => (
-        <div key={item.id}>
-          {item.name} Country: {item.country}
+      {cartItems.map((listing) => (
+        <div key={listing.id} style={listingStyle}>
+          <div style={{ margin: 5 }}>Name: {listing.name}</div>
+          <div style={{ margin: 5 }}>Country: {listing.country}</div>
+          <div style={{ margin: 5 }}>
+            Price: {listing.price} {listing.currency}
+          </div>
+          <div style={{ margin: 5 }}>Description: {listing.description}</div>
         </div>
       ))}
     </div>
