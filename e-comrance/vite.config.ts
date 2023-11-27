@@ -30,6 +30,7 @@ export default defineConfig({
         "slick-carousel",
         "uuidv4",
         "react-icons/fa6",
+        "react",
       ],
     },
   },
