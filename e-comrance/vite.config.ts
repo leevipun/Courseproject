@@ -12,4 +12,24 @@ export default defineConfig({
   server: {
     host: true,
   },
+  build: {
+    rollupOptions: {
+      external: [
+        "react-icons/fa",
+        "antd",
+        "react-redux",
+        "@reduxjs/toolkit",
+        "axios",
+        "express",
+        "mongoose",
+        "multer",
+        "react",
+        "react-dom",
+        "react-router",
+        "react-slick",
+        "slick-carousel",
+        "uuidv4",
+      ],
+    },
+  },
 });
