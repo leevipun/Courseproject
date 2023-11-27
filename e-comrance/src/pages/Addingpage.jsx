@@ -17,7 +17,7 @@ const AddingPage = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [selectedCountry, setSelectedCountry] = useState("Select country");
-  const [price, setPrice] = useState("");
+  const [price, setPrice] = useState("0");
   const [name, setName] = useState("");
   const [showPreview, setShowPreview] = useState(false);
   const [currencyCode, setCurrencyCode] = useState("EUR");
@@ -128,7 +128,7 @@ const AddingPage = () => {
                 onChange={(value) => setCurrencyCode(value)}
               />
               <Input
-                defaultValue="300"
+                defaultValue="0"
                 onChange={(e) => setPrice(e.target.value)}
               />
             </Space.Compact>

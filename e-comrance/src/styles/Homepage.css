@@ -1,0 +1,26 @@
+#listingstyle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+#listing {
+  width: calc(25% - 20px);
+  margin: 10px;
+  border: 1px solid #ccc;
+  padding: 10px;
+  box-sizing: border-box;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Add box shadow here */
+}
+
+#listing img {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: cover;
+}
+
+#listing > div {
+  flex: 1;
+}

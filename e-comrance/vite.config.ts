@@ -9,4 +9,7 @@ export default defineConfig({
       "/src/main.tsx": "/src/main.jsx",
     },
   },
+  server: {
+    host: true,
+  },
 });

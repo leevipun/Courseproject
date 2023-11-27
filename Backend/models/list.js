@@ -22,7 +22,7 @@ const listSchema = mongoose.Schema({
     required: true,
   },
   pics: {
-    type: Array,
+    type: String,
   },
   status: {
     type: String,

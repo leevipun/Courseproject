@@ -9,6 +9,7 @@ import { Button } from "antd";
 import { appendcart } from "../../reducer/cartReducer";
 import { addNotification } from "../../reducer/notificationReducer";
 import Notification from "../components/notification";
+import "../styles/Homepage.css";
 
 const Homepage = () => {
   const navigate = useNavigate();
@@ -17,20 +18,13 @@ const Homepage = () => {
     return state.user;
   });
 
-  const listingStyle = {
-    paddingTop: 10,
-    paddingLeft: 2,
-    border: "solid",
-    borderWidth: 1,
-    marginBottom: 5,
-    marginTop: 5,
-  };
-
   const handleAddToCart = async (id) => {
     const response = await addToCart(id);
     if (response === "Already in cart") {
-      dispatch(addNotification("Item added to your cart"));
+      dispatch(addNotification(response));
       console.log("Hah");
+    } else if (response === "Some one has already taken that") {
+      dispatch(addNotification(response));
     } else {
       console.log(response);
       dispatch(appendcart(response));
@@ -39,7 +33,10 @@ const Homepage = () => {
   };
 
   const listing = useSelector((state) => {
-    return state.listing;
+    const filteredListings = state.listing.filter(
+      (listing) => listing.status !== "In cart"
+    );
+    return filteredListings;
   });
 
   useEffect(() => {
@@ -84,25 +81,38 @@ const Homepage = () => {
           <Navbar />
         </div>
         Welcome back {user && user[0] && user[0].name} <FaHome />
-        <div>
+        <div id="listingstyle">
           {listing.map((listing) => (
-            <div key={listing.id} style={listingStyle}>
-              <div style={{ margin: 5 }}>Name: {listing.name}</div>
-              <div style={{ margin: 5 }}>Country: {listing.country}</div>
-              <div style={{ margin: 5 }}>
-                Price: {listing.price} {listing.currency}
-              </div>
-              <div style={{ margin: 5 }}>
-                Description: {listing.description}
+            <div key={listing.id} id="listing">
+              <div>
+                <img
+                  src="https://hips.hearstapps.com/hmg-prod/images/dog-puppy-on-garden-royalty-free-image-1586966191.jpg?crop=0.752xw:1.00xh;0.175xw,0&resize=1200:*" // assuming you have an 'imageUrl' property
+                  alt={listing.name}
+                  style={{
+                    maxWidth: "100%",
+                    maxHeight: "100%",
+                    objectFit: "cover",
+                  }}
+                />
               </div>
               <div>
-                <Button
-                  type="primary"
-                  style={{ margin: 10 }}
-                  onClick={() => handleAddToCart(listing.id)}
-                >
-                  Add to cart
-                </Button>
+                <div style={{ margin: 5 }}>Name: {listing.name}</div>
+                <div style={{ margin: 5 }}>Country: {listing.country}</div>
+                <div style={{ margin: 5 }}>
+                  Price: {listing.price} {listing.currency}
+                </div>
+                <div style={{ margin: 5 }}>
+                  Description: {listing.description}
+                </div>
+                <div>
+                  <Button
+                    type="primary"
+                    style={{ margin: 10 }}
+                    onClick={() => handleAddToCart(listing.id)}
+                  >
+                    Add to cart
+                  </Button>
+                </div>
               </div>
             </div>
           ))}

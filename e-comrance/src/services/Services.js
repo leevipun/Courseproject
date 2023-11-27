@@ -120,4 +120,13 @@ const getAllCartItems = async () => {
   }
 };
 
-export default { setToken, getAllListings, getAllCartItems };
+const getImages = async () => {
+  try {
+    const response = await axios.get(`${baseURL}/images`);
+    return response.data;
+  } catch (error) {
+    throw new Error(error.response.data.message);
+  }
+};
+
+export default { setToken, getAllListings, getAllCartItems, getImages };

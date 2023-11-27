@@ -27,17 +27,27 @@ cartRouter.post("/", extractUser, extractToken, async (req, res, next) => {
     if (cartlistings.includes(body.id)) {
       res.json("Already in cart");
     } else if (listing) {
-      console.log("Läytyi listaus");
-      user.cart = user.cart.concat(listing._id);
-      await user.save();
-      res.json(listing);
+      if (listing.status === "In cart") {
+        res.json("Some one has already taken that");
+      } else {
+        console.log("Läytyi listaus");
+        const item = {
+          status: "In cart",
+        };
+        const updatedList = await List.findByIdAndUpdate(body.id, item, {
+          new: true,
+        });
+        user.cart = user.cart.concat(listing._id);
+        await user.save();
+        res.json(listing);
+      }
     } else {
       console.log("Ei löytyny");
       res.status(404).send("Item not found");
     }
   } else {
     console.log("Mentiin vaan tänne suoraan");
-    res.status(400).send("Error occurred while adding to cart");
+    return res.status(400).send("Error occurred while adding to cart");
   }
 });
 
