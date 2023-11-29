@@ -9,11 +9,15 @@ import { appendcart } from "../../reducer/cartReducer";
 import { addNotification } from "../../reducer/notificationReducer";
 import Notification from "../components/notification";
 import "../styles/Homepage.css";
+import { initializeListing } from "../../reducer/listingReducer";
 
 const Homepage = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const user = useSelector((state) => {
+    return state.user;
+  });
+  const listings = useSelector((state) => {
     return state.user;
   });
 
@@ -27,7 +31,11 @@ const Homepage = () => {
     } else {
       console.log(response);
       dispatch(appendcart(response));
-      dispatch(addNotification(response.name, "was added to your cart"));
+      dispatch(addNotification(`${response.name} was added to your cart`));
+      const remainingListings = listings.filter((name) => {
+        name !== response.name;
+      });
+      dispatch(initializeListing(remainingListings));
     }
   };
 

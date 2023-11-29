@@ -6,13 +6,13 @@
 }
 
 #listing {
-  width: calc(25% - 20px);
+  width: calc(33.33% - 20px);
   margin: 10px;
   border: 1px solid #ccc;
   padding: 10px;
   box-sizing: border-box;
   border-radius: 10px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 8px 12px rgba(0, 0, 0, 0.1);
 }
 
 #listing img {
