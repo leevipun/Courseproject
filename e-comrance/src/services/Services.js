@@ -129,4 +129,17 @@ const getImages = async () => {
   }
 };
 
+export const deleteCartItem = async (id) => {
+  const config = {
+    headers: { Authorization: token },
+  };
+  console.log(config);
+  try {
+    const response = await axios.delete(`${baseURL}/api/cart/${id}`, config);
+    return response.data;
+  } catch (error) {
+    throw new Error(error.response.data.message);
+  }
+};
+
 export default { setToken, getAllListings, getAllCartItems, getImages };

@@ -3,7 +3,6 @@ import Navbar from "./../components/navbar";
 import "../styles/AddingPage.css";
 import { Space, Select, Input, Button } from "antd";
 const { TextArea } = Input;
-import currencyOptions from "../../Data/currencyData.js";
 import CountriesData from "./../../Data/countryData";
 import { Adding } from "../services/Services.js";
 import { useNavigate } from "react-router-dom";
@@ -20,7 +19,7 @@ const AddingPage = () => {
   const [price, setPrice] = useState("0");
   const [name, setName] = useState("");
   const [showPreview, setShowPreview] = useState(false);
-  const [currencyCode, setCurrencyCode] = useState("EUR");
+  const currencyCode = "EUR";
 
   const [selectedFile, setSelectedFile] = useState([]);
   const [description, setDescription] = useState("");
@@ -122,11 +121,7 @@ const AddingPage = () => {
           </div>
           <div id="ainputdiv" style={{ margin: 10 }}>
             <Space.Compact>
-              <Select
-                defaultValue="EUR"
-                options={currencyOptions}
-                onChange={(value) => setCurrencyCode(value)}
-              />
+              <Select defaultValue="EUR" />
               <Input
                 defaultValue="0"
                 onChange={(e) => setPrice(e.target.value)}

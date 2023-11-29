@@ -18,18 +18,54 @@ import { useDispatch } from "react-redux";
 import { appendUser } from "../reducer/userReducer.js";
 import PurchaseHistory from "./pages/Purchasepage.jsx";
 import Notification from "./components/notification.jsx";
+import { initializecart } from "../reducer/cartReducer.js";
+import { initializeListing } from "../reducer/listingReducer.js";
 
 const App = () => {
   const dispatch = useDispatch();
+
   useEffect(() => {
-    const loggerUser = window.localStorage.getItem("loggedNoteappUser");
-    if (loggerUser) {
-      const user = JSON.parse(loggerUser);
-      Services.setToken(`${user.token}`);
-      dispatch(appendUser(user));
-      console.log("Lisättiin token");
-    }
-  });
+    const fetchData = () => {
+      const loggerUser = window.localStorage.getItem("loggedNoteappUser");
+
+      if (loggerUser) {
+        const user = JSON.parse(loggerUser);
+        Services.setToken(`${user.token}`);
+        dispatch(appendUser(user));
+        console.log("Token added");
+      }
+    };
+
+    fetchData();
+  }, [dispatch]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const listings = await Services.getAllCartItems();
+        dispatch(initializecart(listings));
+        console.log("Listings", listings);
+      } catch (error) {
+        console.error("Error fetching listings:", error);
+      }
+    };
+
+    fetchData();
+  }, [dispatch]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const listings = await Services.getAllListings();
+        dispatch(initializeListing(listings));
+        console.log("Listings", listings);
+      } catch (error) {
+        console.error("Error fetching listings:", error);
+      }
+    };
+
+    fetchData();
+  }, []);
 
   return (
     <div>

@@ -3,8 +3,7 @@ import Navbar from "./../components/navbar";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { useEffect } from "react";
-import Services, { addToCart } from "../services/Services";
-import { initializeListing } from "../../reducer/listingReducer";
+import { addToCart } from "../services/Services";
 import { Button } from "antd";
 import { appendcart } from "../../reducer/cartReducer";
 import { addNotification } from "../../reducer/notificationReducer";
@@ -43,20 +42,6 @@ const Homepage = () => {
     if (!window.localStorage.getItem("loggedNoteappUser")) {
       navigate("/login");
     }
-  }, []);
-
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const listings = await Services.getAllListings();
-        dispatch(initializeListing(listings));
-        console.log("Listings", listings);
-      } catch (error) {
-        console.error("Error fetching listings:", error);
-      }
-    };
-
-    fetchData();
   }, []);
 
   if (!listing) {

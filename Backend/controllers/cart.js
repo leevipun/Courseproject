@@ -4,6 +4,7 @@ const List = require("../models/list");
 require("express-async-errors");
 const User = require("../models/user");
 const middleware = require("../utils/middleware");
+const Cart = require("../models/cart");
 
 const extractUser = middleware.extractUser;
 const extractToken = middleware.extractToken;
@@ -71,6 +72,35 @@ cartRouter.get("/", extractUser, extractToken, async (req, res, next) => {
     }
   } catch (error) {
     next(error);
+  }
+});
+
+cartRouter.delete("/:id", extractUser, async (req, res, next) => {
+  try {
+    const user = req.user;
+    const userid = user._id;
+    const itemid = req.params.id;
+
+    const userCart = await User.findById(userid).select("cart").exec();
+
+    if (userCart) {
+      const remainingItems = userCart.cart.filter(
+        (id) => id.toString() !== itemid
+      );
+      await User.findByIdAndUpdate(userid, { cart: remainingItems });
+      const item = {
+        status: "Aviable",
+      };
+      const updatedList = await List.findByIdAndUpdate(req.params.id, item, {
+        new: true,
+      });
+      res.json(remainingItems);
+    } else {
+      res.status(400).send("Invalid ID");
+    }
+  } catch (err) {
+    console.log(err);
+    next(err);
   }
 });
 

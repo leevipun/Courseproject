@@ -18,6 +18,7 @@ import {
   LogoutOutlined,
   TransactionOutlined,
 } from "@ant-design/icons";
+import { useSelector } from "react-redux";
 
 const Navbar = () => {
   const navigate = useNavigate();
@@ -25,6 +26,12 @@ const Navbar = () => {
   const handleClick = () => {
     setShowInput((prevShowInput) => !prevShowInput);
   };
+
+  const cart = useSelector((state) => {
+    return state.cart;
+  });
+
+  const numberOfItemsInCart = cart.length;
 
   const handleLogout = () => {
     window.localStorage.clear();
@@ -92,7 +99,7 @@ const Navbar = () => {
           </li>
           <li id="navitem">
             <Link to="/cart">
-              <FaShoppingBasket />
+              <FaShoppingBasket /> {numberOfItemsInCart}
             </Link>
           </li>
           <li id="navitem">
