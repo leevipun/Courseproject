@@ -16,7 +16,7 @@ const AddingPage = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [selectedCountry, setSelectedCountry] = useState("Select country");
-  const [price, setPrice] = useState("0");
+  const [price, setPrice] = useState(0);
   const [name, setName] = useState("");
   const [showPreview, setShowPreview] = useState(false);
   const currencyCode = "EUR";
@@ -28,31 +28,34 @@ const AddingPage = () => {
 
   const onAdding = async () => {
     try {
-      const response = await Adding(
-        name,
-        selectedCountry,
-        price,
-        currencyCode,
-        description,
-        selectedFile,
-        id
-      );
-
-      if (response.error) {
-        console.error("Adding failed", response.error);
-        dispatch(addNotification(response.error));
-      } else {
-        navigate("/");
-        dispatch(appendlisting(response));
-        console.log(response);
-        dispatch(addNotification(response.name, "was listed"));
-        console.log("Navigoidaan");
+      if (window.confirm("Are you sure you want to list this item for FREE?")) {
+        const response = await Adding(
+          name,
+          selectedCountry,
+          price,
+          currencyCode,
+          description,
+          selectedFile,
+          id
+        );
+  
+        if (response.error) {
+          console.error("Adding failed", response.error);
+          dispatch(addNotification(response.error));
+        } else {
+          navigate("/");
+          dispatch(appendlisting(response));
+          console.log(response);
+          dispatch(addNotification(response.name, "was listed"));
+          console.log("Navigoidaan");
+        }
       }
     } catch (error) {
       console.error("Adding failed", error.message);
       dispatch(addNotification(error.message));
     }
   };
+  
 
   const handlePreview = () => {
     setShowPreview((prevValue) => !prevValue);
