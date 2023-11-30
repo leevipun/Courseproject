@@ -2,18 +2,21 @@ import { FaHome } from "react-icons/fa";
 import Navbar from "./../components/navbar";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { addToCart } from "../services/Services";
-import { Button } from "antd";
+import { Button, Select } from "antd";
 import { appendcart } from "../../reducer/cartReducer";
 import { addNotification } from "../../reducer/notificationReducer";
+import { LuSettings2 } from "react-icons/lu";
 import Notification from "../components/notification";
 import "../styles/Homepage.css";
 import { initializeListing } from "../../reducer/listingReducer";
+import categoriesWithOptions from "../../Data/categoryData";
 
 const Homepage = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const [showFilter, setShowFilter] = useState(false);
   const user = useSelector((state) => {
     return state.user;
   });
@@ -53,13 +56,19 @@ const Homepage = () => {
     );
   });
 
+  console.log("listin", listing);
+
   useEffect(() => {
     if (!window.sessionStorage.getItem("loggedNoteappUser")) {
       navigate("/login");
     }
   }, []);
 
-  if (!listing) {
+  const handleFiltershow = () => {
+    setShowFilter((prevShowFilter) => !prevShowFilter);
+  };
+
+  if (!listing || listing.length === 0) {
     return (
       <div>
         <div>
@@ -80,7 +89,25 @@ const Homepage = () => {
         <div>
           <Navbar />
         </div>
-        Welcome back {user && user[0] && user[0].name} <FaHome />
+        <div id="itemstyle">
+          <div id="welcome">
+            Welcome back {user && user[0] && user[0].name} <FaHome />
+          </div>
+          <Button type="primary" id="Filtericon" onClick={handleFiltershow}>
+            <LuSettings2 />
+          </Button>
+        </div>
+        {showFilter && (
+          <div style={{ margin: 30 }}>
+            <label htmlFor="category">Filter by category: </label>
+            <Select
+              id="category"
+              options={categoriesWithOptions}
+              style={{ width: 200 }}
+              defaultValue="Electorincs"
+            ></Select>
+          </div>
+        )}
         <div id="listingstyle">
           {listing.map((listing) => (
             <div key={listing.id} id="listing">

@@ -24,3 +24,18 @@
 #listing > div {
   flex: 1;
 }
+
+#itemstyle {
+  display: flex;
+  align-items: center;
+  justify-content: space-between; /* Use space-between to push items to the ends */
+  flex-wrap: wrap;
+}
+
+#Filtericon {
+  order: 2;
+}
+
+#welcome {
+  order: 1;
+}
