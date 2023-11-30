@@ -43,7 +43,14 @@ const Homepage = () => {
     const filteredListings = state.listing.filter(
       (listing) => listing.status !== "In cart"
     );
-    return filteredListings;
+    const filter =
+      typeof state.filter === "string" ? state.filter.toLowerCase() : "";
+
+    return filteredListings.filter(
+      (listing) =>
+        typeof listing.name === "string" &&
+        listing.name.toLowerCase().includes(filter)
+    );
   });
 
   useEffect(() => {

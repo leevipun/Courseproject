@@ -7,6 +7,7 @@ import listingReducer from "../reducer/listingReducer.js";
 import App from "./App.jsx";
 import cartReducer from "../reducer/cartReducer.js";
 import notificationReducer from "../reducer/notificationReducer.js";
+import filterReducer from "../reducer/filterReducer.js";
 
 const store = configureStore({
   reducer: {
@@ -14,6 +15,7 @@ const store = configureStore({
     listing: listingReducer,
     cart: cartReducer,
     notification: notificationReducer,
+    filter: filterReducer,
   },
 });
 
