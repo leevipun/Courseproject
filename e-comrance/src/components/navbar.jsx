@@ -9,7 +9,7 @@ import {
 } from "react-icons/fa";
 import { Link, useNavigate } from "react-router-dom";
 import { FaMagnifyingGlass } from "react-icons/fa6";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import "../App.css";
 import React from "react";
 import { Dropdown, Space } from "antd";
@@ -18,11 +18,43 @@ import {
   LogoutOutlined,
   TransactionOutlined,
 } from "@ant-design/icons";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { setfilter } from "../../reducer/filterReducer";
 
 const Navbar = () => {
   const navigate = useNavigate();
+  const dispatch = useDispatch()
   const [showInput, setShowInput] = useState(false);
+  const [showAdd, setShowAdd] = useState(false)
+  const [showCart, setShowCart] = useState(false)
+  const [filter, setFilter] = useState('')
+
+  const filter = useSelector((state) => state.filter);
+
+  const filterChange = (filter) => {
+    dispatch(setfilter(filter))
+    setFilter(filter)
+  }
+
+  useEffect(() => {
+    const fetchData = () => {
+      const loggerUser = window.localStorage.getItem("loggedNoteappUser");
+
+      if (loggerUser) {
+        const user = JSON.parse(loggerUser);
+        const userStatus = user.style
+        if(userStatus === "seller" || userStatus === "both") {
+          setShowAdd(true)
+        }
+        if(userStatus !== 'seller') {
+          setShowCart(true)
+        }
+      }
+    };
+
+    fetchData();
+  }, []);
+
   const handleClick = () => {
     setShowInput((prevShowInput) => !prevShowInput);
   };
@@ -88,20 +120,21 @@ const Navbar = () => {
               Contacts <FaAddressCard />
             </Link>
           </li>
-          {showInput && <input id="searchInput" placeholder="Search" />}
+          {showInput && <input id="searchInput" value={filter} onChange={(e) => filterChange(e.target.value)} placeholder="Search" />}
           <li id="search" onClick={() => handleClick()}>
             <FaMagnifyingGlass />
           </li>
-          <li id="navitem">
+          {showAdd && (          <li id="navitem">
             <Link to="/add">
               <FaPlus />
             </Link>
-          </li>
-          <li id="navitem">
+          </li>)}
+          {showCart && (          <li id="navitem">
             <Link to="/cart">
               <FaShoppingBasket /> {numberOfItemsInCart}
             </Link>
-          </li>
+          </li>)}
+
           <li id="navitem">
             <Link to="/favorites">
               <FaHeart />
