@@ -54,7 +54,7 @@ const Homepage = () => {
   });
 
   useEffect(() => {
-    if (!window.localStorage.getItem("loggedNoteappUser")) {
+    if (!window.sessionStorage.getItem("loggedNoteappUser")) {
       navigate("/login");
     }
   }, []);

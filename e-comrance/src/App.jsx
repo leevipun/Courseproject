@@ -26,13 +26,16 @@ const App = () => {
 
   useEffect(() => {
     const fetchData = () => {
-      const loggerUser = window.localStorage.getItem("loggedNoteappUser");
+      const sessionUser = window.sessionStorage.getItem("loggedNoteappUser");
 
-      if (loggerUser) {
-        const user = JSON.parse(loggerUser);
+      if (sessionUser) {
+        const user = JSON.parse(sessionUser);
         Services.setToken(`${user.token}`);
         dispatch(appendUser(user));
         console.log("Token added");
+      } else {
+        window.sessionStorage.clear(); // Clear sessionStorage if no user is logged in
+        console.log("sessionStorage cleared");
       }
     };
 

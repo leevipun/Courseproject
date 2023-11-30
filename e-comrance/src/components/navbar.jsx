@@ -30,7 +30,7 @@ const Navbar = () => {
 
   useEffect(() => {
     const fetchData = () => {
-      const loggerUser = window.localStorage.getItem("loggedNoteappUser");
+      const loggerUser = window.sessionStorage.getItem("loggedNoteappUser");
 
       if (loggerUser) {
         const user = JSON.parse(loggerUser);
@@ -63,8 +63,8 @@ const Navbar = () => {
   const numberOfItemsInCart = cart.length;
 
   const handleLogout = () => {
-    window.localStorage.clear();
-    console.log("Hah localstorage meni siinä");
+    window.sessionStorage.clear();
+    console.log("Hah sessionStorage meni siinä");
     navigate("/login");
   };
 
