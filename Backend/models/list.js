@@ -24,6 +24,10 @@ const listSchema = mongoose.Schema({
   pics: {
     type: Array,
   },
+  category: {
+    type: String,
+    required: true
+  },
   status: {
     type: String,
     required: true,

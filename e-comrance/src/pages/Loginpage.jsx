@@ -21,7 +21,7 @@ const Loginpage = () => {
       dispatch(appendUser(user));
       console.log(user.token);
       Services.setToken(user.token);
-      window.sessionStorage.setItem("loggedNoteappUser", JSON.stringify(user));
+      window.sessionStorage.setItem("loggedNoteappUser", JSON.stringify(user.token));
       navigate("/");
     } catch (error) {
       console.error("Login failed", error.message);

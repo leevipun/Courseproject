@@ -56,6 +56,7 @@ export const Adding = async (
   country,
   price,
   currency,
+  category,
   description,
   pics
 ) => {
@@ -64,6 +65,7 @@ export const Adding = async (
     country,
     price,
     currency,
+    category,
     description,
     pics,
   };
