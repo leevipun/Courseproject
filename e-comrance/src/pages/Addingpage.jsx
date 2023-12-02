@@ -10,6 +10,7 @@ import { useDispatch } from "react-redux";
 import { appendlisting } from "../../reducer/listingReducer.js";
 import { v4 as uuidv4 } from "uuid";
 import { addNotification } from "../../reducer/notificationReducer.js";
+import categoriesWithOptions from "../../Data/categoryData.js";
 
 const AddingPage = () => {
   const countryData = CountriesData;
@@ -19,6 +20,7 @@ const AddingPage = () => {
   const [price, setPrice] = useState(0);
   const [name, setName] = useState("");
   const [showPreview, setShowPreview] = useState(false);
+  const [category, setCategory] = useState();
   const currencyCode = "EUR";
 
   const [selectedFile, setSelectedFile] = useState([]);
@@ -28,34 +30,32 @@ const AddingPage = () => {
 
   const onAdding = async () => {
     try {
-      if (window.confirm("Are you sure you want to list this item for FREE?")) {
-        const response = await Adding(
-          name,
-          selectedCountry,
-          price,
-          currencyCode,
-          description,
-          selectedFile,
-          id
-        );
-  
-        if (response.error) {
-          console.error("Adding failed", response.error);
-          dispatch(addNotification(response.error));
-        } else {
-          navigate("/");
-          dispatch(appendlisting(response));
-          console.log(response);
-          dispatch(addNotification(response.name, "was listed"));
-          console.log("Navigoidaan");
-        }
+      const response = await Adding(
+        name,
+        selectedCountry,
+        price,
+        currencyCode,
+        category,
+        description,
+        selectedFile,
+        id
+      );
+
+      if (response.error) {
+        console.error("Adding failed", response.error);
+        dispatch(addNotification(response.error));
+      } else {
+        navigate("/");
+        dispatch(appendlisting(response));
+        console.log(response);
+        dispatch(addNotification(response.name, "was listed"));
+        console.log("Navigoidaan");
       }
     } catch (error) {
       console.error("Adding failed", error.message);
       dispatch(addNotification(error.message));
     }
   };
-  
 
   const handlePreview = () => {
     setShowPreview((prevValue) => !prevValue);
@@ -130,6 +130,13 @@ const AddingPage = () => {
                 onChange={(e) => setPrice(e.target.value)}
               />
             </Space.Compact>
+          </div>
+          <div id="ainputdiv">
+            <Select
+              defaultValue="Electronics"
+              options={categoriesWithOptions}
+              onChange={(value) => setCategory(value)}
+            ></Select>
           </div>
           <div id="ainputdiv">
             <TextArea

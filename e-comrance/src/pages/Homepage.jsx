@@ -4,14 +4,20 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { addToCart } from "../services/Services";
-import { Button, Select } from "antd";
+import { Button, Select, Input } from "antd";
 import { appendcart } from "../../reducer/cartReducer";
 import { addNotification } from "../../reducer/notificationReducer";
 import { LuSettings2 } from "react-icons/lu";
-import Notification from "../components/notification";
 import "../styles/Homepage.css";
 import { initializeListing } from "../../reducer/listingReducer";
 import categoriesWithOptions from "../../Data/categoryData";
+import CountriesData from "../../Data/countryData";
+import {
+  setCategory,
+  setCountry,
+  setMaxPrice,
+  setMinPrice,
+} from "./../../reducer/filterReducer";
 
 const Homepage = () => {
   const navigate = useNavigate();
@@ -20,9 +26,14 @@ const Homepage = () => {
   const user = useSelector((state) => {
     return state.user;
   });
-  const listings = useSelector((state) => {
+  const userlistings = useSelector((state) => {
     return state.user;
   });
+  const filter = useSelector((state) => {
+    return state.filter;
+  });
+
+  console.log("Filter", filter);
 
   const handleAddToCart = async (id) => {
     const response = await addToCart(id);
@@ -35,28 +46,12 @@ const Homepage = () => {
       console.log(response);
       dispatch(appendcart(response));
       dispatch(addNotification(`${response.name} was added to your cart`));
-      const remainingListings = listings.filter((name) => {
+      const remainingListings = userlistings.filter((name) => {
         name !== response.name;
       });
       dispatch(initializeListing(remainingListings));
     }
   };
-
-  const listing = useSelector((state) => {
-    const filteredListings = state.listing.filter(
-      (listing) => listing.status !== "In cart"
-    );
-    const filter =
-      typeof state.filter === "string" ? state.filter.toLowerCase() : "";
-
-    return filteredListings.filter(
-      (listing) =>
-        typeof listing.name === "string" &&
-        listing.name.toLowerCase().includes(filter)
-    );
-  });
-
-  console.log("listin", listing);
 
   useEffect(() => {
     if (!window.sessionStorage.getItem("loggedNoteappUser")) {
@@ -65,8 +60,27 @@ const Homepage = () => {
   }, []);
 
   const handleFiltershow = () => {
-    setShowFilter((prevShowFilter) => !prevShowFilter);
+    setShowFilter((prev) => !prev);
   };
+
+  const listing = useSelector((state) => {
+    const filteredListings = state.listing.filter((item) => {
+      return (
+        item.status !== "In cart" &&
+        (state.filter.minPrice === null ||
+          item.price >= state.filter.minPrice) &&
+        (state.filter.maxPrice === null ||
+          item.price <= state.filter.maxPrice) &&
+        (state.filter.country === "None" ||
+          item.country === state.filter.country) &&
+        (state.filter.category === "None" ||
+          item.category === state.filter.category) &&
+        item.name.toLowerCase().includes(state.filter.filter.toLowerCase())
+      );
+    });
+
+    return filteredListings;
+  });
 
   if (!listing || listing.length === 0) {
     return (
@@ -74,13 +88,56 @@ const Homepage = () => {
         <div>
           <Navbar />
         </div>
-        <div>
-          <Notification />
-        </div>
         Welcome back {user && user[0] && user[0].name} <FaHome />
         <div>
           <h1>No listings</h1>
         </div>
+        <div>
+          <Button type="primary" id="Filtericon" onClick={handleFiltershow}>
+            <LuSettings2 />
+          </Button>
+        </div>
+        {showFilter && (
+          <div style={{ margin: 30 }}>
+            <div style={{ margin: 10 }}>
+              <label htmlFor="category">Filter by category: </label>
+              <Select
+                id="category"
+                options={categoriesWithOptions}
+                style={{ width: 200 }}
+                value={filter.category}
+                onChange={(value) => dispatch(setCategory(value))}
+              ></Select>
+            </div>
+            <div style={{ margin: 10 }}>
+              <label htmlFor="country">Filter by country: </label>
+              <Select
+                id="country"
+                options={CountriesData}
+                style={{ width: 200 }}
+                value={filter.country}
+                onChange={(value) => dispatch(setCountry(value))}
+              ></Select>
+            </div>
+            <div style={{ margin: 10 }}>
+              <Input
+                placeholder="Min price"
+                onChange={(e) => dispatch(setMinPrice(e.target.value))}
+                value={filter.minPrice}
+              />
+            </div>
+            <div style={{ margin: 10 }}>
+              <Input
+                onChange={(e) => dispatch(setMaxPrice(e.target.value))}
+                value={filter.maxPrice}
+                placeholder="Max price"
+              />
+            </div>
+            <div style={{ margin: 10 }}>
+              <Button>Clear filter</Button>
+            </div>
+          </div>
+        )}
       </div>
     );
   } else {
@@ -99,13 +156,43 @@ const Homepage = () => {
         </div>
         {showFilter && (
           <div style={{ margin: 30 }}>
-            <label htmlFor="category">Filter by category: </label>
-            <Select
-              id="category"
-              options={categoriesWithOptions}
-              style={{ width: 200 }}
-              defaultValue="Electorincs"
-            ></Select>
+            <div style={{ margin: 10 }}>
+              <label htmlFor="category">Filter by category: </label>
+              <Select
+                id="category"
+                options={categoriesWithOptions}
+                style={{ width: 200 }}
+                value={filter.category}
+                onChange={(value) => dispatch(setCategory(value))}
+              ></Select>
+            </div>
+            <div style={{ margin: 10 }}>
+              <label htmlFor="country">Filter by country: </label>
+              <Select
+                id="country"
+                options={CountriesData}
+                style={{ width: 200 }}
+                value={filter.country}
+                onChange={(value) => dispatch(setCountry(value))}
+              ></Select>
+            </div>
+            <div style={{ margin: 10, width: 300 }}>
+              <Input
+                placeholder="Min price"
+                value={filter.minPrice}
+                onChange={(e) => dispatch(setMinPrice(e.target.value))}
+              />
+            </div>
+            <div style={{ margin: 10, width: 300 }}>
+              <Input
+                onChange={(e) => dispatch(setMaxPrice(e.target.value))}
+                value={filter.maxPrice}
+                placeholder="Max price"
+              />
+            </div>
+            <div style={{ margin: 10 }}>
+              <Button type="primary">Clear filter</Button>
+            </div>
           </div>
         )}
         <div id="listingstyle">

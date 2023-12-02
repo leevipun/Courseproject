@@ -1,4 +1,5 @@
 const countries = [
+  "None",
   "Afghanistan",
   "Åland Islands",
   "Albania",
@@ -233,9 +234,7 @@ const countries = [
   "Zimbabwe",
 ];
 
-const uniqueCountries = [...new Set(countries)].sort();
-
-const CountriesData = uniqueCountries.map((name) => ({
+const CountriesData = countries.map((name) => ({
   label: name,
   value: name,
 }));

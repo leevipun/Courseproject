@@ -25,7 +25,7 @@ const Navbar = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [showInput, setShowInput] = useState(false);
-  const [showAdd, setShowAdd] = useState(false);
+  const [showAdd, setShowAdd] = useState(true);
   const [showCart, setShowCart] = useState(false);
 
   useEffect(() => {
@@ -34,6 +34,7 @@ const Navbar = () => {
 
       if (loggerUser) {
         const user = JSON.parse(loggerUser);
+
         const userStatus = user.style;
         if (userStatus === "seller" || userStatus === "both") {
           setShowAdd(true);

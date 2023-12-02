@@ -30,7 +30,8 @@ const App = () => {
 
       if (sessionUser) {
         const user = JSON.parse(sessionUser);
-        Services.setToken(`${user.token}`);
+        console.log(user);
+        Services.setToken(`${user}`);
         dispatch(appendUser(user));
         console.log("Token added");
       } else {
@@ -40,7 +41,7 @@ const App = () => {
     };
 
     fetchData();
-  }, [dispatch]);
+  }, []);
 
   useEffect(() => {
     const fetchData = async () => {

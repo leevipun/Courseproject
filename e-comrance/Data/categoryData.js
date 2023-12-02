@@ -1,4 +1,5 @@
 const categories = [
+  "None",
   "Electronics",
   "Appliances",
   "Home",
