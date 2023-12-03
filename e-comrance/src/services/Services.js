@@ -144,4 +144,24 @@ export const deleteCartItem = async (id) => {
   }
 };
 
+export const getUserData = async () => {
+  try {
+    let config = {
+      headers: { Authorization: token },
+    };
+    while (!token) {
+      await new Promise((resolve) => setTimeout(resolve, 100));
+    }
+    config = {
+      headers: { Authorization: token },
+    };
+    console.log(config);
+    const response = await axios.get(`${baseURL}/api/users/info`, config);
+    console.log(response);
+    return response.data;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
 export default { setToken, getAllListings, getAllCartItems, getImages };

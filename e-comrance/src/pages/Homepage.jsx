@@ -3,7 +3,7 @@ import Navbar from "./../components/navbar";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
-import { addToCart } from "../services/Services";
+import { addToCart, getUserData } from "../services/Services";
 import { Button, Select, Input } from "antd";
 import { appendcart } from "../../reducer/cartReducer";
 import { addNotification } from "../../reducer/notificationReducer";
@@ -23,6 +23,12 @@ const Homepage = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [showFilter, setShowFilter] = useState(false);
+  const [userData, setUserData] = useState([]);
+  const getUserInfo = async () => {
+    const response = await getUserData();
+    setUserData(response);
+  };
+
   const user = useSelector((state) => {
     return state.user;
   });
@@ -56,6 +62,8 @@ const Homepage = () => {
   useEffect(() => {
     if (!window.sessionStorage.getItem("loggedNoteappUser")) {
       navigate("/login");
+    } else {
+      getUserInfo();
     }
   }, []);
 
@@ -67,10 +75,8 @@ const Homepage = () => {
     const filteredListings = state.listing.filter((item) => {
       return (
         item.status !== "In cart" &&
-        (state.filter.minPrice === null ||
-          item.price >= state.filter.minPrice) &&
-        (state.filter.maxPrice === null ||
-          item.price <= state.filter.maxPrice) &&
+        (state.filter.minPrice === "" || item.price >= state.filter.minPrice) &&
+        (state.filter.maxPrice === "" || item.price <= state.filter.maxPrice) &&
         (state.filter.country === "None" ||
           item.country === state.filter.country) &&
         (state.filter.category === "None" ||
@@ -147,9 +153,7 @@ const Homepage = () => {
           <Navbar />
         </div>
         <div id="itemstyle">
-          <div id="welcome">
-            Welcome back {user && user[0] && user[0].name} <FaHome />
-          </div>
+          <div id="welcome">Welcome back {userData.name}</div>
           <Button type="primary" id="Filtericon" onClick={handleFiltershow}>
             <LuSettings2 />
           </Button>
@@ -177,14 +181,18 @@ const Homepage = () => {
               ></Select>
             </div>
             <div style={{ margin: 10, width: 300 }}>
+              <label htmlFor="minPrice">Min price: </label>
               <Input
+                id="minPrice"
                 placeholder="Min price"
                 value={filter.minPrice}
                 onChange={(e) => dispatch(setMinPrice(e.target.value))}
               />
             </div>
             <div style={{ margin: 10, width: 300 }}>
+              <label htmlFor="maxPrice">Max price: </label>
               <Input
+                id="maxPrice"
                 onChange={(e) => dispatch(setMaxPrice(e.target.value))}
                 value={filter.maxPrice}
                 placeholder="Max price"

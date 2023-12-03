@@ -14,7 +14,7 @@ export const filterChange = (filter) => {
   };
 };
 
-export const minPriceReducer = (state = null, action) => {
+export const minPriceReducer = (state = "", action) => {
   switch (action.type) {
     case "SET_MIN_PRICE":
       return action.payload;
@@ -30,7 +30,7 @@ export const setMinPrice = (minPrice) => {
   };
 };
 
-export const maxPriceReducer = (state = null, action) => {
+export const maxPriceReducer = (state = "", action) => {
   switch (action.type) {
     case "SET_MAX_PRICE":
       return action.payload;
