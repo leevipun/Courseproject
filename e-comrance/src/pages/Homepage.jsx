@@ -3,7 +3,7 @@ import Navbar from "./../components/navbar";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
-import { addToCart, getUserData } from "../services/Services";
+import { addToCart } from "../services/Services";
 import { Button, Select, Input } from "antd";
 import { appendcart } from "../../reducer/cartReducer";
 import { addNotification } from "../../reducer/notificationReducer";
@@ -23,23 +23,13 @@ const Homepage = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [showFilter, setShowFilter] = useState(false);
-  const [userData, setUserData] = useState([]);
-  const getUserInfo = async () => {
-    const response = await getUserData();
-    setUserData(response);
-  };
-
   const user = useSelector((state) => {
-    return state.user;
-  });
-  const userlistings = useSelector((state) => {
+    console.log("User", state.user);
     return state.user;
   });
   const filter = useSelector((state) => {
     return state.filter;
   });
-
-  console.log("Filter", filter);
 
   const handleAddToCart = async (id) => {
     const response = await addToCart(id);
@@ -52,7 +42,7 @@ const Homepage = () => {
       console.log(response);
       dispatch(appendcart(response));
       dispatch(addNotification(`${response.name} was added to your cart`));
-      const remainingListings = userlistings.filter((name) => {
+      const remainingListings = user.filter((name) => {
         name !== response.name;
       });
       dispatch(initializeListing(remainingListings));
@@ -62,8 +52,6 @@ const Homepage = () => {
   useEffect(() => {
     if (!window.sessionStorage.getItem("loggedNoteappUser")) {
       navigate("/login");
-    } else {
-      getUserInfo();
     }
   }, []);
 
@@ -153,7 +141,7 @@ const Homepage = () => {
           <Navbar />
         </div>
         <div id="itemstyle">
-          <div id="welcome">Welcome back {userData.name}</div>
+          <div id="welcome">Welcome back {user[0].name}</div>
           <Button type="primary" id="Filtericon" onClick={handleFiltershow}>
             <LuSettings2 />
           </Button>
@@ -214,6 +202,7 @@ const Homepage = () => {
                     maxWidth: "100%",
                     maxHeight: "100%",
                     objectFit: "cover",
+                    borderRadius: 10,
                   }}
                 />
               </div>

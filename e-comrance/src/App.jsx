@@ -1,5 +1,5 @@
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
-import Services from "./services/Services.js";
+import Services, { getUserData } from "./services/Services.js";
 import { useEffect } from "react";
 
 import "./App.css";
@@ -25,14 +25,16 @@ const App = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    const fetchData = () => {
+    const fetchData = async () => {
       const sessionUser = window.sessionStorage.getItem("loggedNoteappUser");
 
       if (sessionUser) {
         const user = JSON.parse(sessionUser);
         console.log(user);
         Services.setToken(`${user}`);
-        dispatch(appendUser(user));
+        const response = await getUserData();
+        console.log(response); // Get user data from backend and set it to redux store
+        dispatch(appendUser(response));
         console.log("Token added");
       } else {
         window.sessionStorage.clear(); // Clear sessionStorage if no user is logged in
