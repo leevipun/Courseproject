@@ -1,4 +1,4 @@
-import { FaHome } from "react-icons/fa";
+import { FaHome, FaHeart } from "react-icons/fa";
 import Navbar from "./../components/navbar";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
@@ -76,21 +76,30 @@ const Homepage = () => {
     return filteredListings;
   });
 
+  if (!user) {
+    return(
+      <div>
+        <h1>Loading user data</h1>
+      </div>
+    )
+  }
   if (!listing || listing.length === 0) {
     return (
       <div>
         <div>
           <Navbar />
         </div>
-        Welcome back {user && user[0] && user[0].name} <FaHome />
-        <div>
-          <h1>No listings</h1>
-        </div>
+        <div id="itemstyle">
+        <div >
+         Welcome back {user && user[0] && user[0].name} <FaHome />
+         </div>
         <div>
           <Button type="primary" id="Filtericon" onClick={handleFiltershow}>
             <LuSettings2 />
           </Button>
         </div>
+        </div>
+        <div>
         {showFilter && (
           <div style={{ margin: 30 }}>
             <div style={{ margin: 10 }}>
@@ -132,6 +141,10 @@ const Homepage = () => {
             </div>
           </div>
         )}
+        </div>
+        <div>
+          <h1>No listings</h1>
+        </div>
       </div>
     );
   } else {
@@ -215,7 +228,7 @@ const Homepage = () => {
                 <div style={{ margin: 5 }}>
                   Description: {listing.description}
                 </div>
-                <div>
+                <div id="itemstyle">
                   <Button
                     type="primary"
                     style={{ margin: 10 }}
@@ -223,6 +236,7 @@ const Homepage = () => {
                   >
                     Add to cart
                   </Button>
+                  <Button style={{margin: 10}}><FaHeart/></Button>
                 </div>
               </div>
             </div>
