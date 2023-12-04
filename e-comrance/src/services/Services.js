@@ -164,4 +164,19 @@ export const getUserData = async () => {
   }
 };
 
+export const getAllFavoriteItems = async () => {
+  try {
+    let config = {
+      headers: {Authorization: token},
+    }
+    while(!token) {
+      await new Promise((resolve) => setTimeout(resolve, 100))
+    }
+    const response = await axios.get(`${baseURL}/api/favorite`, config)
+    return response.data
+  } catch (error) {
+    throw new Error(error.response.data.message);
+  }
+}
+
 export default { setToken, getAllListings, getAllCartItems, getImages };

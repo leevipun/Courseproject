@@ -1,6 +1,7 @@
 const favoritesRouter = require("express").Router();
 const jwt = require("jsonwebtoken");
 const List = require("../models/list");
+const User = require("../models/user")
 require("express-async-errors");
 const middleware = require("../utils/middleware");
 
