@@ -21,6 +21,10 @@ import {
 } from "@ant-design/icons";
 import { useDispatch, useSelector } from "react-redux";
 import { filterChange } from "../../reducer/filterReducer";
+import { clearUser } from "../../reducer/userReducer";
+import { clearCart } from "../../reducer/cartReducer";
+import { clearFavorite } from "../../reducer/favoriteReducer";
+import { clearListing } from "../../reducer/listingReducer";
 
 const Navbar = () => {
   const navigate = useNavigate();
@@ -73,6 +77,11 @@ const Navbar = () => {
   const handleLogout = () => {
     window.sessionStorage.clear();
     console.log("Hah sessionStorage meni siinä");
+    dispatch(clearUser());
+    dispatch(clearCart());
+    dispatch(clearFavorite());
+    dispatch(clearListing());
+    console.log("User cleared");
     navigate("/login");
   };
 

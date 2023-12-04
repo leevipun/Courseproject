@@ -112,7 +112,7 @@ const Homepage = () => {
   console.log(userFavoriteId, "Lempparit");
 
   console.log("uuseri", user);
-  console.log("listin");
+  console.log("listings", listing);
 
   if (!user) {
     return (

@@ -1,9 +1,11 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { getAllFavoriteItems } from "./../src/services/Services";
 
+const initialState = [];
+
 const favoriteSlice = createSlice({
   name: "favorite",
-  initialState: [],
+  initialState,
   reducers: {
     appendfavorite(state, action) {
       state.push(action.payload);
@@ -11,10 +13,14 @@ const favoriteSlice = createSlice({
     setfavorite(state, action) {
       return action.payload;
     },
+    clearFavorite() {
+      return initialState;
+    },
   },
 });
 
-export const { appendfavorite, setfavorite } = favoriteSlice.actions;
+export const { appendfavorite, setfavorite, clearFavorite } =
+  favoriteSlice.actions;
 
 export const initializefavorite = () => {
   return async (dispatch) => {

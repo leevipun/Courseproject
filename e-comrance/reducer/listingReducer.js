@@ -11,10 +11,13 @@ const listingSlice = createSlice({
     setlisting(state, action) {
       return action.payload;
     },
+    clearListing() {
+      return [];
+    },
   },
 });
 
-export const { appendlisting, setlisting } = listingSlice.actions;
+export const { appendlisting, setlisting, clearListing } = listingSlice.actions;
 
 export const initializeListing = () => {
   return async (dispatch) => {

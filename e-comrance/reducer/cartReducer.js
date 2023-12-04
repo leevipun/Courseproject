@@ -1,9 +1,11 @@
 import { createSlice } from "@reduxjs/toolkit";
 import Services from "../src/services/Services";
 
+const initialState = [];
+
 const cartSlice = createSlice({
   name: "cart",
-  initialState: [],
+  initialState,
   reducers: {
     appendcart(state, action) {
       state.push(action.payload);
@@ -11,10 +13,13 @@ const cartSlice = createSlice({
     setcart(state, action) {
       return action.payload;
     },
+    clearCart() {
+      return initialState;
+    },
   },
 });
 
-export const { appendcart, setcart } = cartSlice.actions;
+export const { appendcart, setcart, clearCart } = cartSlice.actions;
 
 export const initializecart = () => {
   return async (dispatch) => {

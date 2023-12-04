@@ -1,29 +1,47 @@
+import React, { useState, useEffect } from "react";
 import Navbar from "./../components/navbar";
 import { useSelector } from "react-redux";
-import { Input, Button } from "antd";
-import { useState } from "react";
+import { Input, Button, Spin } from "antd";
 import { updateUserInfo } from "../services/Services";
 
 const Userpage = () => {
-  const user = useSelector((state) => {
-    console.log("User", state.user);
-    return state.user;
-  });
+  const user = useSelector((state) => state.user);
+  const [loading, setLoading] = useState(true);
 
-  const userEmail = user[0].email;
-  const userName = user[0].name;
-
-  console.log();
-  const [email, setEmail] = useState(userEmail);
-  const [name, setName] = useState(userName);
+  const [email, setEmail] = useState("");
+  const [name, setName] = useState("");
   const [address, setAddress] = useState("");
   const [phone, setPhone] = useState("");
 
+  useEffect(() => {
+    const fetchData = async () => {
+      if (user.length > 0) {
+        const userData = user[0];
+        setEmail(userData.email);
+        setName(userData.name);
+        setAddress(userData.address || "");
+        setPhone(userData.phone || "");
+        setLoading(false);
+      } else {
+        setLoading(false);
+      }
+    };
+
+    fetchData();
+  }, [user]);
+
   const handleUpdate = async () => {
-    console.log("Klikattiin");
     const response = await updateUserInfo(email, name, address, phone);
     console.log(response);
   };
+
+  if (loading) {
+    return (
+      <div>
+        <Spin size="large" />
+      </div>
+    );
+  }
 
   return (
     <div>
