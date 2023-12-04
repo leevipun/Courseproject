@@ -2,19 +2,28 @@ import Navbar from "./../components/navbar";
 import { useSelector } from "react-redux";
 import { Input, Button } from "antd";
 import { useState } from "react";
+import { updateUserInfo } from "../services/Services";
 
 const Userpage = () => {
   const user = useSelector((state) => {
     console.log("User", state.user);
     return state.user;
   });
+
+  const userEmail = user[0].email;
+  const userName = user[0].name;
+
   console.log();
-  const [email, setEmail] = useState(user[0].email);
-  const [name, setName] = useState(user[0].name);
+  const [email, setEmail] = useState(userEmail);
+  const [name, setName] = useState(userName);
   const [address, setAddress] = useState("");
   const [phone, setPhone] = useState("");
 
-  const handleUpdate = () => {};
+  const handleUpdate = async () => {
+    console.log("Klikattiin");
+    const response = await updateUserInfo(email, name, address, phone);
+    console.log(response);
+  };
 
   return (
     <div>
@@ -58,7 +67,9 @@ const Userpage = () => {
           onChange={(e) => setPhone(e.target.value)}
         />
       </div>
-      <Button type="primary">Save changes</Button>
+      <Button type="primary" onClick={handleUpdate}>
+        Save changes
+      </Button>
     </div>
   );
 };

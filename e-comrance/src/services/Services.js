@@ -214,6 +214,28 @@ export const deleteFavorite = async (id) => {
   }
 };
 
-export const updateUserInfo = async () => {};
+export const updateUserInfo = async (email, name, address, phone) => {
+  const config = {
+    headers: { Authorization: token },
+  };
+  const newObject = {
+    email: email,
+    name: name,
+    address: address,
+    phone: phone,
+  };
+  console.log(token);
+  console.log(newObject);
+  try {
+    const response = await axios.put(
+      `${baseURL}/api/users/`,
+      newObject,
+      config
+    );
+    return response.data;
+  } catch (error) {
+    throw new Error(error.response.data.message);
+  }
+};
 
 export default { setToken, getAllListings, getAllCartItems, getImages };

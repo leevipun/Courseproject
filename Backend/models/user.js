@@ -19,6 +19,12 @@ const userSchema = mongoose.Schema({
     type: String,
     enum: ["buyer", "seller", "both"],
   },
+  address: {
+    type: String,
+  },
+  phone: {
+    type: String,
+  },
   listings: [
     {
       type: mongoose.Schema.Types.ObjectId,
@@ -34,8 +40,8 @@ const userSchema = mongoose.Schema({
   favorite: [
     {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "List"
-    }
+      ref: "List",
+    },
   ],
   id: {
     type: String,
