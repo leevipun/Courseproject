@@ -31,6 +31,12 @@ const userSchema = mongoose.Schema({
       ref: "List",
     },
   ],
+  favorite: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "List"
+    }
+  ],
   id: {
     type: String,
     required: true,
