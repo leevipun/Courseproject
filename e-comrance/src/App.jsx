@@ -1,5 +1,8 @@
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
-import Services, { getUserData } from "./services/Services.js";
+import Services, {
+  getAllFavoriteItems,
+  getUserData,
+} from "./services/Services.js";
 import { useEffect } from "react";
 
 import "./App.css";
@@ -15,11 +18,13 @@ import Notfound from "./pages/Notfound";
 import Contactpage from "./pages/Contactpage";
 import AddingPage from "./pages/Addingpage";
 import { useDispatch } from "react-redux";
-import { appendUser } from "../reducer/userReducer.js";
+import { appendUser, clearUser } from "../reducer/userReducer.js";
 import PurchaseHistory from "./pages/Purchasepage.jsx";
 import Notification from "./components/notification.jsx";
 import { initializecart } from "../reducer/cartReducer.js";
 import { initializeListing } from "../reducer/listingReducer.js";
+import { initializefavorite } from "../reducer/favoriteReducer.js";
+import Ownlisting from "./pages/Ownlistingpage.jsx";
 
 const App = () => {
   const dispatch = useDispatch();
@@ -33,6 +38,7 @@ const App = () => {
         console.log(user);
         Services.setToken(`${user}`);
         const response = await getUserData();
+        dispatch(clearUser());
         console.log(response); // Get user data from backend and set it to redux store
         dispatch(appendUser(response));
         console.log("Token added");
@@ -73,6 +79,14 @@ const App = () => {
     fetchData();
   }, []);
 
+  useEffect(() => {
+    const fetchData = async () => {
+      const response = await getAllFavoriteItems();
+      dispatch(initializefavorite(response));
+    };
+    fetchData();
+  });
+
   return (
     <div>
       <Notification />
@@ -88,6 +102,7 @@ const App = () => {
           <Route path="/contacts" Component={Contactpage} />
           <Route path="/add" Component={AddingPage} />
           <Route path="/history" Component={PurchaseHistory} />
+          <Route path="/ownlisting" Component={Ownlisting} />
           <Route path="/*" Component={Notfound} />
         </Routes>
       </Router>

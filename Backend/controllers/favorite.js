@@ -1,32 +1,81 @@
-const favoritesRouter = require("express").Router();
+const favoriteRouter = require("express").Router();
 const jwt = require("jsonwebtoken");
 const List = require("../models/list");
-const User = require("../models/user")
+const User = require("../models/user");
 require("express-async-errors");
 const middleware = require("../utils/middleware");
+const { models } = require("mongoose");
 
 const extractUser = middleware.extractUser;
 const extractToken = middleware.extractToken;
 
-favoritesRouter.get("/", extractUser, extractToken, async (req, res, next) => {
-    try {
-      const user = req.user;
-      const id = user._id;
-  
-      const userDocument = await User.findById(id).select("favorite").exec();
-  
-      if (userDocument) {
-        const listings = await Promise.all(
-          userDocument.favorite.map(async (id) => {
-            return await List.findById(id);
-          })
-        );
-  
-        res.json(listings);
-      } else {
-        res.status(404).send("User not found");
-      }
-    } catch (error) {
-      next(error);
+favoriteRouter.get("/", extractUser, extractToken, async (req, res, next) => {
+  try {
+    const user = req.user;
+    const id = user._id;
+
+    const userDocument = await User.findById(id).select("favorite").exec();
+
+    if (userDocument) {
+      const listings = await Promise.all(
+        userDocument.favorite.map(async (id) => {
+          return await List.findById(id);
+        })
+      );
+
+      res.json(listings);
+    } else {
+      res.status(404).send("User not found");
     }
-  });
+  } catch (error) {
+    next(error);
+  }
+});
+
+favoriteRouter.post("/", extractToken, extractUser, async (req, res, next) => {
+  const body = req.body;
+
+  const deCodedToken = jwt.verify(req.token, process.env.SECRET);
+  if (!deCodedToken.id) {
+    return res.status(401).json({ error: "Invalid token" });
+  }
+  const user = req.user;
+  if (body.id) {
+    const favoritelistings = await user.favorite;
+    console.log("favorites", favoritelistings);
+    const listing = await List.findById(body.id);
+    if (favoritelistings.includes(body.id)) {
+      res.json("You have already marked it as favorite");
+    } else {
+      user.favorite = user.favorite.concat(listing._id);
+      await user.save();
+      res.json(listing);
+    }
+  } else {
+    res.status(404).send("Item not found");
+  }
+});
+
+favoriteRouter.delete("/:id", extractUser, async (req, res) => {
+  try {
+    const itemId = req.params.id;
+    const user = req.user;
+    const userId = user._id;
+
+    const userFavorites = await User.findById(userId).select("favorite").exec();
+
+    if (userFavorites) {
+      const remainingItems = userFavorites.favorite.filter(
+        (id) => id.toString() !== itemId
+      );
+      await User.findByIdAndUpdate(userId, { favorite: remainingItems });
+      res.json(remainingItems);
+    } else {
+      res.status(400).send("Invalid ID");
+    }
+  } catch (error) {
+    res.status(500).send("Internal Server Error");
+  }
+});
+
+module.exports = favoriteRouter;

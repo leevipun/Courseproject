@@ -14,6 +14,7 @@ import {
   maxPriceReducer,
   minPriceReducer,
 } from "../reducer/filterReducer.js";
+import favoriteReducer from "../reducer/favoriteReducer.js";
 
 const combineFilter = combineReducers({
   filter: filterReducer,
@@ -30,6 +31,7 @@ const store = configureStore({
     cart: cartReducer,
     notification: notificationReducer,
     filter: combineFilter,
+    favorite: favoriteReducer,
   },
 });
 

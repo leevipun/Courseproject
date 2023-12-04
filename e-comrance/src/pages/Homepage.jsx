@@ -3,7 +3,11 @@ import Navbar from "./../components/navbar";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
-import { addToCart } from "../services/Services";
+import {
+  addToCart,
+  addToFavorites,
+  deleteFavorite,
+} from "../services/Services";
 import { Button, Select, Input } from "antd";
 import { appendcart } from "../../reducer/cartReducer";
 import { addNotification } from "../../reducer/notificationReducer";
@@ -18,6 +22,10 @@ import {
   setMaxPrice,
   setMinPrice,
 } from "./../../reducer/filterReducer";
+import {
+  appendfavorite,
+  initializefavorite,
+} from "../../reducer/favoriteReducer";
 
 const Homepage = () => {
   const navigate = useNavigate();
@@ -29,6 +37,14 @@ const Homepage = () => {
   });
   const filter = useSelector((state) => {
     return state.filter;
+  });
+
+  const userFavoriteId = useSelector((state) => {
+    const favorites = state.favorite;
+    const mappedFavorites = favorites.map((favorite) => {
+      return favorite.id;
+    });
+    return mappedFavorites;
   });
 
   const handleAddToCart = async (id) => {
@@ -46,6 +62,23 @@ const Homepage = () => {
         name !== response.name;
       });
       dispatch(initializeListing(remainingListings));
+    }
+  };
+
+  const handleAddToFavorites = async (id) => {
+    if (userFavoriteId.includes(id)) {
+      const response = await deleteFavorite(id);
+      dispatch(initializefavorite(response));
+    } else {
+      const response = await addToFavorites(id);
+      if (response === "You have already marked it as favorite") {
+        dispatch(addNotification(response));
+      } else {
+        dispatch(appendfavorite(response));
+        dispatch(
+          addNotification(`${response.name} was added to your favorites`)
+        );
+      }
     }
   };
 
@@ -76,12 +109,17 @@ const Homepage = () => {
     return filteredListings;
   });
 
+  console.log(userFavoriteId, "Lempparit");
+
+  console.log("uuseri", user);
+  console.log("listin");
+
   if (!user) {
-    return(
+    return (
       <div>
         <h1>Loading user data</h1>
       </div>
-    )
+    );
   }
   if (!listing || listing.length === 0) {
     return (
@@ -90,57 +128,57 @@ const Homepage = () => {
           <Navbar />
         </div>
         <div id="itemstyle">
-        <div >
-         Welcome back {user && user[0] && user[0].name} <FaHome />
-         </div>
-        <div>
-          <Button type="primary" id="Filtericon" onClick={handleFiltershow}>
-            <LuSettings2 />
-          </Button>
-        </div>
-        </div>
-        <div>
-        {showFilter && (
-          <div style={{ margin: 30 }}>
-            <div style={{ margin: 10 }}>
-              <label htmlFor="category">Filter by category: </label>
-              <Select
-                id="category"
-                options={categoriesWithOptions}
-                style={{ width: 200 }}
-                value={filter.category}
-                onChange={(value) => dispatch(setCategory(value))}
-              ></Select>
-            </div>
-            <div style={{ margin: 10 }}>
-              <label htmlFor="country">Filter by country: </label>
-              <Select
-                id="country"
-                options={CountriesData}
-                style={{ width: 200 }}
-                value={filter.country}
-                onChange={(value) => dispatch(setCountry(value))}
-              ></Select>
-            </div>
-            <div style={{ margin: 10 }}>
-              <Input
-                placeholder="Min price"
-                onChange={(e) => dispatch(setMinPrice(e.target.value))}
-                value={filter.minPrice}
-              />
-            </div>
-            <div style={{ margin: 10 }}>
-              <Input
-                onChange={(e) => dispatch(setMaxPrice(e.target.value))}
-                value={filter.maxPrice}
-                placeholder="Max price"
-              />
-            </div>
-            <div style={{ margin: 10 }}>
-              <Button>Clear filter</Button>
-            </div>
+          <div>
+            Welcome back {user && user[0] && user[0].name} <FaHome />
           </div>
-        )}
+          <div>
+            <Button type="primary" id="Filtericon" onClick={handleFiltershow}>
+              <LuSettings2 />
+            </Button>
+          </div>
+        </div>
+        <div>
+          {showFilter && (
+            <div style={{ margin: 30 }}>
+              <div style={{ margin: 10 }}>
+                <label htmlFor="category">Filter by category: </label>
+                <Select
+                  id="category"
+                  options={categoriesWithOptions}
+                  style={{ width: 200 }}
+                  value={filter.category}
+                  onChange={(value) => dispatch(setCategory(value))}
+                ></Select>
+              </div>
+              <div style={{ margin: 10 }}>
+                <label htmlFor="country">Filter by country: </label>
+                <Select
+                  id="country"
+                  options={CountriesData}
+                  style={{ width: 200 }}
+                  value={filter.country}
+                  onChange={(value) => dispatch(setCountry(value))}
+                ></Select>
+              </div>
+              <div style={{ margin: 10 }}>
+                <Input
+                  placeholder="Min price"
+                  onChange={(e) => dispatch(setMinPrice(e.target.value))}
+                  value={filter.minPrice}
+                />
+              </div>
+              <div style={{ margin: 10 }}>
+                <Input
+                  onChange={(e) => dispatch(setMaxPrice(e.target.value))}
+                  value={filter.maxPrice}
+                  placeholder="Max price"
+                />
+              </div>
+              <div style={{ margin: 10 }}>
+                <Button>Clear filter</Button>
+              </div>
+            </div>
+          )}
         </div>
         <div>
           <h1>No listings</h1>
@@ -209,7 +247,7 @@ const Homepage = () => {
             <div key={listing.id} id="listing">
               <div>
                 <img
-                  src="https://hips.hearstapps.com/hmg-prod/images/dog-puppy-on-garden-royalty-free-image-1586966191.jpg?crop=0.752xw:1.00xh;0.175xw,0&resize=1200:*" // assuming you have an 'imageUrl' property
+                  src="https://hips.hearstapps.com/hmg-prod/images/dog-puppy-on-garden-royalty-free-image-1586966191.jpg?crop=0.752xw:1.00xh;0.175xw,0&resize=1200:*"
                   alt={listing.name}
                   style={{
                     maxWidth: "100%",
@@ -236,7 +274,26 @@ const Homepage = () => {
                   >
                     Add to cart
                   </Button>
-                  <Button style={{margin: 10}}><FaHeart/></Button>
+                  <Button
+                    style={{
+                      margin: 10,
+                      color:
+                        user &&
+                        user.favorites &&
+                        user.favorite.includes(listing.id)
+                          ? "red"
+                          : "black",
+                    }}
+                    onClick={() => handleAddToFavorites(listing.id)}
+                  >
+                    <FaHeart
+                      style={{
+                        color: userFavoriteId.includes(listing.id)
+                          ? "red"
+                          : "black",
+                      }}
+                    />
+                  </Button>
                 </div>
               </div>
             </div>

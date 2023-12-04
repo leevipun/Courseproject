@@ -6,6 +6,7 @@ import {
   FaAddressCard,
   FaPlus,
   FaUser,
+  FaList,
 } from "react-icons/fa";
 import { Link, useNavigate } from "react-router-dom";
 import { FaMagnifyingGlass } from "react-icons/fa6";
@@ -61,7 +62,13 @@ const Navbar = () => {
     return state.cart;
   });
 
+  const favorite = useSelector((state) => {
+    return state.favorite;
+  });
+
   const numberOfItemsInCart = cart.length;
+
+  const numberOfItemsInFavorite = favorite.length;
 
   const handleLogout = () => {
     window.sessionStorage.clear();
@@ -77,6 +84,10 @@ const Navbar = () => {
     navigate("/user");
   };
 
+  const handleOwnlisting = () => {
+    navigate("/ownlisting");
+  };
+
   const items = [
     {
       label: "User info",
@@ -85,14 +96,20 @@ const Navbar = () => {
       onClick: handleUserInfo,
     },
     {
-      label: "Purchase history",
+      label: "Own listings",
       key: "2",
+      icon: <FaList />,
+      onClick: handleOwnlisting,
+    },
+    {
+      label: "Purchase history",
+      key: "3",
       icon: <TransactionOutlined />,
       onClick: handlePurchaseHistory,
     },
     {
       label: "Log out",
-      key: "3",
+      key: "4",
       icon: <LogoutOutlined />,
       danger: true,
       onClick: handleLogout,
@@ -146,7 +163,7 @@ const Navbar = () => {
 
           <li id="navitem">
             <Link to="/favorites">
-              <FaHeart />
+              <FaHeart /> {numberOfItemsInFavorite}
             </Link>
           </li>
           <li id="navitem">

@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import Services from "../src/services/Services";
+import { getAllFavoriteItems } from "./../src/services/Services";
 
 const favoriteSlice = createSlice({
   name: "favorite",
@@ -18,7 +18,7 @@ export const { appendfavorite, setfavorite } = favoriteSlice.actions;
 
 export const initializefavorite = () => {
   return async (dispatch) => {
-    const items = await Services.getAllfavoriteItems();
+    const items = await getAllFavoriteItems();
     dispatch(setfavorite(items));
   };
 };

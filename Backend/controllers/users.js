@@ -41,4 +41,27 @@ usersRouter.get("/info", extractToken, async (req, res) => {
   res.json(user);
 });
 
+usersRouter.put("/", async (req, res) => {
+  try {
+    const deCodedToken = jwt.verify(req.token, process.env.SECRET);
+    if (!deCodedToken) {
+      return res.status(401).json({ error: "Invalid token" });
+    }
+    const user = req.user;
+    const item = {
+      email: body.email,
+      name: body.name,
+      address: body.address,
+      phone: body.phone,
+    };
+    const updatedUser = await User.findByIdAndUpdate(user._id, item, {
+      new: true,
+    });
+    await user.save();
+    res.json("User saved");
+  } catch (error) {
+    return res.status(400).send("Error occurred while updating user");
+  }
+});
+
 module.exports = usersRouter;

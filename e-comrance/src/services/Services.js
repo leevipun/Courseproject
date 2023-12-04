@@ -167,16 +167,53 @@ export const getUserData = async () => {
 export const getAllFavoriteItems = async () => {
   try {
     let config = {
-      headers: {Authorization: token},
+      headers: { Authorization: token },
+    };
+    while (!token) {
+      await new Promise((resolve) => setTimeout(resolve, 100));
     }
-    while(!token) {
-      await new Promise((resolve) => setTimeout(resolve, 100))
-    }
-    const response = await axios.get(`${baseURL}/api/favorite`, config)
-    return response.data
+    config = {
+      headers: { Authorization: token },
+    };
+    const response = await axios.get(`${baseURL}/api/favorite`, config);
+    return response.data;
   } catch (error) {
     throw new Error(error.response.data.message);
   }
-}
+};
+
+export const addToFavorites = async (id) => {
+  const config = {
+    headers: { Authorization: token },
+  };
+  try {
+    console.log(id);
+    const response = await axios.post(
+      `${baseURL}/api/favorite`,
+      { id },
+      config
+    );
+    return response.data;
+  } catch (error) {
+    throw new Error(error.response.data.message);
+  }
+};
+
+export const deleteFavorite = async (id) => {
+  const config = {
+    headers: { Authorization: token },
+  };
+  try {
+    const response = await axios.delete(
+      `${baseURL}/api/favorite/${id}`,
+      config
+    );
+    return response.data;
+  } catch (error) {
+    throw new Error(error.response.data.message);
+  }
+};
+
+export const updateUserInfo = async () => {};
 
 export default { setToken, getAllListings, getAllCartItems, getImages };

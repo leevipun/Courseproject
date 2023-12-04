@@ -26,9 +26,13 @@ const listSchema = mongoose.Schema({
   },
   category: {
     type: String,
-    required: true
+    required: true,
   },
   status: {
+    type: String,
+    required: true,
+  },
+  favoriteStatus: {
     type: String,
     required: true,
   },
