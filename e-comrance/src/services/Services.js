@@ -238,4 +238,32 @@ export const updateUserInfo = async (email, name, address, phone) => {
   }
 };
 
+export const changePassword = async (password) => {
+  try {
+    const config = {
+      headers: { Authorization: token },
+    };
+    const response = await axios.put(
+      `${baseURL}/api/users/password`,
+      { password },
+      config
+    );
+    return response.data;
+  } catch (error) {
+    throw new Error(error.response.data.message);
+  }
+};
+
+export const userDelete = async () => {
+  try {
+    const config = {
+      headers: { Authorization: token },
+    };
+    const response = await axios.delete(`${baseURL}/api/users`, config);
+    return response.data;
+  } catch (error) {
+    throw new Error(error.response.data.message);
+  }
+};
+
 export default { setToken, getAllListings, getAllCartItems, getImages };

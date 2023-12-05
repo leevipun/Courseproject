@@ -70,4 +70,53 @@ usersRouter.put("/", async (req, res) => {
   }
 });
 
+usersRouter.put("/password", async (req, res) => {
+  const body = req.body;
+  try {
+    const deCodedToken = jwt.verify(req.token, process.env.SECRET);
+    if (!deCodedToken) {
+      return res.status(401).json({ error: "Invalid token" });
+    }
+    const user = await User.findOne({ email: deCodedToken.email });
+    console.log(user);
+    const passwordCorrect = await bcrypt.compare(
+      body.password,
+      user.passwordHash
+    );
+    if (passwordCorrect) {
+      return res.status(401).json({ error: "Invalid password" });
+    }
+    const passwordHash = await bcrypt.hash(body.password, 10);
+    const item = {
+      passwordHash: passwordHash,
+    };
+    console.log(item);
+    const updatedUser = await User.findByIdAndUpdate(user._id, item, {
+      new: true,
+    });
+    console.log(updatedUser);
+    await user.save();
+    res.json(updatedUser);
+  } catch (error) {
+    console.log("Tänne :(");
+    console.error(error);
+    return res.status(400).send("Error occurred while updating user");
+  }
+});
+
+usersRouter.delete("/", async (req, res) => {
+  try {
+    const deCodedToken = jwt.verify(req.token, process.env.SECRET);
+    if (!deCodedToken) {
+      return res.status(401).json({ error: "Invalid token" });
+    }
+    const user = await User.findOne({ email: deCodedToken.email });
+    await User.findByIdAndRemove(user._id);
+    res.status(204).end();
+  } catch (error) {
+    console.error(error);
+    return res.status(400).send("Error occurred while deleting user");
+  }
+});
+
 module.exports = usersRouter;

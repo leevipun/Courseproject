@@ -16,6 +16,7 @@ import "../styles/Homepage.css";
 import { initializeListing } from "../../reducer/listingReducer";
 import categoriesWithOptions from "../../Data/categoryData";
 import CountriesData from "../../Data/countryData";
+import Services from "../services/Services";
 import {
   setCategory,
   setCountry,
@@ -38,6 +39,20 @@ const Homepage = () => {
   const filter = useSelector((state) => {
     return state.filter;
   });
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const listings = await Services.getAllCartItems();
+        dispatch(initializeListing(listings));
+        console.log("Listings", listings);
+      } catch (error) {
+        console.error("Error fetching listings:", error);
+      }
+    };
+
+    fetchData();
+  }, [dispatch]);
 
   const userFavoriteId = useSelector((state) => {
     const favorites = state.favorite;
