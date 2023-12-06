@@ -63,7 +63,7 @@ const App = () => {
     };
 
     fetchData();
-  }, [dispatch]);
+  }, []);
 
   useEffect(() => {
     const fetchData = async () => {

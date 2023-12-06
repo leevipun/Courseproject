@@ -20,7 +20,7 @@ const AddingPage = () => {
   const [price, setPrice] = useState(0);
   const [name, setName] = useState("");
   const [showPreview, setShowPreview] = useState(false);
-  const [category, setCategory] = useState();
+  const [category, setCategory] = useState("None");
   const currencyCode = "EUR";
 
   const [selectedFile, setSelectedFile] = useState([]);
@@ -133,7 +133,7 @@ const AddingPage = () => {
           </div>
           <div id="ainputdiv">
             <Select
-              defaultValue="Electronics"
+              value={category}
               options={categoriesWithOptions}
               onChange={(value) => setCategory(value)}
             ></Select>

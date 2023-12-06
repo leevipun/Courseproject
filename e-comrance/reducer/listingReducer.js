@@ -21,8 +21,8 @@ export const { appendlisting, setlisting, clearListing } = listingSlice.actions;
 
 export const initializeListing = () => {
   return async (dispatch) => {
-    const blogs = await Services.getAllListings();
-    dispatch(setlisting(blogs));
+    const listings = await Services.getAllListings();
+    dispatch(setlisting(listings));
   };
 };
 

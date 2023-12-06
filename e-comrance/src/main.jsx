@@ -15,6 +15,7 @@ import {
   minPriceReducer,
 } from "../reducer/filterReducer.js";
 import favoriteReducer from "../reducer/favoriteReducer.js";
+import ownlistingReducer from "../reducer/ownlistingReducer.js";
 
 const combineFilter = combineReducers({
   filter: filterReducer,
@@ -32,6 +33,7 @@ const store = configureStore({
     notification: notificationReducer,
     filter: combineFilter,
     favorite: favoriteReducer,
+    userListings: ownlistingReducer,
   },
 });
 

@@ -74,4 +74,35 @@ listingRouter.post("/", extractUser, extractToken, async (req, res, next) => {
   }
 });
 
+listingRouter.put("/", extractToken, async (req, res) => {
+  try {
+    const body = req.body;
+    const deCodedToken = jwt.verify(req.token, process.env.SECRET);
+    if (!deCodedToken) {
+      return res.status(401).send({ error: "Invalid token" });
+    }
+    const item = {
+      name: body.name,
+      country: body.country,
+      description: body.description,
+      price: body.price,
+    };
+    const updatedListing = await List.findByIdAndUpdate(body.id, item, {
+      new: true,
+    });
+    res.json(updatedListing);
+  } catch (error) {
+    res.status(500).send({ error: "An error occurred" });
+  }
+});
+
+listingRouter.delete("/:id", async (req, res) => {
+  try {
+    await List.findByIdAndDelete(req.params.id);
+    res.status(200).send;
+  } catch (error) {
+    res.status(500).send({ error: "An error occurred" });
+  }
+});
+
 module.exports = listingRouter;

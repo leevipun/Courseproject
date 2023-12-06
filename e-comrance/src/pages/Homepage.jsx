@@ -7,6 +7,7 @@ import {
   addToCart,
   addToFavorites,
   deleteFavorite,
+  getUsersListings,
 } from "../services/Services";
 import { Button, Select, Input } from "antd";
 import { appendcart } from "../../reducer/cartReducer";
@@ -27,13 +28,14 @@ import {
   appendfavorite,
   initializefavorite,
 } from "../../reducer/favoriteReducer";
+import { initializeUserListing } from "../../reducer/ownlistingReducer";
 
 const Homepage = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [showFilter, setShowFilter] = useState(false);
+
   const user = useSelector((state) => {
-    console.log("User", state.user);
     return state.user;
   });
   const filter = useSelector((state) => {
@@ -43,16 +45,19 @@ const Homepage = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const listings = await Services.getAllCartItems();
-        dispatch(initializeListing(listings));
+        const listings = await Services.getAllListings();
+        const userListings = await getUsersListings();
+        console.log("User listings", userListings);
         console.log("Listings", listings);
+        dispatch(initializeListing(listings));
+        dispatch(initializeUserListing(userListings));
       } catch (error) {
         console.error("Error fetching listings:", error);
       }
     };
 
     fetchData();
-  }, [dispatch]);
+  }, []);
 
   const userFavoriteId = useSelector((state) => {
     const favorites = state.favorite;
@@ -97,12 +102,6 @@ const Homepage = () => {
     }
   };
 
-  useEffect(() => {
-    if (!window.sessionStorage.getItem("loggedNoteappUser")) {
-      navigate("/login");
-    }
-  }, []);
-
   const handleFiltershow = () => {
     setShowFilter((prev) => !prev);
   };
@@ -124,10 +123,11 @@ const Homepage = () => {
     return filteredListings;
   });
 
-  console.log(userFavoriteId, "Lempparit");
-
-  console.log("uuseri", user);
-  console.log("listings", listing);
+  useEffect(() => {
+    if (!window.sessionStorage.getItem("loggedNoteappUser")) {
+      navigate("/login");
+    }
+  }, []);
 
   if (!user) {
     return (

@@ -32,10 +32,6 @@ const listSchema = mongoose.Schema({
     type: String,
     required: true,
   },
-  favoriteStatus: {
-    type: String,
-    required: true,
-  },
 });
 
 listSchema.set("toJSON", {

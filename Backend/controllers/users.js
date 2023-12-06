@@ -113,7 +113,7 @@ usersRouter.delete("/", async (req, res) => {
     }
     const user = await User.findOne({ email: deCodedToken.email });
     const userListings = user.listings;
-    const userCart = user.Cart;
+    const userCart = user.cart;
     console.log(userCart);
     console.log(user);
     console.log(userListings);
@@ -135,6 +135,26 @@ usersRouter.delete("/", async (req, res) => {
   } catch (error) {
     console.error(error);
     return res.status(400).send("Error occurred while deleting user");
+  }
+});
+
+usersRouter.get("/listings", extractToken, async (req, res) => {
+  const deCodedToken = jwt.verify(req.token, process.env.SECRET);
+  if (!deCodedToken) {
+    return res.status(401).send({ error: "Invalid Token" });
+  }
+  const userData = await User.findOne({ email: deCodedToken.email })
+    .select("listings")
+    .exec();
+  if (userData) {
+    const listings = await Promise.all(
+      userData.listings.map(async (id) => {
+        return await List.findById(id);
+      })
+    );
+    res.json(listings);
+  } else {
+    res.status(404).send({ error: "User not found" });
   }
 });
 

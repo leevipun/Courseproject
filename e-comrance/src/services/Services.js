@@ -266,4 +266,55 @@ export const userDelete = async () => {
   }
 };
 
+export const getUsersListings = async () => {
+  try {
+    const config = {
+      headers: { Authorization: token },
+    };
+    const response = await axios.get(`${baseURL}/api/users/listings`, config);
+    return response.data;
+  } catch (error) {
+    throw new Error(error.response.data.message);
+  }
+};
+
+export const updateUsersListing = async (
+  name,
+  country,
+  price,
+  description,
+  id
+) => {
+  try {
+    const newObject = {
+      name: name,
+      country: country,
+      price: price,
+      description: description,
+      id: id,
+    };
+    console.log("Yritetään päivittää");
+    const config = {
+      headers: { Authorization: token },
+    };
+    const response = await axios.put(
+      `${baseURL}/api/listings`,
+      newObject,
+      config
+    );
+    return response.data;
+  } catch (error) {
+    throw new Error(error.response.data.message);
+  }
+};
+
+export const deleteUserListing = async (id) => {
+  try {
+    const response = await axios.delete(`${baseURL}/api/listings/${id}`);
+    return response.data;
+  } catch (error) {
+    throw new Error(error.response.data.message);
+  }
+};
+
 export default { setToken, getAllListings, getAllCartItems, getImages };
