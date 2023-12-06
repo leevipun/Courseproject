@@ -3,6 +3,7 @@ const User = require("../models/user");
 const usersRouter = require("express").Router();
 const jwt = require("jsonwebtoken");
 const middleware = require("../utils/middleware");
+const List = require("../models/list");
 require("express-async-errors");
 
 const extractToken = middleware.extractToken;
@@ -111,8 +112,26 @@ usersRouter.delete("/", async (req, res) => {
       return res.status(401).json({ error: "Invalid token" });
     }
     const user = await User.findOne({ email: deCodedToken.email });
+    const userListings = user.listings;
+    const userCart = user.Cart;
+    console.log(userCart);
+    console.log(user);
+    console.log(userListings);
+    for (const id of userListings) {
+      console.log(id);
+      await List.findByIdAndRemove(id);
+    }
+
+    const item = {
+      status: "Avialable",
+    };
+    if (userCart) {
+      for (const id of userCart) {
+        await List.findByIdAndUpdate(id, item, { new: true });
+      }
+    }
     await User.findByIdAndRemove(user._id);
-    res.status(204).end();
+    res.status(204).send("User deleted Successfully");
   } catch (error) {
     console.error(error);
     return res.status(400).send("Error occurred while deleting user");

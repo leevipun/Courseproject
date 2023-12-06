@@ -1,14 +1,18 @@
 import React, { useState, useEffect } from "react";
 import Navbar from "./../components/navbar";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Input, Button, Spin } from "antd";
 import {
   changePassword,
   updateUserInfo,
   userDelete,
 } from "../services/Services";
+import { addNotification } from "../../reducer/notificationReducer";
+import { useNavigate } from "react-router-dom";
 
 const Userpage = () => {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
   const user = useSelector((state) => state.user);
   const [loading, setLoading] = useState(true);
 
@@ -54,9 +58,11 @@ const Userpage = () => {
     }
   };
 
-  const handleUserDelete = () => {
+  const handleUserDelete = async () => {
     if (window.confirm("Are you sure you want to delete your account?")) {
-      userDelete();
+      const response = await userDelete();
+      navigate("/login");
+      dispatch(addNotification(response));
     }
   };
 
