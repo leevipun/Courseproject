@@ -1,4 +1,4 @@
-import { FaHome, FaHeart } from "react-icons/fa";
+import { FaHeart } from "react-icons/fa";
 import Navbar from "./../components/navbar";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
@@ -143,9 +143,7 @@ const Homepage = () => {
           <Navbar />
         </div>
         <div id="itemstyle">
-          <div>
-            Welcome back {user && user[0] && user[0].name} <FaHome />
-          </div>
+          <div>Welcome back {user && user[0] && user[0].name}</div>
           <div>
             <Button type="primary" id="Filtericon" onClick={handleFiltershow}>
               <LuSettings2 />

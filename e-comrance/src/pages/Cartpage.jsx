@@ -1,19 +1,32 @@
 import { FaShoppingBasket } from "react-icons/fa";
-import { Button } from "antd";
 import Navbar from "./../components/navbar";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useState } from "react";
 import { deleteCartItem } from "../services/Services";
 import { initializecart } from "../../reducer/cartReducer";
 import "../styles/Cartpage.css";
+import {
+  LoadingOutlined,
+  SmileOutlined,
+  SolutionOutlined,
+} from "@ant-design/icons";
+import { Steps, Input, Button } from "antd";
+import { CiCreditCard1 } from "react-icons/ci";
 
 const Cartpage = () => {
+  const [showFillInformation, setShowFillInformation] = useState(false);
+  const [showConfirm, setShowConfirm] = useState(false);
+  const [showCheckout, setShowCheckout] = useState(false);
   const dispatch = useDispatch();
+  const user = useSelector((state) => {
+    return state.user;
+  });
+
   const cartItems = useSelector((state) => {
     return state.cart;
   });
 
-  const [totalPrice, setTotalPrice] = useState(0); // Initialize state for total price
+  const [totalPrice, setTotalPrice] = useState(0);
 
   const handleItemDelete = async (id) => {
     try {
@@ -35,6 +48,20 @@ const Cartpage = () => {
 
     calculateTotalPrice();
   }, [cartItems]);
+
+  const handleCheckout = () => {
+    if (!user) {
+      alert("Please login first");
+      return;
+    }
+    if (!user[0].name) {
+      setShowCheckout(true);
+      setShowFillInformation(true);
+    } else {
+      setShowCheckout(true);
+      setShowConfirm(true);
+    }
+  };
 
   return (
     <div>
@@ -75,6 +102,60 @@ const Cartpage = () => {
       <div>
         <h2>Total price: {totalPrice} €</h2>
       </div>
+      <div>
+        <Button type="primary" onClick={handleCheckout}>
+          Check out
+        </Button>
+      </div>
+      {showCheckout && (
+        <div>
+          <Steps
+            items={[
+              {
+                title: "Fill information",
+                status: "process",
+                icon: <LoadingOutlined />,
+              },
+              {
+                title: "Confirm",
+                status: "wait",
+                icon: <SolutionOutlined />,
+              },
+              {
+                title: "Pay",
+                status: "wait",
+                icon: <CiCreditCard1 />,
+              },
+              {
+                title: "Done",
+                status: "wait",
+                icon: <SmileOutlined />,
+              },
+            ]}
+          />
+          {showFillInformation && (
+            <div>
+              <Input type="text" placeholder="Name" value={user[0].name} />
+              <Input
+                type="text"
+                placeholder="Address"
+                value={user[0].address}
+              />
+              <Input type="text" placeholder="Email" value={user[0].email} />
+              <Button type="primary">Submit</Button>
+            </div>
+          )}
+          {showConfirm && (
+            <div>
+              <div>
+                <h2>Confirm your order</h2>
+                <h3>Total price: {totalPrice} €</h3>
+              </div>
+              <Button type="primary">Pay</Button>
+            </div>
+          )}
+        </div>
+      )}
     </div>
   );
 };
