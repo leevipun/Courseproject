@@ -25,6 +25,7 @@ import { initializecart } from "../reducer/cartReducer.js";
 import { initializeListing } from "../reducer/listingReducer.js";
 import { initializefavorite } from "../reducer/favoriteReducer.js";
 import Ownlisting from "./pages/Ownlistingpage.jsx";
+import Checkoutpage from "./pages/Checkoutpage.jsx";
 
 const App = () => {
   const dispatch = useDispatch();
@@ -95,6 +96,7 @@ const App = () => {
           <Route path="/" exact Component={Homepage} />
           <Route path="/about" Component={Aboutpage} />
           <Route path="/cart" Component={Cartpage} />
+          <Route path="/checkout" Component={Checkoutpage} />
           <Route path="/login" Component={Loginpage} />
           <Route path="/register" Component={Registerypage} />
           <Route path="/favorites" Component={Favoritepage} />

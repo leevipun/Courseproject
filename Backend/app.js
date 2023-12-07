@@ -10,6 +10,7 @@ const loginRouter = require("./controllers/login.js");
 const listingRouter = require("./controllers/listings.js");
 const cartRouter = require("./controllers/cart.js");
 const favoriteRouter = require("./controllers/favorite.js");
+const checkoutRouter = require("./controllers/checkout.js");
 
 mongoose.set("strictQuery", false);
 
@@ -36,6 +37,8 @@ app.use("/api/listings", listingRouter);
 
 app.use("/api/cart", cartRouter);
 app.use("/api/favorite", favoriteRouter);
+
+app.use("/api/checkout", checkoutRouter);
 
 app.use(middleware.unknownEndpoint);
 app.use(middleware.errorHandler);

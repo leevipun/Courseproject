@@ -12,6 +12,7 @@ import {
 } from "@ant-design/icons";
 import { Steps, Input, Button } from "antd";
 import { CiCreditCard1 } from "react-icons/ci";
+import { PaymentElement } from "@stripe/react-stripe-js";
 
 const Cartpage = () => {
   const [showFillInformation, setShowFillInformation] = useState(false);
@@ -151,7 +152,7 @@ const Cartpage = () => {
                 <h2>Confirm your order</h2>
                 <h3>Total price: {totalPrice} €</h3>
               </div>
-              <Button type="primary">Pay</Button>
+              <PaymentElement />
             </div>
           )}
         </div>
