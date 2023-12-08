@@ -317,4 +317,16 @@ export const deleteUserListing = async (id) => {
   }
 };
 
+export const createPaymentIntent = async (items) => {
+  try {
+    const response = await axios.post(
+      `${baseURL}/api/checkout/create-payment-intent`,
+      { items }
+    );
+    return response.data;
+  } catch (error) {
+    throw new Error(error.response.data.message);
+  }
+};
+
 export default { setToken, getAllListings, getAllCartItems, getImages };
