@@ -13,8 +13,10 @@ import {
 import { Steps, Input, Button } from "antd";
 import { CiCreditCard1 } from "react-icons/ci";
 import { PaymentElement } from "@stripe/react-stripe-js";
+import { useNavigate } from "react-router-dom";
 
 const Cartpage = () => {
+  const navigate = useNavigate();
   const [showFillInformation, setShowFillInformation] = useState(false);
   const [showConfirm, setShowConfirm] = useState(false);
   const [showCheckout, setShowCheckout] = useState(false);
@@ -55,6 +57,7 @@ const Cartpage = () => {
       alert("Please login first");
       return;
     }
+    navigate("/checkout");
     if (!user[0].name) {
       setShowCheckout(true);
       setShowFillInformation(true);

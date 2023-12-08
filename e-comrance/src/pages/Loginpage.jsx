@@ -6,6 +6,7 @@ import { Button, Input } from "antd";
 import { useDispatch } from "react-redux";
 import { appendUser } from "../../reducer/userReducer";
 import Services from "../services/Services";
+import { addNotification } from "../../reducer/notificationReducer";
 
 const Loginpage = () => {
   const navigate = useNavigate();
@@ -13,9 +14,9 @@ const Loginpage = () => {
   const [password, setPassword] = useState("");
   const [email, setEmail] = useState("");
 
-  const handleLogin = async (e) => {
-    e.preventDefault();
+  const handleLogin = async (event) => {
     try {
+      event.preventDefault();
       const user = await Login(email, password);
       console.log("User Loginissa", user);
       dispatch(appendUser(user));
@@ -27,7 +28,7 @@ const Loginpage = () => {
       );
       navigate("/");
     } catch (error) {
-      console.error("Login failed", error.message);
+      dispatch(addNotification(error));
     }
   };
 

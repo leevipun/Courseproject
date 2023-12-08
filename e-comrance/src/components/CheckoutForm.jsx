@@ -4,14 +4,15 @@ import {
   useStripe,
   useElements,
 } from "@stripe/react-stripe-js";
+import { addNotification } from "../../reducer/notificationReducer";
+import { useDispatch } from "react-redux";
 
 export default function CheckoutForm() {
   const stripe = useStripe();
   const elements = useElements();
+  const dispatch = useDispatch();
 
   const [email, setEmail] = useState("");
-
-  const [message, setMessage] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
@@ -30,16 +31,20 @@ export default function CheckoutForm() {
     stripe.retrievePaymentIntent(clientSecret).then(({ paymentIntent }) => {
       switch (paymentIntent.status) {
         case "succeeded":
-          setMessage("Payment succeeded!");
+          dispatch(addNotification("Payment succeeded!"));
           break;
         case "processing":
-          setMessage("Your payment is processing.");
+          dispatch(addNotification("Your payment is processing."));
           break;
         case "requires_payment_method":
-          setMessage("Your payment was not successful, please try again.");
+          dispatch(
+            addNotification(
+              "Your payment was not successful, please try again."
+            )
+          );
           break;
         default:
-          setMessage("Something went wrong.");
+          dispatch(addNotification("Something went wrong."));
           break;
       }
     });
@@ -60,7 +65,7 @@ export default function CheckoutForm() {
       elements,
       confirmParams: {
         // Make sure to change this to your payment completion page
-        return_url: "http://localhost:3000",
+        return_url: "http://localhost:5173",
         receipt_email: email,
       },
     });
@@ -71,9 +76,9 @@ export default function CheckoutForm() {
     // be redirected to an intermediate site first to authorize the payment, then
     // redirected to the `return_url`.
     if (error.type === "card_error" || error.type === "validation_error") {
-      setMessage(error.message);
+      dispatch(addNotification(error.message));
     } else {
-      setMessage("An unexpected error occurred.");
+      dispatch(addNotification("An unexpected error occurred."));
     }
 
     setIsLoading(false);
@@ -99,8 +104,6 @@ export default function CheckoutForm() {
           {isLoading ? <div className="spinner" id="spinner"></div> : "Pay now"}
         </span>
       </button>
-      {/* Show any error or success messages */}
-      {message && <div id="payment-message">{message}</div>}
     </form>
   );
 }
