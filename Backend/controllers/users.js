@@ -67,7 +67,9 @@ usersRouter.put("/", async (req, res) => {
   } catch (error) {
     console.log("Tänne :(");
     console.error(error);
-    return res.status(400).send("Error occurred while updating user");
+    return res
+      .status(400)
+      .send({ error: "Error occurred while updating user" });
   }
 });
 

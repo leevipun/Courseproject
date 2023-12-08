@@ -1,8 +1,7 @@
 const express = require("express");
 const checkOutRouter = express.Router();
-const stripe = require("stripe")(
-  "sk_test_51OKnCVIH6vH73ShNPtzwZJKzDbG3eSOiDeQ4tTF6t5lOZk3me8QAdJVtrK3tuprepwq5Oi0ztCXezj1dCXQQiOIe008rynSjzD"
-);
+const API_KEY = process.env.SECRET_STRIPE;
+const stripe = require("stripe")(API_KEY);
 
 const calculateOrderAmount = (items) => {
   return 1400;

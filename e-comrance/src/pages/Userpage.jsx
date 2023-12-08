@@ -46,8 +46,14 @@ const Userpage = () => {
   };
 
   const handleUpdate = async () => {
-    const response = await updateUserInfo(email, name, address, phone);
-    console.log(response);
+    try {
+      const response = await updateUserInfo(email, name, address, phone);
+      dispatch(addNotification(response));
+      console.log(response);
+    } catch (error) {
+      console.error(error.error);
+      dispatch(addNotification(error.error));
+    }
   };
 
   const handlePasswordSave = () => {

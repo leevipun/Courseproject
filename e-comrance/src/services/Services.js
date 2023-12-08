@@ -111,10 +111,16 @@ export const addToCart = async (id) => {
 };
 
 const getAllCartItems = async () => {
-  const config = {
-    headers: { Authorization: token },
-  };
   try {
+    let config = {
+      headers: { Authorization: token },
+    };
+    while (!token) {
+      await new Promise((resolve) => setTimeout(resolve, 100));
+    }
+    config = {
+      headers: { Authorization: token },
+    };
     const response = await axios.get(`${baseURL}/api/cart`, config);
     return response.data;
   } catch (error) {
@@ -234,7 +240,9 @@ export const updateUserInfo = async (email, name, address, phone) => {
     );
     return response.data;
   } catch (error) {
-    throw new Error(error.response.data.message);
+    console.log("Error", error);
+    console.log("Data", error.response.data.error);
+    return error.response.data.error;
   }
 };
 
