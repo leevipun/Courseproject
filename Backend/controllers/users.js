@@ -4,17 +4,30 @@ const usersRouter = require("express").Router();
 const jwt = require("jsonwebtoken");
 const middleware = require("../utils/middleware");
 const List = require("../models/list");
+const API_KEY = process.env.SECRET_STRIPE;
+const stripe = require("stripe")(API_KEY);
 require("express-async-errors");
 
 const extractToken = middleware.extractToken;
 
 usersRouter.post("/", async (req, res) => {
-  const { email, name, password, style, id } = req.body;
+  const { email, name, password, country, style, id } = req.body;
 
   const saltRounds = 10;
   const passwordHash = await bcrypt.hash(password, saltRounds);
 
+  const stripeAccount = await stripe.accounts.create({
+    type: "express",
+    country: country,
+    email: email,
+    capabilities: {
+      card_payments: { requested: true },
+      transfers: { requested: true },
+    },
+  });
+
   const user = new User({
+    stripeId: stripeAccount.id,
     email: email,
     name: name,
     passwordHash: passwordHash,

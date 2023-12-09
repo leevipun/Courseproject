@@ -47,6 +47,10 @@ const userSchema = mongoose.Schema({
     type: String,
     required: true,
   },
+  stripeId: {
+    type: String,
+    required: true,
+  },
 });
 
 userSchema.plugin(uniqueValidator);

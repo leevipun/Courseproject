@@ -20,6 +20,7 @@ cartRouter.post("/", extractUser, extractToken, async (req, res, next) => {
   if (!deCodedToken.id) {
     return res.status(401).json({ error: "Invalid token" });
   }
+
   const user = req.user;
   if (body.id) {
     const cartlistings = await user.cart;

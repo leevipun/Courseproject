@@ -2,6 +2,8 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { registery } from "../services/Services";
 import { Input, Button, Radio } from "antd";
+import { Select } from "antd";
+import countryData from "../../Data/countryData";
 
 import "../styles/registeryStyles.css";
 
@@ -11,12 +13,13 @@ const Registerypage = () => {
   const [password, setPassword] = useState("");
   const [name, setName] = useState("");
   const [style, setStyle] = useState("buyer");
+  const [selectedCountry, setSelectedCountry] = useState("Finland");
 
   const handleRegistery = async (e) => {
     e.preventDefault();
 
     try {
-      await registery(email, name, password, style);
+      await registery(email, name, password, selectedCountry, style);
       navigate("/login");
       setEmail("");
       setName("");
@@ -40,8 +43,17 @@ const Registerypage = () => {
     },
   ];
 
+  const filterOption = (input, option) =>
+    (option?.label ?? "").toLowerCase().includes(input.toLowerCase());
+
   return (
-    <div id="div">
+    <div
+      style={{
+        alignItems: "center",
+        justifyContent: "center",
+        display: "flex",
+      }}
+    >
       <div>
         <h1>Register</h1>
         <form onSubmit={handleRegistery}>
@@ -81,6 +93,18 @@ const Registerypage = () => {
               onChange={(e) => setPassword(e.target.value)}
             />
           </div>
+          <p>Where are you from?</p>
+          <div>
+            <Select
+              style={{ width: 200 }}
+              showSearch
+              defaultValue="Finaland"
+              value={selectedCountry}
+              filterOption={filterOption}
+              onChange={(value) => setSelectedCountry(value)}
+              options={countryData}
+            ></Select>
+          </div>
           <p>What you want to do?</p>
           <div>
             <Radio.Group
@@ -94,12 +118,13 @@ const Registerypage = () => {
           <Button id="button" type="primary" htmlType="submit">
             Register
           </Button>
+          <div>
+            <p>
+              Fill the rest of the information in your profile after
+              registration
+            </p>
+          </div>
         </form>
-        <div>
-          <p>
-            Fill the rest of the information in your profile after registration
-          </p>
-        </div>
       </div>
     </div>
   );

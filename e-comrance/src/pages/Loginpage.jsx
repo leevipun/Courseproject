@@ -1,4 +1,4 @@
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { Login } from "../services/Services";
 import "../styles/loginStyles.css";
@@ -30,6 +30,10 @@ const Loginpage = () => {
     } catch (error) {
       dispatch(addNotification(error));
     }
+  };
+
+  const handleRegister = () => {
+    navigate("/register");
   };
 
   return (
@@ -66,8 +70,8 @@ const Loginpage = () => {
             <p>Forgot password?</p>
           </div>
           <div>
-            <Button type="primary" id="button">
-              <Link to="/register">Register</Link>
+            <Button type="primary" id="button" onClick={() => handleRegister()}>
+              Register
             </Button>
           </div>
         </form>

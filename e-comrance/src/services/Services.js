@@ -32,8 +32,8 @@ export const Login = async (email, password) => {
   }
 };
 
-export const registery = async (email, name, password, style) => {
-  console.log(email, name, password, style);
+export const registery = async (email, name, password, country, style) => {
+  console.log(email, name, password, country, style);
 
   const id = uuidv4();
 
@@ -43,6 +43,7 @@ export const registery = async (email, name, password, style) => {
       name: name,
       password: password,
       style: style,
+      country: country,
       id: id,
     });
     return response.data;

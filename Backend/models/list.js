@@ -32,6 +32,9 @@ const listSchema = mongoose.Schema({
     type: String,
     required: true,
   },
+  author: {
+    type: String,
+  },
 });
 
 listSchema.set("toJSON", {
