@@ -5,7 +5,7 @@ import {
   useElements,
 } from "@stripe/react-stripe-js";
 import { addNotification } from "../../reducer/notificationReducer";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import "../styles/stripe.css";
 
 export default function CheckoutForm() {
@@ -15,6 +15,10 @@ export default function CheckoutForm() {
 
   const [email, setEmail] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+
+  const user = useSelector((state) => state.user);
+
+  const userCart = user[0].cart;
 
   useEffect(() => {
     if (!stripe) {
@@ -55,6 +59,9 @@ export default function CheckoutForm() {
     });
   }, [stripe]);
 
+  console.log("User", user);
+  console.log("Kärry", userCart);
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -70,7 +77,7 @@ export default function CheckoutForm() {
       elements,
       confirmParams: {
         // Make sure to change this to your payment completion page
-        return_url: "http://localhost:5173",
+        return_url: "http://localhost:5173/success",
         receipt_email: email,
       },
     });
@@ -89,9 +96,13 @@ export default function CheckoutForm() {
     setIsLoading(false);
   };
 
-  const paymentElementOptions = {
-    mode: "payment",
-    layout: "tabs",
+  const options = {
+    layout: {
+      type: "accordion",
+      defaultCollapsed: false,
+      radios: false,
+      spacedAccordionItems: true,
+    },
   };
 
   return (
@@ -105,7 +116,7 @@ export default function CheckoutForm() {
           placeholder="Enter email address"
         />
 
-        <PaymentElement id="payment-element" options={paymentElementOptions} />
+        <PaymentElement id="payment-element" options={options} />
         <button disabled={isLoading || !stripe || !elements} id="submit">
           <span id="button-text">
             {isLoading ? (

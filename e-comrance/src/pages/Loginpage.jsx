@@ -33,7 +33,13 @@ const Loginpage = () => {
   };
 
   return (
-    <div id="div">
+    <div
+      style={{
+        alignItems: "center",
+        justifyContent: "center",
+        display: "flex",
+      }}
+    >
       <div>
         <h1>Login</h1>
         <form onSubmit={handleLogin}>
@@ -59,12 +65,12 @@ const Loginpage = () => {
             </Button>
             <p>Forgot password?</p>
           </div>
+          <div>
+            <Button type="primary" id="button">
+              <Link to="/register">Register</Link>
+            </Button>
+          </div>
         </form>
-        <div>
-          <Button type="primary" id="button">
-            <Link to="/register">Register</Link>
-          </Button>
-        </div>
       </div>
     </div>
   );
