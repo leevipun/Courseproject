@@ -10,29 +10,51 @@ const extractUser = middleware.extractUser;
 const extractToken = middleware.extractToken;
 
 cartRouter.post("/", extractUser, extractToken, async (req, res, next) => {
-  const body = req.body;
-
-  console.log("body", body);
-
-  console.log("Request user", req.user);
-
-  const deCodedToken = jwt.verify(req.token, process.env.SECRET);
-  if (!deCodedToken.id) {
-    return res.status(401).json({ error: "Invalid token" });
-  }
-
-  const user = req.user;
-  if (body.id) {
-    const cartlistings = await user.cart;
-    console.log("Cartlistings", cartlistings);
-    const listing = await List.findById(body.id);
-    if (cartlistings.includes(body.id)) {
-      res.json("Already in cart");
-    } else if (listing) {
+  try {
+    const body = req.body;
+    console.log("body", body);
+    console.log("Request user", req.user);
+    const deCodedToken = jwt.verify(req.token, process.env.SECRET);
+    if (!deCodedToken.id) {
+      return res.status(401).json({ error: "Invalid token" });
+    }
+    const user = req.user;
+    if (body.id) {
+      const cartlistings = await user.cart;
+      const listing = await List.findById(body.id);
+      if (!listing) {
+        console.log("Ei löytynyt listaus");
+        return res.status(400).json({ error: "Item not found" });
+      }
+      if (listing.author === user._id.toString()) {
+        console.log("Oma listaus");
+        return res.status(400).json({ error: "You can't buy your own item" });
+      }
+      if (cartlistings.includes(body.id)) {
+        console.log("Löytyi jo listauksesta");
+        return res.status(400).json({ error: "Item already in cart" });
+      }
       if (listing.status === "In cart") {
-        res.json("Some one has already taken that");
+        return res
+          .status(400)
+          .json({ error: "Item already in someone's cart" });
       } else {
         console.log("Läytyi listaus");
+        // Check if the author of the new listing is different from the author of items already in the cart
+        if (cartlistings.length > 0) {
+          const authorsInCart = await List.find({ _id: { $in: cartlistings } })
+            .distinct("author")
+            .exec();
+          if (
+            authorsInCart.length > 0 &&
+            !authorsInCart.includes(listing.author.toString())
+          ) {
+            console.log("Items from different authors in cart");
+            return res
+              .status(400)
+              .json({ error: "Can only have items from one author" });
+          }
+        }
         const item = {
           status: "In cart",
         };
@@ -43,13 +65,10 @@ cartRouter.post("/", extractUser, extractToken, async (req, res, next) => {
         await user.save();
         res.json(listing);
       }
-    } else {
-      console.log("Ei löytyny");
-      res.status(404).send("Item not found");
     }
-  } else {
-    console.log("Mentiin vaan tänne suoraan");
-    return res.status(400).send("Error occurred while adding to cart");
+  } catch (error) {
+    console.error("Error:", error);
+    res.status(500).json({ error: "Internal Server Error" });
   }
 });
 

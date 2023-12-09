@@ -16,21 +16,11 @@ usersRouter.post("/", async (req, res) => {
   const saltRounds = 10;
   const passwordHash = await bcrypt.hash(password, saltRounds);
 
-  const stripeAccount = await stripe.accounts.create({
-    type: "express",
-    country: country,
-    email: email,
-    capabilities: {
-      card_payments: { requested: true },
-      transfers: { requested: true },
-    },
-  });
-
   const user = new User({
-    stripeId: stripeAccount.id,
     email: email,
     name: name,
     passwordHash: passwordHash,
+    country: country,
     style: style,
     id: id,
   });
@@ -39,6 +29,41 @@ usersRouter.post("/", async (req, res) => {
   const savedUser = await user.save();
 
   res.status(201).json(savedUser);
+});
+
+usersRouter.patch("/stripe", extractToken, async (req, res) => {
+  try {
+    const email = req.body.email;
+
+    const user = await User.findOne({ email: email });
+    console.log(user);
+    console.log(user.email);
+    console.log(user.country);
+
+    const stripeAccount = await stripe.accounts.create({
+      type: "express",
+      email: user.email,
+      country: user.country,
+      capabilities: {
+        card_payments: { requested: true },
+        transfers: { requested: true },
+      },
+    });
+
+    // Update the user with the stripeId
+    await User.updateOne(
+      { email: user.email },
+      { $set: { stripeId: stripeAccount.id } }
+    );
+
+    return res
+      .status(200)
+      .json({ message: "Stripe account created successfully" });
+  } catch (error) {
+    console.error(error);
+    await User.findOneAndDelete({ email: req.body.email });
+    return res.status(500).json({ error: "Internal server error" });
+  }
 });
 
 usersRouter.get("/", async (request, response) => {
@@ -129,6 +154,8 @@ usersRouter.delete("/", async (req, res) => {
     const user = await User.findOne({ email: deCodedToken.email });
     const userListings = user.listings;
     const userCart = user.cart;
+    const userStripeId = user.stripeId;
+    console.log(userStripeId);
     console.log(userCart);
     console.log(user);
     console.log(userListings);
@@ -145,8 +172,13 @@ usersRouter.delete("/", async (req, res) => {
         await List.findByIdAndUpdate(id, item, { new: true });
       }
     }
-    await User.findByIdAndRemove(user._id);
-    res.status(204).send("User deleted Successfully");
+    const deletedStripeAccount = await stripe.accounts.del(userStripeId);
+    if (!deletedStripeAccount || deletedStripeAccount.deleted === false) {
+      return res.status(400).send("Error occurred while deleting account");
+    } else {
+      await User.findByIdAndRemove(user._id);
+      res.status(204).send("User deleted Successfully");
+    }
   } catch (error) {
     console.error(error);
     return res.status(400).send("Error occurred while deleting user");

@@ -68,20 +68,25 @@ const Homepage = () => {
   });
 
   const handleAddToCart = async (id) => {
-    const response = await addToCart(id);
-    if (response === "Already in cart") {
-      dispatch(addNotification(response));
-      console.log("Hah");
-    } else if (response === "Some one has already taken that") {
-      dispatch(addNotification(response));
-    } else {
-      console.log(response);
-      dispatch(appendcart(response));
-      dispatch(addNotification(`${response.name} was added to your cart`));
-      const remainingListings = user.filter((name) => {
-        name !== response.name;
-      });
-      dispatch(initializeListing(remainingListings));
+    try {
+      const response = await addToCart(id);
+      console.log("Response", response);
+      if (response === "Already in cart") {
+        dispatch(addNotification(response));
+        console.log("Hah");
+      } else if (response === "Some one has already taken that") {
+        dispatch(addNotification(response));
+      } else {
+        console.log(response);
+        dispatch(appendcart(response));
+        dispatch(addNotification(`${response.name} was added to your cart`));
+        const remainingListings = user.filter((name) => {
+          name !== response.name;
+        });
+        dispatch(initializeListing(remainingListings));
+      }
+    } catch (error) {
+      dispatch(addNotification(error));
     }
   };
 

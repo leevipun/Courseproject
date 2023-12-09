@@ -49,6 +49,10 @@ const userSchema = mongoose.Schema({
   },
   stripeId: {
     type: String,
+    required: false,
+  },
+  country: {
+    type: String,
     required: true,
   },
 });

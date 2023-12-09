@@ -105,9 +105,11 @@ export const addToCart = async (id) => {
   try {
     console.log(id);
     const response = await axios.post(`${baseURL}/api/cart`, { id }, config);
+    console.log("Response ", response.data);
     return response.data;
   } catch (error) {
-    throw new Error(error.response.data.message);
+    console.log("Error", error);
+    throw error.response.data.error;
   }
 };
 
@@ -331,6 +333,23 @@ export const createPaymentIntent = async (items) => {
     const response = await axios.post(
       `${baseURL}/api/checkout/create-payment-intent`,
       { items }
+    );
+    return response.data;
+  } catch (error) {
+    throw new Error(error.response.data.message);
+  }
+};
+
+export const updateStripeId = async (email, name, country) => {
+  const newObject = {
+    email: email,
+    name: name,
+    country: country,
+  };
+  try {
+    const response = await axios.patch(
+      `${baseURL}/api/users/stripe`,
+      newObject
     );
     return response.data;
   } catch (error) {

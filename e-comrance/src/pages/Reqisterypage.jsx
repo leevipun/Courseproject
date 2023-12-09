@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { registery } from "../services/Services";
+import { registery, updateStripeId } from "../services/Services";
 import { Input, Button, Radio } from "antd";
 import { Select } from "antd";
 import countryData from "../../Data/countryData";
@@ -20,6 +20,7 @@ const Registerypage = () => {
 
     try {
       await registery(email, name, password, selectedCountry, style);
+      await updateStripeId(email, name, selectedCountry);
       navigate("/login");
       setEmail("");
       setName("");
