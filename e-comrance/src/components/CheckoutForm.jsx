@@ -6,6 +6,7 @@ import {
 } from "@stripe/react-stripe-js";
 import { addNotification } from "../../reducer/notificationReducer";
 import { useDispatch } from "react-redux";
+import "../styles/stripe.css";
 
 export default function CheckoutForm() {
   const stripe = useStripe();
@@ -32,9 +33,11 @@ export default function CheckoutForm() {
       switch (paymentIntent.status) {
         case "succeeded":
           dispatch(addNotification("Payment succeeded!"));
+          console.log(paymentIntent);
           break;
         case "processing":
           dispatch(addNotification("Your payment is processing."));
+          console.log(paymentIntent);
           break;
         case "requires_payment_method":
           dispatch(
@@ -42,9 +45,11 @@ export default function CheckoutForm() {
               "Your payment was not successful, please try again."
             )
           );
+          console.log(paymentIntent);
           break;
         default:
           dispatch(addNotification("Something went wrong."));
+          console.log(paymentIntent);
           break;
       }
     });
@@ -85,25 +90,32 @@ export default function CheckoutForm() {
   };
 
   const paymentElementOptions = {
+    mode: "payment",
     layout: "tabs",
   };
 
   return (
-    <form id="payment-form" onSubmit={handleSubmit}>
-      <input
-        id="email"
-        type="text"
-        value={email}
-        onChange={(e) => setEmail(e.target.value)}
-        placeholder="Enter email address"
-      />
+    <body id="body">
+      <form id="payment-form" onSubmit={handleSubmit}>
+        <input
+          id="email"
+          type="text"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          placeholder="Enter email address"
+        />
 
-      <PaymentElement id="payment-element" options={paymentElementOptions} />
-      <button disabled={isLoading || !stripe || !elements} id="submit">
-        <span id="button-text">
-          {isLoading ? <div className="spinner" id="spinner"></div> : "Pay now"}
-        </span>
-      </button>
-    </form>
+        <PaymentElement id="payment-element" options={paymentElementOptions} />
+        <button disabled={isLoading || !stripe || !elements} id="submit">
+          <span id="button-text">
+            {isLoading ? (
+              <div className="spinner" id="spinner"></div>
+            ) : (
+              "Pay now"
+            )}
+          </span>
+        </button>
+      </form>
+    </body>
   );
 }
