@@ -2,6 +2,7 @@ const express = require("express");
 const checkOutRouter = express.Router();
 const API_KEY = process.env.SECRET_STRIPE;
 const stripe = require("stripe")(API_KEY);
+const User = require("../models/user");
 
 const calculateOrderAmount = (items) => {
   const total = items.reduce((acc, item) => {
@@ -23,15 +24,21 @@ const calculateOrderAmount = (items) => {
 checkOutRouter.post("/create-payment-intent", async (req, res) => {
   const { items } = req.body;
 
+  console.log("Item", items);
+
+  console.log("Author", items[0].author);
+
+  const user = await User.findById(items[0].author);
+
   const paymentIntent = await stripe.paymentIntents.create({
-    amount: await calculateOrderAmount(items),
+    amount: calculateOrderAmount(items),
     currency: "eur",
     automatic_payment_methods: {
       enabled: true,
     },
     application_fee_amount: 123,
     transfer_data: {
-      destination: "{{CONNECTED_STRIPE_ACCOUNT_ID}}",
+      destination: `${user.stripeId}`,
     },
   });
 

@@ -18,7 +18,9 @@ export default function CheckoutForm() {
 
   const user = useSelector((state) => state.user);
 
-  const userCart = user[0].cart;
+  const userCart = user[0].cart.author;
+
+  console.log("UserCart", userCart);
 
   useEffect(() => {
     if (!stripe) {

@@ -173,7 +173,7 @@ usersRouter.delete("/", async (req, res) => {
       }
     }
     const deletedStripeAccount = await stripe.accounts.del(userStripeId);
-    if (!deletedStripeAccount || deletedStripeAccount.deleted === false) {
+    if (!deletedStripeAccount || deletedStripeAccount.deleted === true) {
       return res.status(400).send("Error occurred while deleting account");
     } else {
       await User.findByIdAndRemove(user._id);

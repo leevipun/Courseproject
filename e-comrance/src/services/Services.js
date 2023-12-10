@@ -28,7 +28,7 @@ export const Login = async (email, password) => {
     return response.data;
   } catch (error) {
     console.log(error);
-    return error.response.data.error;
+    return { errer: error.response.data.error };
   }
 };
 
@@ -328,11 +328,11 @@ export const deleteUserListing = async (id) => {
   }
 };
 
-export const createPaymentIntent = async (items) => {
+export const createPaymentIntent = async (items, userId) => {
   try {
     const response = await axios.post(
       `${baseURL}/api/checkout/create-payment-intent`,
-      { items }
+      { items, userId }
     );
     return response.data;
   } catch (error) {
@@ -340,11 +340,25 @@ export const createPaymentIntent = async (items) => {
   }
 };
 
-export const updateStripeId = async (email, name, country) => {
+export const updateStripeId = async (
+  email,
+  name,
+  country,
+  iban,
+  accountName,
+  accountCurrency,
+  accountType,
+  accountCountry
+) => {
   const newObject = {
     email: email,
     name: name,
     country: country,
+    iban: iban,
+    accountName: accountName,
+    accountCurrency: accountCurrency,
+    accountType: accountType,
+    accountCountry: accountCountry,
   };
   try {
     const response = await axios.patch(

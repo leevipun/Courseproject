@@ -13,7 +13,7 @@ const Registerypage = () => {
   const [password, setPassword] = useState("");
   const [name, setName] = useState("");
   const [style, setStyle] = useState("buyer");
-  const [selectedCountry, setSelectedCountry] = useState("Finland");
+  const [selectedCountry, setSelectedCountry] = useState("FI");
 
   const handleRegistery = async (e) => {
     e.preventDefault();
