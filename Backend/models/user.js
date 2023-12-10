@@ -1,3 +1,4 @@
+const { first } = require("lodash");
 const mongoose = require("mongoose");
 const uniqueValidator = require("mongoose-unique-validator");
 
@@ -9,7 +10,14 @@ const userSchema = mongoose.Schema({
     trim: true,
     match: [/^\S+@\S+\.\S+$/, "Please enter a valid email address"],
   },
-  name: String,
+  firstname: {
+    type: String,
+    required: true,
+  },
+  lastname: {
+    type: String,
+    required: true,
+  },
   passwordHash: {
     type: String,
     minlength: 3,

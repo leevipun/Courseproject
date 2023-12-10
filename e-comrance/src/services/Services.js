@@ -32,15 +32,23 @@ export const Login = async (email, password) => {
   }
 };
 
-export const registery = async (email, name, password, country, style) => {
-  console.log(email, name, password, country, style);
+export const registery = async (
+  email,
+  firstName,
+  lastName,
+  password,
+  country,
+  style
+) => {
+  console.log(email, firstName, lastName, password, country, style);
 
   const id = uuidv4();
 
   try {
     const response = await axios.post(`${baseURL}/api/users`, {
       email: email,
-      name: name,
+      firstName: firstName,
+      lastName: lastName,
       password: password,
       style: style,
       country: country,
@@ -342,23 +350,31 @@ export const createPaymentIntent = async (items, userId) => {
 
 export const updateStripeId = async (
   email,
-  name,
-  country,
   iban,
-  accountName,
-  accountCurrency,
-  accountType,
-  accountCountry
+  firstName,
+  lastName,
+  city,
+  address,
+  postalCode,
+  phoneNumber,
+  birthDay,
+  birthMonth,
+  birthYear,
+  selectedCountry
 ) => {
   const newObject = {
     email: email,
-    name: name,
-    country: country,
     iban: iban,
-    accountName: accountName,
-    accountCurrency: accountCurrency,
-    accountType: accountType,
-    accountCountry: accountCountry,
+    firstName: firstName,
+    lastName: lastName,
+    city: city,
+    address: address,
+    postalCode: postalCode,
+    phoneNumber: phoneNumber,
+    birthDay: birthDay,
+    birthMonth: birthMonth,
+    birthYear: birthYear,
+    selectedCountry: selectedCountry,
   };
   try {
     const response = await axios.patch(

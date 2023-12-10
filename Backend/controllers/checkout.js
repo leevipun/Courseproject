@@ -36,9 +36,8 @@ checkOutRouter.post("/create-payment-intent", async (req, res) => {
     automatic_payment_methods: {
       enabled: true,
     },
-    application_fee_amount: 123,
     transfer_data: {
-      destination: `${user.stripeId}`,
+      destination: user.stripeAccountId,
     },
   });
 

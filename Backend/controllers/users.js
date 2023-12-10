@@ -7,18 +7,22 @@ const List = require("../models/list");
 const API_KEY = process.env.SECRET_STRIPE;
 const stripe = require("stripe")(API_KEY);
 require("express-async-errors");
+const http = require("http");
 
 const extractToken = middleware.extractToken;
 
 usersRouter.post("/", async (req, res) => {
-  const { email, name, password, country, style, id } = req.body;
+  const { email, firstName, lastName, password, country, style, id } = req.body;
 
   const saltRounds = 10;
   const passwordHash = await bcrypt.hash(password, saltRounds);
 
+  console.log(req.ip);
+
   const user = new User({
     email: email,
-    name: name,
+    firstname: firstName,
+    lastname: lastName,
     passwordHash: passwordHash,
     country: country,
     style: style,
@@ -33,7 +37,10 @@ usersRouter.post("/", async (req, res) => {
 
 usersRouter.patch("/stripe", extractToken, async (req, res) => {
   try {
+    const iban = req.body.iban;
     const email = req.body.email;
+
+    console.log(req.body);
 
     const user = await User.findOne({ email: email });
     console.log(user);
@@ -41,12 +48,46 @@ usersRouter.patch("/stripe", extractToken, async (req, res) => {
     console.log(user.country);
 
     const stripeAccount = await stripe.accounts.create({
-      type: "express",
+      type: "custom",
       email: user.email,
       country: user.country,
       capabilities: {
         card_payments: { requested: true },
         transfers: { requested: true },
+      },
+      tos_acceptance: {
+        date: Math.floor(Date.now() / 1000),
+        ip: "82.181.90.127",
+      },
+      business_type: "individual",
+      business_profile: {
+        mcc: "5734",
+        product_description: "Test",
+      },
+      external_account: {
+        object: "bank_account",
+        country: user.country,
+        currency: "eur",
+        account_holder_name: user.name && user.lastName,
+        account_holder_type: "individual",
+        account_number: iban,
+      },
+      individual: {
+        first_name: req.body.firstName,
+        last_name: req.body.lastName,
+        email: req.body.email,
+        phone: req.body.phone,
+        address: {
+          city: req.body.city,
+          country: req.body.country,
+          line1: req.body.address,
+          postal_code: req.body.postalCode,
+        },
+        dob: {
+          month: req.body.month,
+          day: req.body.day,
+          year: req.body.year,
+        },
       },
     });
 
@@ -173,7 +214,7 @@ usersRouter.delete("/", async (req, res) => {
       }
     }
     const deletedStripeAccount = await stripe.accounts.del(userStripeId);
-    if (!deletedStripeAccount || deletedStripeAccount.deleted === true) {
+    if (!deletedStripeAccount || deletedStripeAccount.deleted !== true) {
       return res.status(400).send("Error occurred while deleting account");
     } else {
       await User.findByIdAndRemove(user._id);
@@ -203,6 +244,13 @@ usersRouter.get("/listings", extractToken, async (req, res) => {
   } else {
     res.status(404).send({ error: "User not found" });
   }
+});
+
+usersRouter.delete("/stripe", (req, res) => {
+  req.body.stripeId;
+  console.log(req.body.stripeId);
+  stripe.accounts.del(req.body.stripeId);
+  return res.status(200).json({ message: "Stripe account deleted" });
 });
 
 module.exports = usersRouter;
