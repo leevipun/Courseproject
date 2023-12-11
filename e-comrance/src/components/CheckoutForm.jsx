@@ -7,6 +7,7 @@ import {
 import { addNotification } from "../../reducer/notificationReducer";
 import { useDispatch, useSelector } from "react-redux";
 import "../styles/stripe.css";
+import { deleteCartItem } from "../services/Services";
 
 export default function CheckoutForm() {
   const stripe = useStripe();
@@ -79,7 +80,7 @@ export default function CheckoutForm() {
       elements,
       confirmParams: {
         // Make sure to change this to your payment completion page
-        return_url: "http://localhost:5173/success",
+        return_url: "http://localhost:5173/payment-successful",
         receipt_email: email,
       },
     });

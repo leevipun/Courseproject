@@ -105,6 +105,7 @@ const App = () => {
           <Route path="/add" Component={AddingPage} />
           <Route path="/history" Component={PurchaseHistory} />
           <Route path="/ownlisting" Component={Ownlisting} />
+          <Route path="/payment-successful" Component={PurchaseHistory} />
           <Route path="/*" Component={Notfound} />
         </Routes>
       </Router>

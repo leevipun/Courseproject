@@ -18,9 +18,8 @@ export const Login = async (email, password) => {
       password: password,
     });
 
-    const token = response.data.token; // Assuming your token is in the response.data
+    const token = response.data.token;
 
-    // Set the token in localStorage
     setToken(token);
 
     console.log(response.data);
