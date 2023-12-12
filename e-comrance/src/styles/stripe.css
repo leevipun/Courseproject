@@ -43,8 +43,8 @@ form {
   margin-bottom: 24px;
 }
 
-/* Buttons and links */
-button {
+/* submits and links */
+#submit {
   background: #5469d4;
   font-family: Arial, sans-serif;
   color: #ffffff;
@@ -60,11 +60,11 @@ button {
   width: 100%;
 }
 
-button:hover {
+#submit:hover {
   filter: contrast(115%);
 }
 
-button:disabled {
+#submit:disabled {
   opacity: 0.5;
   cursor: default;
 }

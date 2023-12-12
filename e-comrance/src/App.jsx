@@ -26,6 +26,7 @@ import { initializeListing } from "../reducer/listingReducer.js";
 import { initializefavorite } from "../reducer/favoriteReducer.js";
 import Ownlisting from "./pages/Ownlistingpage.jsx";
 import Checkoutpage from "./pages/Checkoutpage.jsx";
+import PaymentSucess from "./pages/paymentsucess.jsx";
 
 const App = () => {
   const dispatch = useDispatch();
@@ -105,7 +106,7 @@ const App = () => {
           <Route path="/add" Component={AddingPage} />
           <Route path="/history" Component={PurchaseHistory} />
           <Route path="/ownlisting" Component={Ownlisting} />
-          <Route path="/payment-successful" Component={PurchaseHistory} />
+          <Route path="/payment-successful" Component={PaymentSucess} />
           <Route path="/*" Component={Notfound} />
         </Routes>
       </Router>

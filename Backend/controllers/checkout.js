@@ -36,9 +36,10 @@ checkOutRouter.post("/create-payment-intent", async (req, res) => {
     automatic_payment_methods: {
       enabled: true,
     },
-    transfer_data: {
+    //FIXME: Muista laittaa oikea destination
+    /*    transfer_data: {
       destination: user.stripeAccountId,
-    },
+    },*/
   });
 
   res.send({

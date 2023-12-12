@@ -7,7 +7,6 @@ import {
 import { addNotification } from "../../reducer/notificationReducer";
 import { useDispatch, useSelector } from "react-redux";
 import "../styles/stripe.css";
-import { deleteCartItem } from "../services/Services";
 
 export default function CheckoutForm() {
   const stripe = useStripe();

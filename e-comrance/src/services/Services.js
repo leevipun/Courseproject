@@ -151,11 +151,12 @@ export const deleteCartItem = async (id) => {
   const config = {
     headers: { Authorization: token },
   };
-  console.log(config);
   try {
     const response = await axios.delete(`${baseURL}/api/cart/${id}`, config);
+    console.log(response.data);
     return response.data;
   } catch (error) {
+    console.log(error);
     return { error: error.response.data.message };
   }
 };
