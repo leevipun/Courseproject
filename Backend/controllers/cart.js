@@ -5,6 +5,7 @@ require("express-async-errors");
 const User = require("../models/user");
 const middleware = require("../utils/middleware");
 const Cart = require("../models/cart");
+const { last } = require("lodash");
 
 const extractUser = middleware.extractUser;
 const extractToken = middleware.extractToken;
@@ -57,6 +58,8 @@ cartRouter.post("/", extractUser, extractToken, async (req, res, next) => {
         }
         const item = {
           status: "In cart",
+          buyer: user._id,
+          lastPrice: listing.price,
         };
         const updatedList = await List.findByIdAndUpdate(body.id, item, {
           new: true,

@@ -35,6 +35,12 @@ const listSchema = mongoose.Schema({
   author: {
     type: String,
   },
+  lastPrice: {
+    type: Number,
+  },
+  buyer: {
+    type: String,
+  },
 });
 
 listSchema.set("toJSON", {

@@ -15,7 +15,9 @@ const PaymentSucess = () => {
     //const items = cartItems.map((item) => item.id);
     //await deleteCartItemAndUserListing(items);
     cartItems.forEach(async (item) => {
+      console.log("delete user listing");
       await deleteUserListing(item.id);
+      console.log("delete cart item");
       await deleteCartItem(item.id);
     });
 

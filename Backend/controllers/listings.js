@@ -99,8 +99,32 @@ listingRouter.put("/", extractToken, async (req, res) => {
 
 listingRouter.delete("/:id", async (req, res) => {
   try {
+    const deCodedToken = jwt.verify(req.token, process.env.SECRET);
+    if (!deCodedToken) {
+      return res.status(401).send({ error: "Invalid token" });
+    }
+    const user = await User.findById(deCodedToken.id);
+    console.log("Täällä");
+    const listing = await List.findById(req.params.id);
+    const buyer = User.findById(listing.buyer);
+    console.log("Täällä myös");
+    const userlistings = (user.listings = user.listings.filter(
+      (item) => item.toString() !== listing.id.toString()
+    ));
+    const item = {
+      listings: userlistings,
+    };
+    console.log(item);
+    await User.findByIdAndUpdate(deCodedToken.id, item, {
+      new: true,
+    });
+    await User.findByIdAndUpdate(listing.buyer, {
+      $pull: { cart: listing._id },
+    });
+    console.log("Täälläkin");
     await List.findByIdAndDelete(req.params.id);
-    res.status(200).send;
+    console.log("Täälläkin myös");
+    res.status(200).send(userlistings);
   } catch (error) {
     res.status(500).send({ error: "An error occurred" });
   }

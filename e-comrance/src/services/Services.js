@@ -329,7 +329,13 @@ export const updateUsersListing = async (
 
 export const deleteUserListing = async (id) => {
   try {
-    const response = await axios.delete(`${baseURL}/api/listings/${id}`);
+    const config = {
+      headers: { Authorization: token },
+    };
+    const response = await axios.delete(
+      `${baseURL}/api/listings/${id}`,
+      config
+    );
     return response.data;
   } catch (error) {
     return { error: error.response.data.message };

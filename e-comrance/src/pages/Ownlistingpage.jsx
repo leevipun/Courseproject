@@ -3,7 +3,7 @@ import Navbar from "./../components/navbar";
 import { useDispatch, useSelector } from "react-redux";
 import { Button, Input } from "antd";
 import { useState } from "react";
-import { updateUsersListing } from "../services/Services";
+import { deleteUserListing, updateUsersListing } from "../services/Services";
 import { initializeUserListing } from "../../reducer/ownlistingReducer";
 
 const Ownlistings = () => {
@@ -50,9 +50,12 @@ const Ownlistings = () => {
     setEdit(false);
   };
 
-  const handleDelete = (id) => {
+  const handleDelete = async (id) => {
     console.log("Delete");
     console.log(id);
+    const response = await deleteUserListing(id);
+    console.log("response", response);
+    dispatch(initializeUserListing(response));
   };
 
   return (

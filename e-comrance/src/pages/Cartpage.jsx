@@ -29,6 +29,8 @@ const Cartpage = () => {
     return state.cart;
   });
 
+  console.log("cart", cartItems);
+
   const [totalPrice, setTotalPrice] = useState(0);
 
   const handleItemDelete = async (id) => {

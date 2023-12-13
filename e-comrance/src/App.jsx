@@ -57,15 +57,24 @@ const App = () => {
     const fetchData = async () => {
       try {
         const listings = await Services.getAllCartItems();
-        dispatch(initializecart(listings));
         console.log("Listings", listings);
+        const validListings = listings.filter(
+          (item) => item !== undefined && item !== null && item !== ""
+        );
+        if (validListings.length === 0) {
+          dispatch(initializecart([]));
+          return;
+        } else {
+          dispatch(initializecart(validListings));
+          console.log("Valid Listings", validListings);
+        }
       } catch (error) {
         console.error("Error fetching listings:", error);
       }
     };
 
     fetchData();
-  }, []);
+  }, [dispatch]);
 
   useEffect(() => {
     const fetchData = async () => {
