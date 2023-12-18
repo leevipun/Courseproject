@@ -6,8 +6,11 @@ import "../styles/registeryStyles.css";
 import PersonalInfo from "../components/registery/personalInfo";
 import AddressInfo from "../components/registery/addressInfo";
 import AdditionalInfo from "../components/registery/additionalInfo";
+import { useDispatch } from "react-redux";
+import { addNotification } from "../../reducer/notificationReducer";
 
 const Registerypage = () => {
+  const dispatch = useDispatch();
   const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -59,6 +62,7 @@ const Registerypage = () => {
       setPassword("");
     } catch (error) {
       console.error("Registration failed:", error.error);
+      dispatch(addNotification(error.error));
     }
   };
 

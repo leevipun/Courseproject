@@ -55,7 +55,8 @@ export const registery = async (
     });
     return response.data;
   } catch (error) {
-    throw { error: error.response.data.message };
+    console.log("Error", error);
+    throw { error: error.response.data.error };
   }
 };
 
