@@ -2,11 +2,11 @@ import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { Login } from "../services/Services";
 import "../styles/loginStyles.css";
-import { Button, Input } from "antd";
 import { useDispatch } from "react-redux";
 import { appendUser } from "../../reducer/userReducer";
 import Services from "../services/Services";
 import { addNotification } from "../../reducer/notificationReducer";
+import LoginForm from "../components/loginForm";
 
 const Loginpage = () => {
   const navigate = useNavigate();
@@ -15,8 +15,8 @@ const Loginpage = () => {
   const [email, setEmail] = useState("");
 
   const handleLogin = async (event) => {
+    event.preventDefault();
     try {
-      event.preventDefault();
       const user = await Login(email, password);
       console.log("User Loginissa", user);
       dispatch(appendUser(user));
@@ -28,7 +28,7 @@ const Loginpage = () => {
       );
       navigate("/");
     } catch (error) {
-      dispatch(addNotification(error));
+      dispatch(addNotification(error.error));
     }
   };
 
@@ -37,46 +37,14 @@ const Loginpage = () => {
   };
 
   return (
-    <div
-      style={{
-        alignItems: "center",
-        justifyContent: "center",
-        display: "flex",
-      }}
-    >
-      <div>
-        <h1>Login</h1>
-        <form onSubmit={handleLogin}>
-          <Input
-            id="input"
-            type="text"
-            placeholder="Email"
-            autoComplete="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-          />
-          <Input
-            id="input"
-            type="password"
-            placeholder="Password"
-            value={password}
-            autoComplete="current-password"
-            onChange={(e) => setPassword(e.target.value)}
-          />
-          <div id="login">
-            <Button type="primary" id="button" htmlType="submit">
-              Log in
-            </Button>
-            <p>Forgot password?</p>
-          </div>
-          <div>
-            <Button type="primary" id="button" onClick={() => handleRegister()}>
-              Register
-            </Button>
-          </div>
-        </form>
-      </div>
-    </div>
+    <LoginForm
+      handleLogin={handleLogin}
+      handleRegister={handleRegister}
+      setEmail={setEmail}
+      setPassword={setPassword}
+      email={email}
+      password={password}
+    />
   );
 };
 

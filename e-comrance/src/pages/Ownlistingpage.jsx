@@ -3,7 +3,11 @@ import Navbar from "./../components/navbar";
 import { useDispatch, useSelector } from "react-redux";
 import { Button, Input } from "antd";
 import { useState } from "react";
-import { deleteUserListing, updateUsersListing } from "../services/Services";
+import {
+  deleteUserListing,
+  updateListing,
+  updateUsersListing,
+} from "../services/Services";
 import { initializeUserListing } from "../../reducer/ownlistingReducer";
 
 const Ownlistings = () => {
@@ -28,6 +32,14 @@ const Ownlistings = () => {
       setPrice(editListing[0].price);
       setDescription(editListing[0].description);
       console.log(editListing);
+      const newObject = {
+        id: id,
+        name: name,
+        country: country,
+        price: price,
+        description: description,
+      };
+      updateListing(newObject);
       setLastId(id);
     } else if (lastId === id) {
       setEdit(false);

@@ -18,6 +18,12 @@
   align-items: center;
 }
 
-p {
+#personalInfoInput {
   margin: 5px;
+  width: calc(50% - 10px);
+}
+
+#personalEmailInput {
+  margin: 5px;
+  width: calc(100% - 10px);
 }

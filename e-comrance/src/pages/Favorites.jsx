@@ -43,6 +43,9 @@ const Favoritepage = () => {
                 Price: {favorite.price} {favorite.currency}
               </div>
               <div style={{ margin: 5 }}>
+                Last price: {favorite.lastPrice} {favorite.currency}
+              </div>
+              <div style={{ margin: 5 }}>
                 Description: {favorite.description}
               </div>
             </div>

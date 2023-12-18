@@ -4,6 +4,7 @@ const List = require("../models/list");
 require("express-async-errors");
 const User = require("../models/user");
 const middleware = require("../utils/middleware");
+const { last } = require("lodash");
 
 const extractUser = middleware.extractUser;
 const extractToken = middleware.extractToken;
@@ -55,6 +56,7 @@ listingRouter.post("/", extractUser, extractToken, async (req, res, next) => {
     category: body.category,
     pics: body.pics,
     author: user._id,
+    lastPrice: body.price,
     status: "Aviable",
   });
 
@@ -78,6 +80,8 @@ listingRouter.post("/", extractUser, extractToken, async (req, res, next) => {
 listingRouter.put("/", extractToken, async (req, res) => {
   try {
     const body = req.body;
+    const listing = await List.findById(body.id);
+    console.log(listing);
     const deCodedToken = jwt.verify(req.token, process.env.SECRET);
     if (!deCodedToken) {
       return res.status(401).send({ error: "Invalid token" });
@@ -87,6 +91,7 @@ listingRouter.put("/", extractToken, async (req, res) => {
       country: body.country,
       description: body.description,
       price: body.price,
+      lastPrice: listing.price,
     };
     const updatedListing = await List.findByIdAndUpdate(body.id, item, {
       new: true,

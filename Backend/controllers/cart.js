@@ -20,26 +20,32 @@ cartRouter.post("/", extractUser, extractToken, async (req, res, next) => {
       return res.status(401).json({ error: "Invalid token" });
     }
     const user = req.user;
+    //Check if we have a valid id
     if (body.id) {
       const cartlistings = await user.cart;
       const listing = await List.findById(body.id);
+      // Check if the listing exists
       if (!listing) {
         console.log("Ei löytynyt listaus");
         return res.status(400).json({ error: "Item not found" });
       }
+      // Check if the listing is yours
       if (listing.author === user._id.toString()) {
         console.log("Oma listaus");
         return res.status(400).json({ error: "You can't buy your own item" });
       }
+      // Check if the listing is already in the cart
       if (cartlistings.includes(body.id)) {
         console.log("Löytyi jo listauksesta");
         return res.status(400).json({ error: "Item already in cart" });
       }
+      // Check if the listing is already sold
       if (listing.status === "In cart") {
         return res
           .status(400)
           .json({ error: "Item already in someone's cart" });
       } else {
+        // If not, add it to the cart
         console.log("Läytyi listaus");
         // Check if the author of the new listing is different from the author of items already in the cart
         if (cartlistings.length > 0) {
@@ -56,10 +62,10 @@ cartRouter.post("/", extractUser, extractToken, async (req, res, next) => {
               .json({ error: "Can only have items from one author" });
           }
         }
+        //update the listing status
         const item = {
           status: "In cart",
           buyer: user._id,
-          lastPrice: listing.price,
         };
         const updatedList = await List.findByIdAndUpdate(body.id, item, {
           new: true,

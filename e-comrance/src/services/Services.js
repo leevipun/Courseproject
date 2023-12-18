@@ -26,8 +26,8 @@ export const Login = async (email, password) => {
     console.log("palautetaan");
     return response.data;
   } catch (error) {
-    console.log(error);
-    return { errer: error.response.data.error };
+    console.log("Error", error);
+    throw { error: error.response.data.error };
   }
 };
 
@@ -55,7 +55,7 @@ export const registery = async (
     });
     return response.data;
   } catch (error) {
-    return { error: error.response.data.message };
+    throw { error: error.response.data.message };
   }
 };
 
@@ -92,7 +92,7 @@ export const Adding = async (
     );
     return response.data;
   } catch (error) {
-    return { error: error.response.data.message };
+    throw { error: error.response.data.message };
   }
 };
 
@@ -101,7 +101,7 @@ const getAllListings = async () => {
     const response = await axios.get(`${baseURL}/api/listings`);
     return response.data;
   } catch (error) {
-    return { error: error.response.data.message };
+    throw { error: error.response.data.message };
   }
 };
 
@@ -134,7 +134,7 @@ const getAllCartItems = async () => {
     const response = await axios.get(`${baseURL}/api/cart`, config);
     return response.data;
   } catch (error) {
-    return { error: error.response.data.message };
+    throw { error: error.response.data.message };
   }
 };
 
@@ -143,7 +143,7 @@ const getImages = async () => {
     const response = await axios.get(`${baseURL}/images`);
     return response.data;
   } catch (error) {
-    return { error: error.response.data.message };
+    throw { error: error.response.data.message };
   }
 };
 
@@ -157,7 +157,7 @@ export const deleteCartItem = async (id) => {
     return response.data;
   } catch (error) {
     console.log(error);
-    return { error: error.response.data.message };
+    throw { error: error.response.data.message };
   }
 };
 
@@ -178,6 +178,7 @@ export const getUserData = async () => {
     return response.data;
   } catch (error) {
     console.log(error);
+    throw { error: error.response.data.message };
   }
 };
 
@@ -195,7 +196,7 @@ export const getAllFavoriteItems = async () => {
     const response = await axios.get(`${baseURL}/api/favorite`, config);
     return response.data;
   } catch (error) {
-    return { error: error.response.data.message };
+    throw { error: error.response.data.message };
   }
 };
 
@@ -212,7 +213,7 @@ export const addToFavorites = async (id) => {
     );
     return response.data;
   } catch (error) {
-    return { error: error.response.data.message };
+    throw { error: error.response.data.message };
   }
 };
 
@@ -227,7 +228,7 @@ export const deleteFavorite = async (id) => {
     );
     return response.data;
   } catch (error) {
-    return { error: error.response.data.message };
+    throw { error: error.response.data.message };
   }
 };
 
@@ -253,7 +254,7 @@ export const updateUserInfo = async (email, name, address, phone) => {
   } catch (error) {
     console.log("Error", error);
     console.log("Data", error.response.data.error);
-    return error.response.data.error;
+    throw { error: error.response.data.error };
   }
 };
 
@@ -269,7 +270,7 @@ export const changePassword = async (password) => {
     );
     return response.data;
   } catch (error) {
-    return { error: error.response.data.message };
+    throw { error: error.response.data.message };
   }
 };
 
@@ -281,7 +282,7 @@ export const userDelete = async () => {
     const response = await axios.delete(`${baseURL}/api/users`, config);
     return response.data;
   } catch (error) {
-    return { error: error.response.data.message };
+    throw { error: error.response.data.message };
   }
 };
 
@@ -293,7 +294,7 @@ export const getUsersListings = async () => {
     const response = await axios.get(`${baseURL}/api/users/listings`, config);
     return response.data;
   } catch (error) {
-    return { error: error.response.data.message };
+    throw { error: error.response.data.message };
   }
 };
 
@@ -323,7 +324,7 @@ export const updateUsersListing = async (
     );
     return response.data;
   } catch (error) {
-    return { error: error.response.data.message };
+    throw { error: error.response.data.message };
   }
 };
 
@@ -338,7 +339,7 @@ export const deleteUserListing = async (id) => {
     );
     return response.data;
   } catch (error) {
-    return { error: error.response.data.message };
+    throw { error: error.response.data.message };
   }
 };
 
@@ -350,7 +351,7 @@ export const createPaymentIntent = async (items, userId) => {
     );
     return response.data;
   } catch (error) {
-    return { error: error.response.data.message };
+    throw { error: error.response.data.message };
   }
 };
 
@@ -389,7 +390,23 @@ export const updateStripeId = async (
     );
     return response.data;
   } catch (error) {
-    return { error: error.response.data.message };
+    throw { error: error.response.data.message };
+  }
+};
+
+export const updateListing = async (newObject) => {
+  try {
+    const config = {
+      headers: { Authorization: token },
+    };
+    const response = await axios.put(
+      `${baseURL}/api/listings`,
+      newObject,
+      config
+    );
+    return response.data;
+  } catch (error) {
+    throw { error: error.response.data.message };
   }
 };
 

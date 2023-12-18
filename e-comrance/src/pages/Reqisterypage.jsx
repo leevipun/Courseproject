@@ -1,11 +1,11 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { registery, updateStripeId } from "../services/Services";
-import { Input, Button, Radio } from "antd";
-import { Select } from "antd";
-import countryData from "../../Data/countryData";
 
 import "../styles/registeryStyles.css";
+import PersonalInfo from "../components/registery/personalInfo";
+import AddressInfo from "../components/registery/addressInfo";
+import AdditionalInfo from "../components/registery/additionalInfo";
 
 const Registerypage = () => {
   const navigate = useNavigate();
@@ -22,8 +22,10 @@ const Registerypage = () => {
   const [birthYear, setBirthYear] = useState("");
   const [style, setStyle] = useState("buyer");
   const [selectedCountry, setSelectedCountry] = useState("FI");
-  const [banking, setBanking] = useState(false);
   const [iban, setIban] = useState("");
+  const [personalInfoForm, setPersonalInfoForm] = useState(true);
+  const [addressInfoForm, setAddressInfoForm] = useState(false);
+  const [additionalInfoFrom, setAdditionalInfoForm] = useState(false);
 
   const handleRegistery = async (e) => {
     e.preventDefault();
@@ -56,29 +58,18 @@ const Registerypage = () => {
       setFirstName("");
       setPassword("");
     } catch (error) {
-      console.error("Registration failed:", error.message);
+      console.error("Registration failed:", error.error);
     }
   };
-  const options = [
-    {
-      label: "Buy",
-      value: "buyer",
-    },
-    {
-      label: "Sell",
-      value: "seller",
-    },
-    {
-      label: "Both",
-      value: "both",
-    },
-  ];
 
-  const filterOption = (input, option) =>
-    (option?.label ?? "").toLowerCase().includes(input.toLowerCase());
+  const handlePersonalInfoForm = () => {
+    setPersonalInfoForm((prev) => !prev);
+    setAddressInfoForm((prev) => !prev);
+  };
 
-  const handleNext = () => {
-    setBanking((prev) => !prev);
+  const handleAddressInfoForm = () => {
+    setAddressInfoForm((prev) => !prev);
+    setAdditionalInfoForm((prev) => !prev);
   };
 
   return (
@@ -92,176 +83,51 @@ const Registerypage = () => {
       <div>
         <h1>Register</h1>
         <form onSubmit={handleRegistery}>
-          <div>
-            <Input
-              style={{ width: 300 }}
-              id="input"
-              type="text"
-              placeholder="First name"
-              value={firstName}
-              onChange={(e) => setFirstName(e.target.value)}
-              required
+          {personalInfoForm && (
+            <PersonalInfo
+              firstName={firstName}
+              setFirstName={setFirstName}
+              lastName={lastName}
+              setLastname={setLastname}
+              email={email}
+              setEmail={setEmail}
+              password={password}
+              setPassword={setPassword}
+              style={style}
+              setStyle={setStyle}
+              handlePersonalInfoForm={handlePersonalInfoForm}
             />
-          </div>
-          <div>
-            <Input
-              style={{ width: 300 }}
-              id="input"
-              type="text"
-              placeholder="Last name"
-              value={lastName}
-              onChange={(e) => setLastname(e.target.value)}
-              required
+          )}
+          {addressInfoForm && (
+            <AddressInfo
+              city={city}
+              setCity={setCity}
+              address={address}
+              setAddress={setAddress}
+              postalCode={postalCode}
+              setPostalCode={setPostalCode}
+              selectedCountry={selectedCountry}
+              setSelectedCountry={setSelectedCountry}
+              handleAddressInfoForm={handleAddressInfoForm}
+              handlePersonalInfoForm={handlePersonalInfoForm}
             />
-          </div>
-          <div>
-            <Input
-              style={{ width: 300 }}
-              id="input"
-              type="text"
-              placeholder="City"
-              value={city}
-              onChange={(e) => setCity(e.target.value)}
-              required
+          )}
+          {additionalInfoFrom && (
+            <AdditionalInfo
+              setBirthDay={setBirthDay}
+              birthDay={birthDay}
+              setBirthMonth={setBirthMonth}
+              birthMonth={birthMonth}
+              setBirthYear={setBirthYear}
+              birthYear={birthYear}
+              setIban={setIban}
+              iban={iban}
+              phoneNumber={phoneNumber}
+              setPhoneNumber={setPhoneNumber}
+              handleAddressInfoForm={handleAddressInfoForm}
+              handleRegistery={handleRegistery}
             />
-          </div>
-          <div>
-            <Input
-              style={{ width: 300 }}
-              id="input"
-              type="text"
-              placeholder="Address"
-              value={address}
-              onChange={(e) => setAddress(e.target.value)}
-              required
-            />
-          </div>
-          <div>
-            <Input
-              style={{ width: 300 }}
-              id="input"
-              type="text"
-              placeholder="Postal code"
-              value={postalCode}
-              onChange={(e) => setPostalCode(e.target.value)}
-              required
-            />
-          </div>
-          <div>
-            <Input
-              style={{ width: 300 }}
-              id="input"
-              type="text"
-              placeholder="Phone number"
-              value={phoneNumber}
-              onChange={(e) => setPhoneNumber(e.target.value)}
-              required
-            />
-          </div>
-          <div>
-            <Input
-              style={{ width: 300 }}
-              id="input"
-              type="text"
-              placeholder="Email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              required
-            />
-          </div>
-          <div>
-            <Input
-              style={{ width: 300 }}
-              id="input"
-              type="number"
-              placeholder="Birthday"
-              value={birthDay}
-              onChange={(e) => setBirthDay(e.target.value)}
-              required
-            />
-          </div>
-          <div>
-            <Input
-              style={{ width: 300 }}
-              id="input"
-              type="number"
-              placeholder="Birth month"
-              value={birthMonth}
-              onChange={(e) => setBirthMonth(e.target.value)}
-              required
-            />
-          </div>
-          <div>
-            <Input
-              style={{ width: 300 }}
-              id="input"
-              type="number"
-              placeholder="Birth year"
-              value={birthYear}
-              onChange={(e) => setBirthYear(e.target.value)}
-              required
-            />
-          </div>
-          <div>
-            <Select
-              style={{ width: 300 }}
-              id="input"
-              showSearch
-              placeholder="Select your country"
-              options={countryData}
-              onChange={(e) => setSelectedCountry(e)}
-              filterOption={filterOption}
-              value={selectedCountry}
-              required
-            />
-          </div>
-          <div>
-            <Input
-              style={{ width: 300 }}
-              id="input"
-              type="password"
-              placeholder="Password"
-              value={password}
-              autoComplete="new-password"
-              required
-              onChange={(e) => setPassword(e.target.value)}
-            />
-          </div>
-          <p>What you want to do?</p>
-          <div>
-            <Radio.Group
-              id="input"
-              options={options}
-              onChange={(e) => setStyle(e.target.value)}
-              value={style}
-              optionType="button"
-            />
-          </div>
-          <Button id="button" type="primary" onClick={handleNext}>
-            Next
-          </Button>
-          <div>
-            {banking && (
-              <div>
-                <p>
-                  You can change your profile style later on your profile page
-                </p>
-                <div>
-                  <Input
-                    style={{ width: 300 }}
-                    id="input"
-                    type="text"
-                    placeholder="IBAN"
-                    value={iban}
-                    onChange={(e) => setIban(e.target.value)}
-                  />
-                  <Button id="button" type="primary" htmlType="submit">
-                    Register
-                  </Button>
-                </div>
-              </div>
-            )}
-          </div>
+          )}
         </form>
       </div>
     </div>

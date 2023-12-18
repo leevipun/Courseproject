@@ -7,7 +7,6 @@ const List = require("../models/list");
 const API_KEY = process.env.SECRET_STRIPE;
 const stripe = require("stripe")(API_KEY);
 require("express-async-errors");
-const http = require("http");
 
 const extractToken = middleware.extractToken;
 
