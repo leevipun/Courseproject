@@ -50,28 +50,18 @@ const PersonalInfo = ({
       </div>
       <div>
         <Input
-          id="personalEmailInput"
+          id="personalLongInput"
           type="text"
           placeholder="Email"
+          autoComplete="email"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
           required
         />
       </div>
-      <p>What you want to do?</p>
-      <div>
-        <Radio.Group
-          id="input"
-          options={options}
-          onChange={(e) => setStyle(e.target.value)}
-          value={style}
-          optionType="button"
-        />
-      </div>
       <div>
         <Input
-          style={{ width: 300 }}
-          id="input"
+          id="personalPasswordInput"
           type="password"
           placeholder="Password"
           value={password}
@@ -80,9 +70,25 @@ const PersonalInfo = ({
           onChange={(e) => setPassword(e.target.value)}
         />
       </div>
-      <Button type="primary" onClick={handlePersonalInfoForm}>
-        Next
-      </Button>
+      <div id="personalStyleDiv">
+        <div>
+          <p>What you want to do?</p>
+        </div>
+        <div>
+          <Radio.Group
+            id="input"
+            options={options}
+            onChange={(e) => setStyle(e.target.value)}
+            value={style}
+            optionType="button"
+          />
+        </div>
+      </div>
+      <div style={{ display: "flex", justifyContent: "right" }}>
+        <Button type="primary" onClick={handlePersonalInfoForm}>
+          Next
+        </Button>
+      </div>
     </div>
   );
 };

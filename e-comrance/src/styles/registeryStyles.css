@@ -23,7 +23,35 @@
   width: calc(50% - 10px);
 }
 
-#personalEmailInput {
+#personalLongInput {
   margin: 5px;
   width: calc(100% - 10px);
+}
+
+#personalPasswordInput {
+  margin: 5px;
+  width: calc(100% - 10px);
+}
+
+#personalStyleDiv {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+}
+
+#addressInfoInput {
+  margin: 5px;
+  width: calc(100% - 10px);
+}
+
+#addressLongInput {
+  margin: 5px;
+  width: calc(100% - 10px);
+}
+
+#NextBackButtonDiv {
+  margin: 5px;
+  display: flex;
+  justify-content: space-between;
 }

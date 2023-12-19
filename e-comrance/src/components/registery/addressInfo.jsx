@@ -21,8 +21,7 @@ const AddressInfo = ({
     <div>
       <div>
         <Select
-          style={{ width: 300 }}
-          id="input"
+          style={{ width: 300, margin: 5 }}
           showSearch
           placeholder="Select your country"
           options={CountriesData}
@@ -34,19 +33,7 @@ const AddressInfo = ({
       </div>
       <div>
         <Input
-          style={{ width: 300 }}
-          id="input"
-          type="text"
-          placeholder="City"
-          value={city}
-          onChange={(e) => setCity(e.target.value)}
-          required
-        />
-      </div>
-      <div>
-        <Input
-          style={{ width: 300 }}
-          id="input"
+          id="addressLongInput"
           type="text"
           placeholder="Address"
           value={address}
@@ -54,10 +41,17 @@ const AddressInfo = ({
           required
         />
       </div>
-      <div>
+      <div style={{ display: "flex" }}>
         <Input
-          style={{ width: 300 }}
-          id="input"
+          id="personalInfoInput"
+          type="text"
+          placeholder="City"
+          value={city}
+          onChange={(e) => setCity(e.target.value)}
+          required
+        />
+        <Input
+          id="personalInfoInput"
           type="text"
           placeholder="Postal code"
           value={postalCode}
@@ -65,12 +59,14 @@ const AddressInfo = ({
           required
         />
       </div>
-      <Button type="primary" onClick={handleAddressInfoForm}>
-        Next
-      </Button>
-      <Button type="primary" onClick={handlePersonalInfoForm}>
-        Back
-      </Button>
+      <div id="NextBackButtonDiv">
+        <Button type="primary" onClick={handlePersonalInfoForm}>
+          Back
+        </Button>
+        <Button type="primary" onClick={handleAddressInfoForm}>
+          Next
+        </Button>
+      </div>
     </div>
   );
 };

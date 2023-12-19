@@ -21,14 +21,23 @@ const AdditionalInfo = ({
         <Input
           style={{ width: 300 }}
           id="input"
+          type="text"
+          autoComplete="tel"
+          placeholder="Phone number"
+          value={phoneNumber}
+          onChange={(e) => setPhoneNumber(e.target.value)}
+        />
+      </div>
+      <div style={{ display: "flex" }}>
+        <Input
+          style={{ width: 300 }}
+          id="input"
           type="number"
           placeholder="Birthday"
           value={birthDay}
           onChange={(e) => setBirthDay(e.target.value)}
           required
         />
-      </div>
-      <div>
         <Input
           style={{ width: 300 }}
           id="input"
@@ -38,8 +47,6 @@ const AdditionalInfo = ({
           onChange={(e) => setBirthMonth(e.target.value)}
           required
         />
-      </div>
-      <div>
         <Input
           style={{ width: 300 }}
           id="input"
@@ -52,28 +59,22 @@ const AdditionalInfo = ({
       </div>
       <div>
         <Input
-          style={{ width: 300 }}
-          id="input"
+          id="personalLongInput"
           type="text"
           placeholder="IBAN"
-          value={phoneNumber}
-          onChange={(e) => setPhoneNumber(e.target.value)}
-        />
-      </div>
-      <div>
-        <Input
-          style={{ width: 300 }}
-          id="input"
-          type="text"
-          placeholder="IBAN"
+          autoComplete="iban"
           value={iban}
           onChange={(e) => setIban(e.target.value)}
         />
       </div>
-      <Button type="primary" onClick={handleAddressInfoForm}>
-        Back
-      </Button>
-      <Button onClick={handleRegistery}>Submit</Button>
+      <div id="NextBackButtonDiv">
+        <Button type="primary" onClick={handleAddressInfoForm}>
+          Back
+        </Button>
+        <Button onClick={handleRegistery} type="primary">
+          Submit
+        </Button>
+      </div>
     </div>
   );
 };
