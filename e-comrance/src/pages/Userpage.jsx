@@ -9,15 +9,23 @@ import {
 } from "../services/Services";
 import { addNotification } from "../../reducer/notificationReducer";
 import { useNavigate } from "react-router-dom";
+import AdditionalInfo from "../components/registery/additionalInfo";
+import AddressInfo from "../components/registery/addressInfo";
+import PersonalInfo from "../components/registery/personalInfo";
+import { set } from "mongoose";
 
 const Userpage = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const user = useSelector((state) => state.user);
   const [loading, setLoading] = useState(true);
+  const [personalInfo, setPersonalInfo] = useState(true);
+  const [addressInfo, setAddressInfo] = useState(false);
+  const [additionalInfo, setAdditionalInfo] = useState(false);
 
   const [email, setEmail] = useState("");
-  const [name, setName] = useState("");
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastname] = useState("");
   const [address, setAddress] = useState("");
   const [phone, setPhone] = useState("");
   const [passwordVis, setPasswordVis] = useState(false);
@@ -29,7 +37,8 @@ const Userpage = () => {
       if (user.length > 0) {
         const userData = user[0];
         setEmail(userData.email);
-        setName(userData.name);
+        setFirstName(userData.firstname);
+        setLastname(userData.lastname);
         setAddress(userData.address || "");
         setPhone(userData.phone || "");
         setLoading(false);
@@ -72,6 +81,24 @@ const Userpage = () => {
     }
   };
 
+  const handleShowPersonalInfo = () => {
+    setPersonalInfo(true);
+    setAddressInfo(false);
+    setAdditionalInfo(false);
+  };
+
+  const handleShowAddressInfo = () => {
+    setPersonalInfo(false);
+    setAddressInfo(true);
+    setAdditionalInfo(false);
+  };
+
+  const handleShowAdditionalInfo = () => {
+    setPersonalInfo(false);
+    setAddressInfo(false);
+    setAdditionalInfo(true);
+  };
+
   if (loading) {
     return (
       <div>
@@ -84,91 +111,90 @@ const Userpage = () => {
     <div>
       <div>
         <Navbar />
-      </div>
-      <h1>Userpage</h1>
-      <div style={{ margin: 10 }}>
-        <label htmlFor="email">Email: </label>
-        <Input
-          id="email"
-          style={{ width: 300 }}
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-        />
-      </div>
-      <div style={{ margin: 10 }}>
-        <label htmlFor="name">Name: </label>
-        <Input
-          id="name"
-          style={{ width: 300 }}
-          value={name}
-          onChange={(e) => setName(e.target.value)}
-        />
-      </div>
-      <div style={{ margin: 10 }}>
-        <label htmlFor="address">Address: </label>
-        <Input
-          id="address"
-          style={{ width: 300 }}
-          value={address}
-          onChange={(e) => setAddress(e.target.value)}
-        />
-      </div>
-      <div style={{ margin: 10 }}>
-        <label htmlFor="phone">Phone: </label>
-        <Input
-          id="phone"
-          style={{ width: 300 }}
-          value={phone}
-          onChange={(e) => setPhone(e.target.value)}
-        />
-      </div>
-      <div>
-        <Button type="primary" onClick={handleUpdate} style={{ margin: 10 }}>
-          Save changes
-        </Button>
-        <Button
-          type="primary"
-          onClick={handlePasswordVis}
-          style={{ margin: 10 }}
-        >
-          Change Password
-        </Button>
-      </div>
-      <div style={{ margin: 10 }}>
-        {passwordVis && (
-          <form>
-            <div>
-              <div style={{ margin: 10 }}>
-                <label htmlFor="password">Password: </label>
-                <Input.Password
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  id="password"
-                  autoComplete="new-password"
-                  style={{ width: 300 }}
-                />
-              </div>
-              <div style={{ margin: 10 }}>
-                <label htmlFor="password2">Repeat Password: </label>
-                <Input.Password
-                  value={password2}
-                  onChange={(e) => setPassword2(e.target.value)}
-                  id="password2"
-                  autoComplete="new-password"
-                  style={{ width: 300 }}
-                />
-              </div>
-              <Button type="primary" onClick={handlePasswordSave}>
-                Save Password
-              </Button>
-            </div>
-          </form>
+        <h1>Userpage</h1>
+        <div>
+          <ul id="usernavbar">
+            <li id="usernavitem" onClick={handleShowPersonalInfo}>
+              Personal Info
+            </li>
+            <li id="usernavitem" onClick={handleShowAddressInfo}>
+              Address Info
+            </li>
+            <li id="usernavitem" onClick={handleShowAdditionalInfo}>
+              Additional Info
+            </li>
+          </ul>
+        </div>
+        {personalInfo && (
+          <div>
+            <PersonalInfo
+              lastName={lastName}
+              setLastname={setLastname}
+              firstName={firstName}
+              setFirstName={setFirstName}
+              email={email}
+              setEmail={setEmail}
+            />
+          </div>
         )}
-      </div>
-      <div style={{ margin: 10 }}>
-        <Button type="primary" danger onClick={handleUserDelete}>
-          Delete Account
-        </Button>
+        {addressInfo && (
+          <div>
+            <AddressInfo />
+          </div>
+        )}
+        {additionalInfo && (
+          <div>
+            <AdditionalInfo />
+          </div>
+        )}
+        <div>
+          <Button type="primary" onClick={handleUpdate} style={{ margin: 10 }}>
+            Save changes
+          </Button>
+          <Button
+            type="primary"
+            onClick={handlePasswordVis}
+            style={{ margin: 10 }}
+          >
+            Change Password
+          </Button>
+        </div>
+        <div style={{ margin: 10 }}>
+          {passwordVis && (
+            <form>
+              <div>
+                <div style={{ margin: 10 }}>
+                  <label htmlFor="password">Password: </label>
+                  <Input.Password
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    id="password"
+                    autoComplete="new-password"
+                    style={{ width: 300 }}
+                  />
+                </div>
+                <div style={{ margin: 10 }}>
+                  <label htmlFor="password2">Repeat Password: </label>
+                  <Input.Password
+                    value={password2}
+                    onChange={(e) => setPassword2(e.target.value)}
+                    id="password2"
+                    autoComplete="new-password"
+                    style={{ width: 300 }}
+                  />
+                </div>
+                <Button type="primary" onClick={handlePasswordSave}>
+                  Save Password
+                </Button>
+              </div>
+            </form>
+          )}
+        </div>
+        <div style={{ margin: 10 }}>
+          <Button type="primary" danger onClick={handleUserDelete}>
+            Delete Account
+          </Button>
+        </div>
       </div>
     </div>
   );
