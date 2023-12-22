@@ -1,5 +1,5 @@
 import React from "react";
-import { Input, Radio, Button } from "antd";
+import { Input } from "antd";
 
 const PersonalInfo = ({
   firstName,
@@ -8,26 +8,7 @@ const PersonalInfo = ({
   setLastname,
   email,
   setEmail,
-  password,
-  setPassword,
-  style,
-  setStyle,
-  handlePersonalInfoForm,
 }) => {
-  const options = [
-    {
-      label: "Buy",
-      value: "buyer",
-    },
-    {
-      label: "Sell",
-      value: "seller",
-    },
-    {
-      label: "Both",
-      value: "both",
-    },
-  ];
   return (
     <div>
       <div style={{ display: "flex" }}>
@@ -58,36 +39,6 @@ const PersonalInfo = ({
           onChange={(e) => setEmail(e.target.value)}
           required
         />
-      </div>
-      <div>
-        <Input
-          id="personalPasswordInput"
-          type="password"
-          placeholder="Password"
-          value={password}
-          autoComplete="new-password"
-          required
-          onChange={(e) => setPassword(e.target.value)}
-        />
-      </div>
-      <div id="personalStyleDiv">
-        <div>
-          <p>What you want to do?</p>
-        </div>
-        <div>
-          <Radio.Group
-            id="input"
-            options={options}
-            onChange={(e) => setStyle(e.target.value)}
-            value={style}
-            optionType="button"
-          />
-        </div>
-      </div>
-      <div style={{ display: "flex", justifyContent: "right" }}>
-        <Button type="primary" onClick={handlePersonalInfoForm}>
-          Next
-        </Button>
       </div>
     </div>
   );

@@ -7,31 +7,63 @@ const List = require("../models/list");
 const API_KEY = process.env.SECRET_STRIPE;
 const stripe = require("stripe")(API_KEY);
 require("express-async-errors");
+const nodemailer = require("nodemailer");
+const pass = process.env.EMAILPASS;
 
 const extractToken = middleware.extractToken;
 
+const transporter = nodemailer.createTransport({
+  service: "hotmail",
+  auth: {
+    user: "suomenlehtikauppa@outlook.com",
+    pass: pass,
+  },
+});
+
 usersRouter.post("/", async (req, res) => {
-  const { email, firstName, lastName, password, country, style, id } = req.body;
+  const { newObject } = req.body;
 
   const saltRounds = 10;
-  const passwordHash = await bcrypt.hash(password, saltRounds);
+  const passwordHash = await bcrypt.hash(newObject.password, saltRounds);
 
   console.log(req.ip);
 
+  console.log("new object", newObject);
+
   const user = new User({
-    email: email,
-    firstname: firstName,
-    lastname: lastName,
+    email: newObject.email,
+    firstname: newObject.firstName,
+    lastname: newObject.lastName,
     passwordHash: passwordHash,
-    country: country,
-    style: style,
-    id: id,
+    country: newObject.country,
+    style: newObject.style,
+    id: newObject.id,
+    city: newObject.city,
+    address: newObject.address,
+    postalCode: newObject.postalCode,
+    phone: newObject.phone,
+    Dob: newObject.Dob,
   });
   console.log(user);
 
   const savedUser = await user.save();
 
   res.status(201).json(savedUser);
+
+  const options = {
+    from: "suomenlehtikauppa@outlook.com",
+    to: newObject.email,
+    subject: "Welcome to Suomen Lehtikauppa!",
+    text: "Thank you for registering to Suomen Lehtikauppa!\nAnd becoming a member of our community!\nWe hope you enjoy your stay!\nBest regards,\nSuomen Lehtikauppa team",
+  };
+
+  transporter.sendMail(options, function (err, info) {
+    if (err) {
+      console.log(err);
+      return;
+    }
+    console.log("Sent: " + info.response, "to: " + info.accepted);
+  });
 });
 
 usersRouter.patch("/stripe", extractToken, async (req, res) => {
@@ -45,6 +77,14 @@ usersRouter.patch("/stripe", extractToken, async (req, res) => {
     console.log(user);
     console.log(user.email);
     console.log(user.country);
+    console.log(user.Dob);
+    console.log(user.phone);
+
+    const splitBirthDate = user.Dob.split("/");
+    console.log(splitBirthDate);
+    const day = splitBirthDate[1];
+    const month = splitBirthDate[0];
+    const year = splitBirthDate[2];
 
     const stripeAccount = await stripe.accounts.create({
       type: "custom",
@@ -75,7 +115,7 @@ usersRouter.patch("/stripe", extractToken, async (req, res) => {
         first_name: req.body.firstName,
         last_name: req.body.lastName,
         email: req.body.email,
-        phone: req.body.phone,
+        phone: user.phone,
         address: {
           city: req.body.city,
           country: req.body.country,
@@ -83,9 +123,9 @@ usersRouter.patch("/stripe", extractToken, async (req, res) => {
           postal_code: req.body.postalCode,
         },
         dob: {
-          month: req.body.month,
-          day: req.body.day,
-          year: req.body.year,
+          day: day,
+          month: month,
+          year: year,
         },
       },
     });
@@ -217,6 +257,19 @@ usersRouter.delete("/", async (req, res) => {
       return res.status(400).send("Error occurred while deleting account");
     } else {
       await User.findByIdAndRemove(user._id);
+      const options = {
+        from: "suomenlehtikauppa@outlook.com",
+        to: user.email,
+        subject: "Account deleted",
+        text: "We are sorry to see you go!\nWe hope you enjoyed your stay!\nAnd we will see in the future agen\nBest regards,\nSuomen Lehtikauppa team",
+      };
+      transporter.sendMail(options, function (err, info) {
+        if (err) {
+          console.log(err);
+          return;
+        }
+        console.log("Sent: " + info.response, "to: " + info.accepted);
+      });
       res.status(204).send("User deleted Successfully");
     }
   } catch (error) {

@@ -1,20 +1,36 @@
 import React from "react";
-import { Input, Button } from "antd";
+import { Input, Radio } from "antd";
 
 const AdditionalInfo = ({
-  birthDay,
-  setBirthDay,
-  birthMonth,
-  setBirthMonth,
-  setBirthYear,
-  birthYear,
   iban,
   setIban,
   phoneNumber,
   setPhoneNumber,
-  handleAddressInfoForm,
-  handleRegistery,
+  style,
+  setStyle,
+  setBirthDay,
+  birthDay,
 }) => {
+  const options = [
+    {
+      label: "Buyer",
+      value: "buyer",
+    },
+    {
+      label: "Seller",
+      value: "seller",
+    },
+    {
+      label: "Both",
+      value: "both",
+    },
+  ];
+
+  const handleDateChange = (e) => {
+    // Format the date to yyyy-mm-dd
+    setBirthDay(e.target.value);
+    // Update the state with the formatted date
+  };
   return (
     <div>
       <div>
@@ -29,33 +45,7 @@ const AdditionalInfo = ({
         />
       </div>
       <div style={{ display: "flex" }}>
-        <Input
-          style={{ width: 300 }}
-          id="input"
-          type="number"
-          placeholder="Birthday"
-          value={birthDay}
-          onChange={(e) => setBirthDay(e.target.value)}
-          required
-        />
-        <Input
-          style={{ width: 300 }}
-          id="input"
-          type="number"
-          placeholder="Birth month"
-          value={birthMonth}
-          onChange={(e) => setBirthMonth(e.target.value)}
-          required
-        />
-        <Input
-          style={{ width: 300 }}
-          id="input"
-          type="number"
-          placeholder="Birth year"
-          value={birthYear}
-          onChange={(e) => setBirthYear(e.target.value)}
-          required
-        />
+        <Input type="date" value={birthDay} onChange={handleDateChange} />
       </div>
       <div>
         <Input
@@ -67,13 +57,19 @@ const AdditionalInfo = ({
           onChange={(e) => setIban(e.target.value)}
         />
       </div>
-      <div id="NextBackButtonDiv">
-        <Button type="primary" onClick={handleAddressInfoForm}>
-          Back
-        </Button>
-        <Button onClick={handleRegistery} type="primary">
-          Submit
-        </Button>
+      <div id="personalStyleDiv">
+        <div>
+          <p>What role you wanna take</p>
+        </div>
+        <div>
+          <Radio.Group
+            id="input"
+            options={options}
+            onChange={(e) => setStyle(e.target.value)}
+            value={style}
+            optionType="button"
+          />
+        </div>
       </div>
     </div>
   );

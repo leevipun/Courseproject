@@ -1,5 +1,4 @@
 import axios from "axios";
-import { v4 as uuidv4 } from "uuid";
 
 const baseURL = "http://localhost:3003";
 
@@ -31,27 +30,12 @@ export const Login = async (email, password) => {
   }
 };
 
-export const registery = async (
-  email,
-  firstName,
-  lastName,
-  password,
-  country,
-  style
-) => {
-  console.log(email, firstName, lastName, password, country, style);
-
-  const id = uuidv4();
-
+export const registery = async (newObject) => {
   try {
+    console.log("axios", newObject);
+    console.log(newObject.phone);
     const response = await axios.post(`${baseURL}/api/users`, {
-      email: email,
-      firstName: firstName,
-      lastName: lastName,
-      password: password,
-      style: style,
-      country: country,
-      id: id,
+      newObject,
     });
     return response.data;
   } catch (error) {
@@ -356,34 +340,7 @@ export const createPaymentIntent = async (items, userId) => {
   }
 };
 
-export const updateStripeId = async (
-  email,
-  iban,
-  firstName,
-  lastName,
-  city,
-  address,
-  postalCode,
-  phoneNumber,
-  birthDay,
-  birthMonth,
-  birthYear,
-  selectedCountry
-) => {
-  const newObject = {
-    email: email,
-    iban: iban,
-    firstName: firstName,
-    lastName: lastName,
-    city: city,
-    address: address,
-    postalCode: postalCode,
-    phoneNumber: phoneNumber,
-    birthDay: birthDay,
-    birthMonth: birthMonth,
-    birthYear: birthYear,
-    selectedCountry: selectedCountry,
-  };
+export const updateStripeId = async (newObject) => {
   try {
     const response = await axios.patch(
       `${baseURL}/api/users/stripe`,

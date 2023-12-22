@@ -1,4 +1,4 @@
-const { first } = require("lodash");
+const { first, add } = require("lodash");
 const mongoose = require("mongoose");
 const uniqueValidator = require("mongoose-unique-validator");
 
@@ -62,6 +62,26 @@ const userSchema = mongoose.Schema({
   country: {
     type: String,
     required: true,
+  },
+  address: {
+    type: String,
+    required: true,
+  },
+  city: {
+    type: String,
+    required: false,
+  },
+  postalCode: {
+    type: String,
+    required: false,
+  },
+  phone: {
+    type: String,
+    required: false,
+  },
+  Dob: {
+    type: String,
+    required: false,
   },
 });
 

@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { registery, updateStripeId } from "../services/Services";
+import { v4 as uuidv4 } from "uuid";
 
 import "../styles/registeryStyles.css";
 import PersonalInfo from "../components/registery/personalInfo";
@@ -8,6 +9,8 @@ import AddressInfo from "../components/registery/addressInfo";
 import AdditionalInfo from "../components/registery/additionalInfo";
 import { useDispatch } from "react-redux";
 import { addNotification } from "../../reducer/notificationReducer";
+import { Button, Input } from "antd";
+import Spinner from "../components/LoadSpinner";
 
 const Registerypage = () => {
   const dispatch = useDispatch();
@@ -20,47 +23,50 @@ const Registerypage = () => {
   const [address, setAddress] = useState("");
   const [postalCode, setPostalCode] = useState("");
   const [phoneNumber, setPhoneNumber] = useState("");
-  const [birthDay, setBirthDay] = useState("");
-  const [birthMonth, setBirthMonth] = useState("");
-  const [birthYear, setBirthYear] = useState("");
   const [style, setStyle] = useState("buyer");
   const [selectedCountry, setSelectedCountry] = useState("FI");
   const [iban, setIban] = useState("");
   const [personalInfoForm, setPersonalInfoForm] = useState(true);
   const [addressInfoForm, setAddressInfoForm] = useState(false);
   const [additionalInfoFrom, setAdditionalInfoForm] = useState(false);
+  const [birthDay, setBirthDay] = useState("");
+  const [loading, setLoading] = useState(false);
+
+  const spinTip = "Creating account...";
 
   const handleRegistery = async (e) => {
     e.preventDefault();
 
     try {
-      await registery(
-        email,
-        firstName,
-        lastName,
-        password,
-        selectedCountry,
-        style
-      );
-      await updateStripeId(
-        email,
-        iban,
-        firstName,
-        lastName,
-        city,
-        address,
-        postalCode,
-        phoneNumber,
-        birthDay,
-        birthMonth,
-        birthYear,
-        selectedCountry
-      );
+      const id = uuidv4();
+      console.log("phone", phoneNumber);
+      const splitBirthday = birthDay.split("-");
+      const formattedDate = `${splitBirthday[1]}/${splitBirthday[2]}/${splitBirthday[0]}`;
+      const newObject = {
+        email: email,
+        firstName: firstName,
+        lastName: lastName,
+        password: password,
+        style: style,
+        country: selectedCountry,
+        id: id,
+        city: city,
+        address: address,
+        postalCode: postalCode,
+        phone: phoneNumber,
+        Dob: formattedDate,
+        iban: iban,
+      };
+      setLoading(true);
+      await registery(newObject);
+      await updateStripeId(newObject);
+      setLoading(false);
       navigate("/login");
       setEmail("");
       setFirstName("");
       setPassword("");
     } catch (error) {
+      setLoading(false);
       console.error("Registration failed:", error.error);
       dispatch(addNotification(error.error));
     }
@@ -69,6 +75,10 @@ const Registerypage = () => {
   const handlePersonalInfoForm = () => {
     setPersonalInfoForm((prev) => !prev);
     setAddressInfoForm((prev) => !prev);
+  };
+
+  const handleCancel = () => {
+    navigate("/login");
   };
 
   const handleAddressInfoForm = () => {
@@ -88,51 +98,90 @@ const Registerypage = () => {
         <h1>Register</h1>
         <form onSubmit={handleRegistery}>
           {personalInfoForm && (
-            <PersonalInfo
-              firstName={firstName}
-              setFirstName={setFirstName}
-              lastName={lastName}
-              setLastname={setLastname}
-              email={email}
-              setEmail={setEmail}
-              password={password}
-              setPassword={setPassword}
-              style={style}
-              setStyle={setStyle}
-              handlePersonalInfoForm={handlePersonalInfoForm}
-            />
+            <div>
+              <PersonalInfo
+                firstName={firstName}
+                setFirstName={setFirstName}
+                lastName={lastName}
+                setLastname={setLastname}
+                email={email}
+                setEmail={setEmail}
+                password={password}
+                setPassword={setPassword}
+                style={style}
+                setStyle={setStyle}
+                handlePersonalInfoForm={handlePersonalInfoForm}
+              />
+              <div>
+                <Input.Password
+                  type="password"
+                  placeholder="Password"
+                  value={password}
+                  autoComplete="new-password"
+                  required
+                  onChange={(e) => setPassword(e.target.value)}
+                />
+              </div>
+              <div id="NextBackButtonDiv">
+                <Button type="primary" onClick={handleCancel}>
+                  Cancel
+                </Button>
+                <Button type="primary" onClick={handlePersonalInfoForm}>
+                  Next
+                </Button>
+              </div>
+            </div>
           )}
           {addressInfoForm && (
-            <AddressInfo
-              city={city}
-              setCity={setCity}
-              address={address}
-              setAddress={setAddress}
-              postalCode={postalCode}
-              setPostalCode={setPostalCode}
-              selectedCountry={selectedCountry}
-              setSelectedCountry={setSelectedCountry}
-              handleAddressInfoForm={handleAddressInfoForm}
-              handlePersonalInfoForm={handlePersonalInfoForm}
-            />
+            <div>
+              <AddressInfo
+                city={city}
+                setCity={setCity}
+                address={address}
+                setAddress={setAddress}
+                postalCode={postalCode}
+                setPostalCode={setPostalCode}
+                selectedCountry={selectedCountry}
+                setSelectedCountry={setSelectedCountry}
+                handleAddressInfoForm={handleAddressInfoForm}
+                handlePersonalInfoForm={handlePersonalInfoForm}
+              />
+              <div id="NextBackButtonDiv">
+                <Button type="primary" onClick={handlePersonalInfoForm}>
+                  Back
+                </Button>
+                <Button type="primary" onClick={handleAddressInfoForm}>
+                  Next
+                </Button>
+              </div>
+            </div>
           )}
           {additionalInfoFrom && (
-            <AdditionalInfo
-              setBirthDay={setBirthDay}
-              birthDay={birthDay}
-              setBirthMonth={setBirthMonth}
-              birthMonth={birthMonth}
-              setBirthYear={setBirthYear}
-              birthYear={birthYear}
-              setIban={setIban}
-              iban={iban}
-              phoneNumber={phoneNumber}
-              setPhoneNumber={setPhoneNumber}
-              handleAddressInfoForm={handleAddressInfoForm}
-              handleRegistery={handleRegistery}
-            />
+            <div>
+              <AdditionalInfo
+                birthDay={birthDay}
+                setBirthDay={setBirthDay}
+                setIban={setIban}
+                iban={iban}
+                phoneNumber={phoneNumber}
+                setPhoneNumber={setPhoneNumber}
+                handleAddressInfoForm={handleAddressInfoForm}
+                handleRegistery={handleRegistery}
+                setStyle={setStyle}
+                style={style}
+              />
+              <div id="NextBackButtonDiv">
+                <Button type="primary" onClick={handleAddressInfoForm}>
+                  Back
+                </Button>
+                <Button onClick={handleRegistery} type="primary">
+                  Submit
+                </Button>
+              </div>
+            </div>
           )}
         </form>
+        <Spinner loading={loading} spinTip={spinTip} />
       </div>
     </div>
   );

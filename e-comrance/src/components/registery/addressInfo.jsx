@@ -1,5 +1,5 @@
 import React from "react";
-import { Input, Select, Button } from "antd";
+import { Input, Select } from "antd";
 import CountriesData from "../../../Data/countryData";
 
 const AddressInfo = ({
@@ -11,8 +11,6 @@ const AddressInfo = ({
   setPostalCode,
   selectedCountry,
   setSelectedCountry,
-  handleAddressInfoForm,
-  handlePersonalInfoForm,
 }) => {
   const filterOption = (input, option) =>
     (option?.label ?? "").toLowerCase().includes(input.toLowerCase());
@@ -58,14 +56,6 @@ const AddressInfo = ({
           onChange={(e) => setPostalCode(e.target.value)}
           required
         />
-      </div>
-      <div id="NextBackButtonDiv">
-        <Button type="primary" onClick={handlePersonalInfoForm}>
-          Back
-        </Button>
-        <Button type="primary" onClick={handleAddressInfoForm}>
-          Next
-        </Button>
       </div>
     </div>
   );

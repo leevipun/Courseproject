@@ -29,11 +29,14 @@ import {
   initializefavorite,
 } from "../../reducer/favoriteReducer";
 import { initializeUserListing } from "../../reducer/ownlistingReducer";
+import Spinner from "../components/LoadSpinner";
 
 const Homepage = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [showFilter, setShowFilter] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const spinTip = "Loading listings...";
 
   const user = useSelector((state) => {
     return state.user;
@@ -45,14 +48,18 @@ const Homepage = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
+        setLoading(true);
         const listings = await Services.getAllListings();
         const userListings = await getUsersListings();
         console.log("User listings", userListings);
         console.log("Listings", listings);
         dispatch(initializeListing(listings));
         dispatch(initializeUserListing(userListings));
+        setLoading(false);
       } catch (error) {
         console.error("Error fetching listings:", error);
+        dispatch(addNotification(error));
+        setLoading(false);
       }
     };
 
@@ -134,14 +141,7 @@ const Homepage = () => {
     }
   }, []);
 
-  if (!user) {
-    return (
-      <div>
-        <h1>Loading user data</h1>
-      </div>
-    );
-  }
-  if (!listing || listing.length === 0) {
+  if (listing.length === 0) {
     return (
       <div>
         <div>
@@ -316,6 +316,9 @@ const Homepage = () => {
               </div>
             </div>
           ))}
+        </div>
+        <div>
+          <Spinner loading={loading} spinTip={spinTip} />
         </div>
       </div>
     );
