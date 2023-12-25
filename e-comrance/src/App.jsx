@@ -1,8 +1,5 @@
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
-import Services, {
-  getAllFavoriteItems,
-  getUserData,
-} from "./services/Services.js";
+import Services from "./services/Services.js";
 import { useEffect } from "react";
 
 import "./App.css";
@@ -18,73 +15,15 @@ import Notfound from "./pages/Notfound";
 import Contactpage from "./pages/Contactpage";
 import AddingPage from "./pages/Addingpage";
 import { useDispatch } from "react-redux";
-import { appendUser, clearUser } from "../reducer/userReducer.js";
 import PurchaseHistory from "./pages/Purchasepage.jsx";
 import Notification from "./components/notification.jsx";
-import { initializecart } from "../reducer/cartReducer.js";
 import { initializeListing } from "../reducer/listingReducer.js";
-import { initializefavorite } from "../reducer/favoriteReducer.js";
 import Ownlisting from "./pages/Ownlistingpage.jsx";
 import Checkoutpage from "./pages/Checkoutpage.jsx";
 import PaymentSucess from "./pages/paymentsucess.jsx";
 
 const App = () => {
   const dispatch = useDispatch();
-
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const sessionUser = window.sessionStorage.getItem("loggedNoteappUser");
-
-        if (sessionUser) {
-          const user = JSON.parse(sessionUser);
-          console.log(user);
-          Services.setToken(`${user}`);
-          const response = await getUserData();
-          dispatch(clearUser());
-          console.log(response); // Get user data from backend and set it to redux store
-          dispatch(appendUser(response));
-          console.log("Token added");
-        } else {
-          window.sessionStorage.clear(); // Clear sessionStorage if no user is logged in
-          console.log("sessionStorage cleared");
-        }
-      } catch (error) {
-        console.log("error", error);
-        if (error.error === "token expired") {
-          window.sessionStorage.clear();
-          console.log("sessionStorage cleared");
-          dispatch(clearUser());
-        }
-        console.error("Error fetching user data:", error);
-      }
-    };
-
-    fetchData();
-  }, []);
-
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const listings = await Services.getAllCartItems();
-        console.log("Listings", listings);
-        const validListings = listings.filter(
-          (item) => item !== undefined && item !== null && item !== ""
-        );
-        if (validListings.length === 0) {
-          dispatch(initializecart([]));
-          return;
-        } else {
-          dispatch(initializecart(validListings));
-          console.log("Valid Listings", validListings);
-        }
-      } catch (error) {
-        console.error("Error fetching listings:", error);
-      }
-    };
-
-    fetchData();
-  }, [dispatch]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -99,14 +38,6 @@ const App = () => {
 
     fetchData();
   }, []);
-
-  useEffect(() => {
-    const fetchData = async () => {
-      const response = await getAllFavoriteItems();
-      dispatch(initializefavorite(response));
-    };
-    fetchData();
-  });
 
   return (
     <div>

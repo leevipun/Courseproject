@@ -11,6 +11,8 @@ import { appendlisting } from "../../reducer/listingReducer.js";
 import { v4 as uuidv4 } from "uuid";
 import { addNotification } from "../../reducer/notificationReducer.js";
 import categoriesWithOptions from "../../Data/categoryData.js";
+import Spinner from "../components/LoadSpinner.jsx";
+import { set } from "mongoose";
 
 const AddingPage = () => {
   const countryData = CountriesData;
@@ -20,6 +22,7 @@ const AddingPage = () => {
   const [price, setPrice] = useState(0);
   const [name, setName] = useState("");
   const [category, setCategory] = useState("None");
+  const [loading, setLoading] = useState(false);
   const currencyCode = "EUR";
 
   const [selectedFile, setSelectedFile] = useState([]);
@@ -29,6 +32,7 @@ const AddingPage = () => {
 
   const handleAdding = async () => {
     try {
+      setLoading(true);
       const response = await Adding(
         name,
         selectedCountry,
@@ -41,9 +45,11 @@ const AddingPage = () => {
       );
 
       if (response.error) {
+        setLoading(false);
         console.error("Adding failed", response.error);
         dispatch(addNotification(response.error));
       } else {
+        setLoading(false);
         navigate("/");
         dispatch(appendlisting(response));
         console.log(response);
@@ -51,6 +57,7 @@ const AddingPage = () => {
         console.log("Navigoidaan");
       }
     } catch (error) {
+      setLoading(false);
       console.error("Adding failed", error.message);
       dispatch(addNotification(error.message));
     }
@@ -148,6 +155,7 @@ const AddingPage = () => {
             </Button>
           </div>
         </div>
+        <Spinner loading={loading} spinTip="Adding listing" />
       </div>
     </div>
   );

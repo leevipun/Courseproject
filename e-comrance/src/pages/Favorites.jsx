@@ -1,7 +1,32 @@
 import Navbar from "./../components/navbar";
 import { useSelector } from "react-redux";
+import { useEffect, useState } from "react";
+import { getAllFavoriteItems } from "../services/Services";
+import { initializefavorite } from "../../reducer/favoriteReducer.js";
+import { useDispatch } from "react-redux";
+import Spinner from "../components/LoadSpinner.jsx";
 
 const Favoritepage = () => {
+  const dispatch = useDispatch();
+  const [loading, setLoading] = useState(false);
+  const [spinTip, setSpinTip] = useState("");
+
+  useEffect(() => {
+    const fetchData = async () => {
+      setSpinTip("Loading favorite items");
+      try {
+        setLoading(true);
+        const response = await getAllFavoriteItems();
+        dispatch(initializefavorite(response));
+        setLoading(false);
+      } catch (error) {
+        setLoading(false);
+        console.error("Error fetching favorite items:", error);
+      }
+    };
+    fetchData();
+  });
+
   document.title = "Favorites";
 
   const favorites = useSelector((state) => {
@@ -52,6 +77,7 @@ const Favoritepage = () => {
           </div>
         ))}
       </div>
+      <Spinner loading={loading} tip={spinTip} />
     </div>
   );
 };

@@ -7,8 +7,11 @@ import {
   deleteUserListing,
   updateListing,
   updateUsersListing,
+  getUsersListings,
 } from "../services/Services";
 import { initializeUserListing } from "../../reducer/ownlistingReducer";
+import { useEffect } from "react";
+import Spinner from "../components/LoadSpinner";
 
 const Ownlistings = () => {
   const dispatch = useDispatch();
@@ -18,8 +21,27 @@ const Ownlistings = () => {
   const [description, setDescription] = useState("");
   const [lastId, setLastId] = useState();
   const [edit, setEdit] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [spinTip, setSpinTip] = useState("");
   const userListings = useSelector((state) => state.userListings);
   console.log(userListings);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      setSpinTip("Loading user listings...");
+      try {
+        setLoading(true);
+        const userListings = await getUsersListings();
+        console.log("User listings", userListings);
+        dispatch(initializeUserListing(userListings));
+        setLoading(false);
+      } catch (error) {
+        setLoading(false);
+        console.error(error);
+      }
+    };
+    fetchData();
+  }, []);
 
   const handleEdit = (id) => {
     console.log(id);
@@ -152,6 +174,7 @@ const Ownlistings = () => {
               Save
             </Button>
           </div>
+          <Spinner loading={loading} tip={spinTip} />
         </div>
       )}
     </div>

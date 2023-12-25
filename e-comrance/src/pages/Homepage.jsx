@@ -7,7 +7,6 @@ import {
   addToCart,
   addToFavorites,
   deleteFavorite,
-  getUsersListings,
 } from "../services/Services";
 import { Button, Select, Input } from "antd";
 import { appendcart } from "../../reducer/cartReducer";
@@ -28,7 +27,6 @@ import {
   appendfavorite,
   initializefavorite,
 } from "../../reducer/favoriteReducer";
-import { initializeUserListing } from "../../reducer/ownlistingReducer";
 import Spinner from "../components/LoadSpinner";
 
 const Homepage = () => {
@@ -50,11 +48,8 @@ const Homepage = () => {
       try {
         setLoading(true);
         const listings = await Services.getAllListings();
-        const userListings = await getUsersListings();
-        console.log("User listings", userListings);
         console.log("Listings", listings);
         dispatch(initializeListing(listings));
-        dispatch(initializeUserListing(userListings));
         setLoading(false);
       } catch (error) {
         console.error("Error fetching listings:", error);
@@ -148,12 +143,10 @@ const Homepage = () => {
           <Navbar />
         </div>
         <div id="itemstyle">
-          <div>Welcome back {user && user[0] && user[0].name}</div>
-          <div>
-            <Button type="primary" id="Filtericon" onClick={handleFiltershow}>
-              <LuSettings2 />
-            </Button>
-          </div>
+          <h1 id="welcome"></h1>
+          <Button type="primary" id="Filtericon" onClick={handleFiltershow}>
+            <LuSettings2 />
+          </Button>
         </div>
         <div>
           {showFilter && (
@@ -210,7 +203,7 @@ const Homepage = () => {
           <Navbar />
         </div>
         <div id="itemstyle">
-          <div id="welcome">Welcome back {user[0].name}</div>
+          <div id="welcome"></div>
           <Button type="primary" id="Filtericon" onClick={handleFiltershow}>
             <LuSettings2 />
           </Button>

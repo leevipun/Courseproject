@@ -2,7 +2,7 @@ import { FaShoppingBasket } from "react-icons/fa";
 import Navbar from "./../components/navbar";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useState } from "react";
-import { deleteCartItem } from "../services/Services";
+import Services, { deleteCartItem } from "../services/Services";
 import { initializecart } from "../../reducer/cartReducer";
 import "../styles/Cartpage.css";
 import {
@@ -14,12 +14,15 @@ import { Steps, Input, Button } from "antd";
 import { CiCreditCard1 } from "react-icons/ci";
 import { PaymentElement } from "@stripe/react-stripe-js";
 import { useNavigate } from "react-router-dom";
+import Spinner from "../components/LoadSpinner";
 
 const Cartpage = () => {
   const navigate = useNavigate();
   const [showFillInformation, setShowFillInformation] = useState(false);
   const [showConfirm, setShowConfirm] = useState(false);
   const [showCheckout, setShowCheckout] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [spinTip, setSpinTip] = useState("");
   const dispatch = useDispatch();
   const user = useSelector((state) => {
     return state.user;
@@ -33,8 +36,38 @@ const Cartpage = () => {
 
   const [totalPrice, setTotalPrice] = useState(0);
 
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        setSpinTip("Loading cart items");
+        setLoading(true);
+        const listings = await Services.getAllCartItems();
+        console.log("Listings", listings);
+        const validListings = listings.filter(
+          (item) => item !== undefined && item !== null && item !== ""
+        );
+        if (validListings.length === 0) {
+          dispatch(initializecart([]));
+          setLoading(false);
+          return;
+        } else {
+          dispatch(initializecart(validListings));
+          console.log("Valid Listings", validListings);
+          setLoading(false);
+        }
+      } catch (error) {
+        setLoading(false);
+        console.error("Error fetching listings:", error);
+      }
+    };
+
+    fetchData();
+  }, [dispatch]);
+
   const handleItemDelete = async (id) => {
     try {
+      setSpinTip("Deleting item");
+      setLoading(true);
       console.log(id);
       const response = await deleteCartItem(id);
       dispatch(initializecart(response));
@@ -162,6 +195,7 @@ const Cartpage = () => {
           )}
         </div>
       )}
+      <Spinner loading={loading} spinTip={spinTip} />
     </div>
   );
 };

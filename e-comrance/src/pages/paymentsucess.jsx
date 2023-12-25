@@ -20,22 +20,12 @@ const PaymentSucess = () => {
     console.log("useEffect");
     const fetchData = async () => {
       const sessionUser = window.sessionStorage.getItem("loggedNoteappUser");
-
-      if (sessionUser) {
-        const user = JSON.parse(sessionUser);
-        console.log(user);
-        Services.setToken(`${user}`);
-        const response = await getUserData();
-        dispatch(clearUser());
-        console.log(response); // Get user data from backend and set it to redux store
-        dispatch(appendUser(response));
-        console.log("Token added");
-      } else {
-        window.sessionStorage.clear(); // Clear sessionStorage if no user is logged in
-        console.log("sessionStorage cleared");
-      }
+      const user = JSON.parse(sessionUser);
+      console.log(user);
+      const response = await getUserData();
+      dispatch(clearUser());
+      dispatch(appendUser(response));
     };
-
     fetchData();
   }, []);
 
@@ -46,9 +36,9 @@ const PaymentSucess = () => {
   const handleBackToHome = async () => {
     const email = user[0].email;
     const sellerEmail = cartItems[0].author;
-    //await sendReceipt(email, sellerEmail, cartItems);
+    await sendReceipt(email, sellerEmail, cartItems);
     console.log("send receipt s");
-    //await sellerReceipt(email, sellerEmail, cartItems);
+    await sellerReceipt(email, sellerEmail, cartItems);
     console.log("send receipt b");
     cartItems.forEach(async (item) => {
       console.log("delete user listing");
