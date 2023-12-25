@@ -46,7 +46,7 @@ const PaymentSucess = () => {
   const handleBackToHome = async () => {
     const email = user[0].email;
     const sellerEmail = cartItems[0].author;
-    await sendReceipt(email, sellerEmail, cartItems);
+    //await sendReceipt(email, sellerEmail, cartItems);
     console.log("send receipt s");
     //await sellerReceipt(email, sellerEmail, cartItems);
     console.log("send receipt b");

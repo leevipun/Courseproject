@@ -12,7 +12,7 @@ const transporter = nodemailer.createTransport({
   },
 });
 
-/*emailRouter.post("/seller", async (req, res) => {
+emailRouter.post("/seller", async (req, res) => {
   const { email, sellerEmail, items } = req.body;
 
   const buyer = await User.findOne({ email: email });
@@ -76,7 +76,7 @@ const transporter = nodemailer.createTransport({
     }
     console.log("Sent Seller: " + info.response);
   });
-});*/
+});
 
 emailRouter.post("/buyer", async (req, res) => {
   const { email, sellerEmail, items } = req.body;
@@ -88,8 +88,8 @@ emailRouter.post("/buyer", async (req, res) => {
   const itemHTML = items
     .map(
       (cartItem) => `
-    <div key=${cartItem.id} id="Cartlisting" style="display: flex; border: 1px solid #ccc; margin: 10px; padding: 10px; border-radius: 10px;">
-      <div style="flex: 1;">
+    <div key=${cartItem.id} id="Cartlisting" border: 1px solid #ccc; margin: 10px; padding: 10px; border-radius: 10px;">
+      <div>
         <img
           src="https://hips.hearstapps.com/hmg-prod/images/dog-puppy-on-garden-royalty-free-image-1586966191.jpg?crop=0.752xw:1.00xh;0.175xw,0&resize=600:*"
           alt=${cartItem.name}
@@ -101,7 +101,7 @@ emailRouter.post("/buyer", async (req, res) => {
           "
         />
       </div>
-      <div style="flex: 2; padding-left: 10px;">
+      <div>
         <div style="margin: 5px; font-weight: bold;">Name: ${cartItem.name}</div>
         <div style="margin: 5px;">Country: ${cartItem.country}</div>
         <div style="margin: 5px;">

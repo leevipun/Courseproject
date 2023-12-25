@@ -123,15 +123,26 @@ listingRouter.delete("/:id", async (req, res) => {
     await User.findByIdAndUpdate(deCodedToken.id, item, {
       new: true,
     });
-    await User.findByIdAndUpdate(listing.buyer, {
-      $pull: { cart: listing._id },
-    });
-    console.log("Täälläkin");
+    console.log("Päivitys onnistui");
+    console.log(listing.buyer);
+    await User.findOneAndUpdate(
+      { email: listing.buyer },
+      {
+        $pull: { cart: listing._id },
+      }
+    );
+    await User.findOneAndUpdate(
+      { email: listing.author },
+      {
+        $pull: { listings: listing.id },
+      }
+    );
+    console.log("Poisto onnistui");
     await List.findByIdAndDelete(req.params.id);
-    console.log("Täälläkin myös");
+    console.log("Kaikki onnistui");
     res.status(200).send(userlistings);
   } catch (error) {
-    res.status(500).send({ error: "An error occurred" });
+    res.status(500).send({ error: error });
   }
 });
 
