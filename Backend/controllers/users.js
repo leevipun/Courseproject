@@ -8,17 +8,10 @@ const API_KEY = process.env.SECRET_STRIPE;
 const stripe = require("stripe")(API_KEY);
 require("express-async-errors");
 const nodemailer = require("nodemailer");
+const { transporter } = require("./email");
 const pass = process.env.EMAILPASS;
 
 const extractToken = middleware.extractToken;
-
-const transporter = nodemailer.createTransport({
-  service: "hotmail",
-  auth: {
-    user: "suomenlehtikauppa@outlook.com",
-    pass: pass,
-  },
-});
 
 usersRouter.post("/", async (req, res) => {
   const { newObject } = req.body;
@@ -51,10 +44,10 @@ usersRouter.post("/", async (req, res) => {
   res.status(201).json(savedUser);
 
   const options = {
-    from: "suomenlehtikauppa@outlook.com",
+    from: "nordicexchange@outlook.com",
     to: newObject.email,
-    subject: "Welcome to Suomen Lehtikauppa!",
-    text: "Thank you for registering to Suomen Lehtikauppa!\nAnd becoming a member of our community!\nWe hope you enjoy your stay!\nBest regards,\nSuomen Lehtikauppa team",
+    subject: "Welcome to Nordic Exchange!",
+    text: "Thank you for registering to Nordic Exchange!\nAnd becoming a member of our community!\nWe hope you enjoy your stay!\nBest regards,\nNordic Exchange team",
   };
 
   transporter.sendMail(options, function (err, info) {
@@ -258,10 +251,10 @@ usersRouter.delete("/", async (req, res) => {
     } else {
       await User.findByIdAndRemove(user._id);
       const options = {
-        from: "suomenlehtikauppa@outlook.com",
+        from: "nordicexchange@outlook.com",
         to: user.email,
         subject: "Account deleted",
-        text: "We are sorry to see you go!\nWe hope you enjoyed your stay!\nAnd we will see in the future agen\nBest regards,\nSuomen Lehtikauppa team",
+        html: "<h1>We are sorry to see you go!</h1><p>We hope you enjoyed your stay!</p><p>Hopefully we'll see in the future agen</p><p>Best regards,</p><p>Nordic Exchange team</p>",
       };
       transporter.sendMail(options, function (err, info) {
         if (err) {

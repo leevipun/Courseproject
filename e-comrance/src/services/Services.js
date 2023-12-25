@@ -77,7 +77,7 @@ export const Adding = async (
     );
     return response.data;
   } catch (error) {
-    throw { error: error.response.data.message };
+    throw { error: error.response.data.error };
   }
 };
 
@@ -86,7 +86,7 @@ const getAllListings = async () => {
     const response = await axios.get(`${baseURL}/api/listings`);
     return response.data;
   } catch (error) {
-    throw { error: error.response.data.message };
+    throw { error: error.response.data.error };
   }
 };
 
@@ -119,7 +119,7 @@ const getAllCartItems = async () => {
     const response = await axios.get(`${baseURL}/api/cart`, config);
     return response.data;
   } catch (error) {
-    throw { error: error.response.data.message };
+    throw { error: error.response.data.error };
   }
 };
 
@@ -128,7 +128,7 @@ const getImages = async () => {
     const response = await axios.get(`${baseURL}/images`);
     return response.data;
   } catch (error) {
-    throw { error: error.response.data.message };
+    throw { error: error.response.data.error };
   }
 };
 
@@ -142,7 +142,7 @@ export const deleteCartItem = async (id) => {
     return response.data;
   } catch (error) {
     console.log(error);
-    throw { error: error.response.data.message };
+    throw { error: error.response.data.error };
   }
 };
 
@@ -163,7 +163,7 @@ export const getUserData = async () => {
     return response.data;
   } catch (error) {
     console.log(error);
-    throw { error: error.response.data.message };
+    throw { error: error.response.data.error };
   }
 };
 
@@ -181,7 +181,7 @@ export const getAllFavoriteItems = async () => {
     const response = await axios.get(`${baseURL}/api/favorite`, config);
     return response.data;
   } catch (error) {
-    throw { error: error.response.data.message };
+    throw { error: error.response.data.error };
   }
 };
 
@@ -198,7 +198,7 @@ export const addToFavorites = async (id) => {
     );
     return response.data;
   } catch (error) {
-    throw { error: error.response.data.message };
+    throw { error: error.response.data.error };
   }
 };
 
@@ -213,7 +213,7 @@ export const deleteFavorite = async (id) => {
     );
     return response.data;
   } catch (error) {
-    throw { error: error.response.data.message };
+    throw { error: error.response.data.error };
   }
 };
 
@@ -255,7 +255,7 @@ export const changePassword = async (password) => {
     );
     return response.data;
   } catch (error) {
-    throw { error: error.response.data.message };
+    throw { error: error.response.data.error };
   }
 };
 
@@ -267,7 +267,7 @@ export const userDelete = async () => {
     const response = await axios.delete(`${baseURL}/api/users`, config);
     return response.data;
   } catch (error) {
-    throw { error: error.response.data.message };
+    throw { error: error.response.data.error };
   }
 };
 
@@ -279,7 +279,7 @@ export const getUsersListings = async () => {
     const response = await axios.get(`${baseURL}/api/users/listings`, config);
     return response.data;
   } catch (error) {
-    throw { error: error.response.data.message };
+    throw { error: error.response.data.error };
   }
 };
 
@@ -309,7 +309,7 @@ export const updateUsersListing = async (
     );
     return response.data;
   } catch (error) {
-    throw { error: error.response.data.message };
+    throw { error: error.response.data.error };
   }
 };
 
@@ -324,7 +324,7 @@ export const deleteUserListing = async (id) => {
     );
     return response.data;
   } catch (error) {
-    throw { error: error.response.data.message };
+    throw { error: error.response.data.error };
   }
 };
 
@@ -336,7 +336,7 @@ export const createPaymentIntent = async (items, userId) => {
     );
     return response.data;
   } catch (error) {
-    throw { error: error.response.data.message };
+    throw { error: error.response.data.error };
   }
 };
 
@@ -348,7 +348,7 @@ export const updateStripeId = async (newObject) => {
     );
     return response.data;
   } catch (error) {
-    throw { error: error.response.data.message };
+    throw { error: error.response.data.error };
   }
 };
 
@@ -364,7 +364,33 @@ export const updateListing = async (newObject) => {
     );
     return response.data;
   } catch (error) {
-    throw { error: error.response.data.message };
+    throw { error: error.response.data.error };
+  }
+};
+
+export const sendReceipt = async (email, sellerEmail, items) => {
+  try {
+    const response = await axios.post(`${baseURL}/api/email/buyer`, {
+      email,
+      sellerEmail,
+      items,
+    });
+    return response.data;
+  } catch (error) {
+    throw { error: error.response.data.error };
+  }
+};
+
+export const sellerReceipt = async (email, sellerEmail, items) => {
+  try {
+    const response = await axios.post(`${baseURL}/api/email/seller`, {
+      email,
+      sellerEmail,
+      items,
+    });
+    return response.data;
+  } catch (error) {
+    throw { error: error.response.data.error };
   }
 };
 

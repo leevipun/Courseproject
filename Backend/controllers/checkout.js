@@ -3,6 +3,7 @@ const checkOutRouter = express.Router();
 const API_KEY = process.env.SECRET_STRIPE;
 const stripe = require("stripe")(API_KEY);
 const User = require("../models/user");
+const { transporter } = require("./email");
 
 const calculateOrderAmount = (items) => {
   const total = items.reduce((acc, item) => {
@@ -28,7 +29,7 @@ checkOutRouter.post("/create-payment-intent", async (req, res) => {
 
   console.log("Author", items[0].author);
 
-  const user = await User.findById(items[0].author);
+  const user = await User.findOne({ email: items[0].author });
 
   const paymentIntent = await stripe.paymentIntents.create({
     amount: calculateOrderAmount(items),

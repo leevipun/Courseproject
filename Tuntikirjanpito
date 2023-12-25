@@ -1,16 +1,66 @@
-Tuntikirjan pito
+Nov 20, 2023 - 2h
+Initial commit: Project setup and repository creation.
 
-Navbar - 3h
-UI - 6h
-backend - 9h
-LoginRouter & usersRouter & Bugs - 2h
-registery - 2h
-Routes - 2h
-Addpage && functions - 4h
-Homepage - 3h
-Cart - 4h
-Bugs - 5h 
-Filter - 3h
-Favoritepage - 1h
-Userupdate - 2h
-localstorage & sessionstorage config - 2h
+Nov 21, 2023 - 4h
+Implemented basic functions to navbar.
+Started working on backend functionality.
+
+Nov 22, 2023 - 4h
+Improved routes and added an adding page.
+Introduced a user registration feature.
+
+Nov 23, 2023 - 3h
+Updated user login functionality.
+Improved adding menu functionality.
+
+Nov 24, 2023 - 2h
+Made the home page show listings.
+Implemented local storage for data persistence.
+
+Nov 25, 2023 - 4h
+Worked on adding items to the cart.
+Improved UI changes and made changes to user save functionality.
+
+Nov 26, 2023 - 4h
+Made UI changes, including margin adjustments.
+Implemented notifications and bug fixes.
+
+Nov 27, 2023 - 4h
+Resolved bugs related to the cart.
+Implemented a better cart system.
+
+Nov 29, 2023 - 3h
+Implemented features related to cart conditions.
+Improved cart functionality and refactored code.
+
+Nov 30, 2023 - 4h
+Implemented category filters.
+Switched from local storage to session storage.
+
+Dec 1, 2023 - 4h
+Added categories for filtering.
+Implemented real-time filter functionality.
+
+Dec 2, 2023 - 5h
+Made UI changes for filters.
+Started working on paying functionality.
+
+Dec 3, 2023 - 2h
+Implemented filters for categories.
+Initiated work on the user page UI and functions.
+
+Dec 6-10, 2023 - 9h
+Integrated and improved Stripe functionality.
+Implemented checkout process.
+Phase 6: User Account Management
+
+Dec 11-13, 2023 - 4h
+Added features for password change.
+Implemented user account deletion.
+
+Dec 18-22, 2023 - 4h
+Made UI changes to the registry.
+Implemented auto emails.
+Conducted UI changes and validations.
+
+total hours - 66

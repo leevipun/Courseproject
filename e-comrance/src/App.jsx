@@ -33,20 +33,30 @@ const App = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-      const sessionUser = window.sessionStorage.getItem("loggedNoteappUser");
+      try {
+        const sessionUser = window.sessionStorage.getItem("loggedNoteappUser");
 
-      if (sessionUser) {
-        const user = JSON.parse(sessionUser);
-        console.log(user);
-        Services.setToken(`${user}`);
-        const response = await getUserData();
-        dispatch(clearUser());
-        console.log(response); // Get user data from backend and set it to redux store
-        dispatch(appendUser(response));
-        console.log("Token added");
-      } else {
-        window.sessionStorage.clear(); // Clear sessionStorage if no user is logged in
-        console.log("sessionStorage cleared");
+        if (sessionUser) {
+          const user = JSON.parse(sessionUser);
+          console.log(user);
+          Services.setToken(`${user}`);
+          const response = await getUserData();
+          dispatch(clearUser());
+          console.log(response); // Get user data from backend and set it to redux store
+          dispatch(appendUser(response));
+          console.log("Token added");
+        } else {
+          window.sessionStorage.clear(); // Clear sessionStorage if no user is logged in
+          console.log("sessionStorage cleared");
+        }
+      } catch (error) {
+        console.log("error", error);
+        if (error.error === "token expired") {
+          window.sessionStorage.clear();
+          console.log("sessionStorage cleared");
+          dispatch(clearUser());
+        }
+        console.error("Error fetching user data:", error);
       }
     };
 

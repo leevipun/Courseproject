@@ -55,7 +55,7 @@ listingRouter.post("/", extractUser, extractToken, async (req, res, next) => {
     currency: body.currency,
     category: body.category,
     pics: body.pics,
-    author: user._id,
+    author: user.email,
     lastPrice: body.price,
     status: "Aviable",
   });

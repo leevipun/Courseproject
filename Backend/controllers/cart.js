@@ -30,12 +30,12 @@ cartRouter.post("/", extractUser, extractToken, async (req, res, next) => {
         return res.status(400).json({ error: "Item not found" });
       }
       // Check if the listing is yours
-      if (listing.author === user._id.toString()) {
+      if (listing.author === user.email) {
         console.log("Oma listaus");
         return res.status(400).json({ error: "You can't buy your own item" });
       }
       // Check if the listing is already in the cart
-      if (cartlistings.includes(body.id)) {
+      if (cartlistings.includes(body.email)) {
         console.log("Löytyi jo listauksesta");
         return res.status(400).json({ error: "Item already in cart" });
       }
@@ -54,7 +54,7 @@ cartRouter.post("/", extractUser, extractToken, async (req, res, next) => {
             .exec();
           if (
             authorsInCart.length > 0 &&
-            !authorsInCart.includes(listing.author.toString())
+            !authorsInCart.includes(listing.author)
           ) {
             console.log("Items from different authors in cart");
             return res
@@ -65,7 +65,7 @@ cartRouter.post("/", extractUser, extractToken, async (req, res, next) => {
         //update the listing status
         const item = {
           status: "In cart",
-          buyer: user._id,
+          buyer: user.email,
         };
         const updatedList = await List.findByIdAndUpdate(body.id, item, {
           new: true,

@@ -11,6 +11,7 @@ const listingRouter = require("./controllers/listings.js");
 const cartRouter = require("./controllers/cart.js");
 const favoriteRouter = require("./controllers/favorite.js");
 const checkoutRouter = require("./controllers/checkout.js");
+const { emailRouter } = require("./controllers/email.js");
 
 mongoose.set("strictQuery", false);
 
@@ -36,6 +37,7 @@ app.use(middleware.extractToken);
 app.use("/api/users", usersRouter);
 app.use("/api/login", loginRouter);
 app.use("/api/listings", listingRouter);
+app.use("/api/email", emailRouter);
 
 app.use("/api/cart", cartRouter);
 app.use("/api/favorite", favoriteRouter);
