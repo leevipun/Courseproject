@@ -1,11 +1,11 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "@react";
 import {
   PaymentElement,
   useStripe,
   useElements,
 } from "@stripe/react-stripe-js";
 import { addNotification } from "../../reducer/notificationReducer";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch, useSelector } from "@react-redux";
 import "../styles/stripe.css";
 
 export default function CheckoutForm() {

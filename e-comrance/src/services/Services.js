@@ -163,7 +163,7 @@ export const getUserData = async () => {
     return response.data;
   } catch (error) {
     console.log(error);
-    throw { error: error.response.data.error };
+    throw error.response;
   }
 };
 

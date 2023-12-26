@@ -1,5 +1,4 @@
-import React from "react";
-import { Input, Radio } from "antd";
+import { Input, Radio } from "@antd";
 
 const AdditionalInfo = ({
   iban,
@@ -29,8 +28,11 @@ const AdditionalInfo = ({
   const handleDateChange = (e) => {
     // Format the date to yyyy-mm-dd
     setBirthDay(e.target.value);
+    console.log(e.target.value);
     // Update the state with the formatted date
   };
+
+  console.log(birthDay);
   return (
     <div>
       <div>

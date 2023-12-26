@@ -1,17 +1,16 @@
-import { FaHeart } from "react-icons/fa";
+import { FaHeart } from "@react-icons/fa";
 import Navbar from "./../components/navbar";
-import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
-import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "@react-redux";
+import { useEffect, useState } from "@react";
 import {
   addToCart,
   addToFavorites,
   deleteFavorite,
 } from "../services/Services";
-import { Button, Select, Input } from "antd";
+import { Button, Select, Input } from "@antd";
 import { appendcart } from "../../reducer/cartReducer";
 import { addNotification } from "../../reducer/notificationReducer";
-import { LuSettings2 } from "react-icons/lu";
+import { LuSettings2 } from "@react-icons/lu";
 import "../styles/Homepage.css";
 import { initializeListing } from "../../reducer/listingReducer";
 import categoriesWithOptions from "../../Data/categoryData";
@@ -30,7 +29,6 @@ import {
 import Spinner from "../components/LoadSpinner";
 
 const Homepage = () => {
-  const navigate = useNavigate();
   const dispatch = useDispatch();
   const [showFilter, setShowFilter] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -59,7 +57,7 @@ const Homepage = () => {
     };
 
     fetchData();
-  }, []);
+  }, [dispatch]);
 
   const userFavoriteId = useSelector((state) => {
     const favorites = state.favorite;
@@ -71,6 +69,10 @@ const Homepage = () => {
 
   const handleAddToCart = async (id) => {
     try {
+      if (user.length === 0) {
+        dispatch(addNotification("Please login first"));
+        return;
+      }
       const response = await addToCart(id);
       console.log("Response", response);
       if (response === "Already in cart") {
@@ -93,6 +95,10 @@ const Homepage = () => {
   };
 
   const handleAddToFavorites = async (id) => {
+    if (user.length === 0) {
+      dispatch(addNotification("Please login first"));
+      return;
+    }
     if (userFavoriteId.includes(id)) {
       const response = await deleteFavorite(id);
       dispatch(initializefavorite(response));
@@ -130,12 +136,6 @@ const Homepage = () => {
     return filteredListings;
   });
 
-  useEffect(() => {
-    if (!window.sessionStorage.getItem("loggedNoteappUser")) {
-      navigate("/login");
-    }
-  }, []);
-
   if (listing.length === 0) {
     return (
       <div>
@@ -143,7 +143,7 @@ const Homepage = () => {
           <Navbar />
         </div>
         <div id="itemstyle">
-          <h1 id="welcome"></h1>
+          <p id="welcome"></p>
           <Button type="primary" id="Filtericon" onClick={handleFiltershow}>
             <LuSettings2 />
           </Button>
@@ -191,7 +191,14 @@ const Homepage = () => {
             </div>
           )}
         </div>
-        <div>
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            height: "80vh",
+          }}
+        >
           <h1>No listings</h1>
         </div>
       </div>

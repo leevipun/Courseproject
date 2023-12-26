@@ -1,6 +1,6 @@
-import { useNavigate } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
-import { Button } from "antd";
+import { useNavigate } from "@react-router-dom";
+import { useDispatch, useSelector } from "@react-redux";
+import { Button } from "@antd";
 import Services, {
   deleteCartItem,
   deleteUserListing,
@@ -10,7 +10,7 @@ import Services, {
 } from "../services/Services";
 import { clearCart } from "../../reducer/cartReducer";
 import { appendUser, clearUser } from "../../reducer/userReducer";
-import { useEffect } from "react";
+import { useEffect } from "@react";
 
 const PaymentSucess = () => {
   const dispatch = useDispatch();

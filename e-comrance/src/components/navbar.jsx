@@ -7,13 +7,13 @@ import {
   FaPlus,
   FaUser,
   FaList,
-} from "react-icons/fa";
-import { Link, useNavigate } from "react-router-dom";
-import { FaMagnifyingGlass } from "react-icons/fa6";
-import { useEffect, useState } from "react";
+} from "@react-icons/fa";
+import { Link, useNavigate } from "@react-router-dom";
+import { FaMagnifyingGlass } from "@react-icons/fa6";
+import { useEffect, useState } from "@react";
 import "../App.css";
-import React from "react";
-import { Dropdown, Space, Input } from "antd";
+import { Dropdown, Space, Input } from "@antd";
+import { CiLogin } from "react-icons/ci";
 import {
   UserOutlined,
   LogoutOutlined,
@@ -29,6 +29,7 @@ import { clearListing } from "../../reducer/listingReducer";
 const Navbar = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const [isLogged, setIsLogged] = useState(false);
   const [showInput, setShowInput] = useState(false);
   const [showAdd, setShowAdd] = useState(true);
   const [showCart, setShowCart] = useState(false);
@@ -46,6 +47,9 @@ const Navbar = () => {
         }
         if (userStatus !== "seller") {
           setShowCart(true);
+        }
+        if (user.length > 0) {
+          setIsLogged(true);
         }
       }
     };
@@ -175,15 +179,24 @@ const Navbar = () => {
               <FaHeart /> {numberOfItemsInFavorite}
             </Link>
           </li>
-          <li id="navitem">
-            <Dropdown menu={{ items }} trigger={["click"]}>
-              <a onClick={(e) => e.preventDefault()}>
-                <Space>
-                  <FaUser id="user" />
-                </Space>
-              </a>
-            </Dropdown>
-          </li>
+          {isLogged && (
+            <li id="navitem">
+              <Dropdown menu={{ items }} trigger={["click"]}>
+                <a onClick={(e) => e.preventDefault()}>
+                  <Space>
+                    <FaUser id="user" />
+                  </Space>
+                </a>
+              </Dropdown>
+            </li>
+          )}
+          {!isLogged && (
+            <li id="navitem">
+              <Link to="/login">
+                Login <CiLogin />
+              </Link>
+            </li>
+          )}
         </ul>
       </nav>
     </div>

@@ -1,6 +1,6 @@
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
-import Services from "./services/Services.js";
-import { useEffect } from "react";
+import Services, { getUserData } from "./services/Services.js";
+import { useEffect } from "@react";
 
 import "./App.css";
 
@@ -14,13 +14,14 @@ import Userpage from "./pages/Userpage";
 import Notfound from "./pages/Notfound";
 import Contactpage from "./pages/Contactpage";
 import AddingPage from "./pages/Addingpage";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import PurchaseHistory from "./pages/Purchasepage.jsx";
 import Notification from "./components/notification.jsx";
 import { initializeListing } from "../reducer/listingReducer.js";
 import Ownlisting from "./pages/Ownlistingpage.jsx";
 import Checkoutpage from "./pages/Checkoutpage.jsx";
 import PaymentSucess from "./pages/paymentsucess.jsx";
+import { setUser } from "../reducer/userReducer.js";
 
 const App = () => {
   const dispatch = useDispatch();
@@ -38,6 +39,36 @@ const App = () => {
 
     fetchData();
   }, []);
+
+  useEffect(() => {
+    const user = JSON.parse(sessionStorage.getItem("loggedNoteappUser"));
+    const fetchData = async () => {
+      Services.setToken(user);
+      if (!user && user.lenght === 0) {
+        console.log("No user logged in");
+        return;
+      }
+      try {
+        console.log("Fetching user data");
+        console.log(user);
+        const loggedUser = await getUserData(user);
+        console.log("Logged user", loggedUser);
+        setUser(loggedUser);
+      } catch (error) {
+        if (error.error === "token expired") {
+          console.log("Token expired");
+          sessionStorage.removeItem("loggedNoteappUser");
+          return;
+        }
+        console.error("Error fetching user:", error);
+      }
+    };
+    fetchData();
+  }, []);
+
+  const user = useSelector((state) => state.user);
+
+  console.log("App.js user", user);
 
   return (
     <div>

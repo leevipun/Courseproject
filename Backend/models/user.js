@@ -83,6 +83,10 @@ const userSchema = mongoose.Schema({
     type: String,
     required: false,
   },
+  iban: {
+    type: String,
+    required: false,
+  },
 });
 
 userSchema.plugin(uniqueValidator);

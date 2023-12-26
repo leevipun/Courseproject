@@ -1,6 +1,5 @@
-import React from "react";
-import ReactDOM from "react-dom/client";
-import { Provider } from "react-redux";
+import ReactDOM from "@react-dom/client";
+import { Provider } from "@react-redux";
 import { combineReducers, configureStore } from "@reduxjs/toolkit";
 import userReducer from "../reducer/userReducer.js";
 import listingReducer from "../reducer/listingReducer.js";

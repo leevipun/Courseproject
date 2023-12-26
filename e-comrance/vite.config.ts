@@ -31,6 +31,8 @@ export default defineConfig({
         "uuidv4",
         "react-icons/fa6",
         "react",
+        "@react-dom/client",
+        "@react",
       ],
     },
   },

@@ -1,8 +1,8 @@
-import { FaShoppingBasket } from "react-icons/fa";
+import { FaShoppingBasket } from "@react-icons/fa";
 import Navbar from "./../components/navbar";
-import { useDispatch, useSelector } from "react-redux";
-import { useEffect, useState } from "react";
-import Services, { deleteCartItem } from "../services/Services";
+import { useDispatch, useSelector } from "@react-redux";
+import { useEffect, useState } from "@react";
+import Services, { deleteCartItem, getUserData } from "../services/Services";
 import { initializecart } from "../../reducer/cartReducer";
 import "../styles/Cartpage.css";
 import {
@@ -10,23 +10,22 @@ import {
   SmileOutlined,
   SolutionOutlined,
 } from "@ant-design/icons";
-import { Steps, Input, Button } from "antd";
-import { CiCreditCard1 } from "react-icons/ci";
+import { Steps, Input, Button } from "@antd";
+import { CiCreditCard1 } from "@react-icons/ci";
 import { PaymentElement } from "@stripe/react-stripe-js";
-import { useNavigate } from "react-router-dom";
+import { useNavigate } from "@react-router-dom";
 import Spinner from "../components/LoadSpinner";
+import { addNotification } from "../../reducer/notificationReducer";
 
 const Cartpage = () => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const [showFillInformation, setShowFillInformation] = useState(false);
   const [showConfirm, setShowConfirm] = useState(false);
   const [showCheckout, setShowCheckout] = useState(false);
   const [loading, setLoading] = useState(false);
   const [spinTip, setSpinTip] = useState("");
-  const dispatch = useDispatch();
-  const user = useSelector((state) => {
-    return state.user;
-  });
+  const [user, setUser] = useState([]);
 
   const cartItems = useSelector((state) => {
     return state.cart;
@@ -41,6 +40,9 @@ const Cartpage = () => {
       try {
         setSpinTip("Loading cart items");
         setLoading(true);
+        const user = JSON.parse(sessionStorage.getItem("loggedNoteappUser"));
+        const response = await getUserData(user);
+        setUser(response);
         const listings = await Services.getAllCartItems();
         console.log("Listings", listings);
         const validListings = listings.filter(
@@ -56,13 +58,22 @@ const Cartpage = () => {
           setLoading(false);
         }
       } catch (error) {
+        if (error.status === 401) {
+          navigate("/login");
+          dispatch(
+            addNotification(
+              "Please login first so we can keep your cart up to date",
+              "error"
+            )
+          );
+        }
         setLoading(false);
         console.error("Error fetching listings:", error);
       }
     };
 
     fetchData();
-  }, [dispatch]);
+  }, []);
 
   const handleItemDelete = async (id) => {
     try {

@@ -1,5 +1,4 @@
-import React from "react";
-import { Input, Select } from "antd";
+import { Input, Select } from "@antd";
 import CountriesData from "../../../Data/countryData";
 
 const AddressInfo = ({

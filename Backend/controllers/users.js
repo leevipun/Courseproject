@@ -35,6 +35,7 @@ usersRouter.post("/", async (req, res) => {
     address: newObject.address,
     postalCode: newObject.postalCode,
     phone: newObject.phone,
+    iban: newObject.iban,
     Dob: newObject.Dob,
   });
   console.log(user);

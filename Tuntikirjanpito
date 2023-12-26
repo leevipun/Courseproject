@@ -5,62 +5,67 @@ Nov 21, 2023 - 4h
 Implemented basic functions to navbar.
 Started working on backend functionality.
 
-Nov 22, 2023 - 4h
+Nov 22, 2023 - 8h
 Improved routes and added an adding page.
 Introduced a user registration feature.
 
-Nov 23, 2023 - 3h
+Nov 23, 2023 - 6h
 Updated user login functionality.
 Improved adding menu functionality.
 
-Nov 24, 2023 - 2h
+Nov 24, 2023 - 4h
 Made the home page show listings.
 Implemented local storage for data persistence.
 
-Nov 25, 2023 - 4h
+Nov 25, 2023 - 8h
 Worked on adding items to the cart.
 Improved UI changes and made changes to user save functionality.
 
-Nov 26, 2023 - 4h
+Nov 26, 2023 - 8h
 Made UI changes, including margin adjustments.
 Implemented notifications and bug fixes.
 
-Nov 27, 2023 - 4h
+Nov 27, 2023 - 8h
 Resolved bugs related to the cart.
 Implemented a better cart system.
 
-Nov 29, 2023 - 3h
+Nov 29, 2023 - 6h
 Implemented features related to cart conditions.
 Improved cart functionality and refactored code.
 
-Nov 30, 2023 - 4h
+Nov 30, 2023 - 8h
 Implemented category filters.
 Switched from local storage to session storage.
 
-Dec 1, 2023 - 4h
+Dec 1, 2023 - 8h
 Added categories for filtering.
 Implemented real-time filter functionality.
 
-Dec 2, 2023 - 5h
+Dec 2, 2023 - 10h
 Made UI changes for filters.
 Started working on paying functionality.
 
-Dec 3, 2023 - 2h
+Dec 3, 2023 - 6h
 Implemented filters for categories.
 Initiated work on the user page UI and functions.
 
-Dec 6-10, 2023 - 9h
+Dec 6-10, 2023 - 16h
 Integrated and improved Stripe functionality.
 Implemented checkout process.
 Phase 6: User Account Management
 
-Dec 11-13, 2023 - 4h
+Dec 11-13, 2023 - 8h
 Added features for password change.
 Implemented user account deletion.
 
-Dec 18-22, 2023 - 4h
+Dec 18-22, 2023 - 10h
 Made UI changes to the registry.
 Implemented auto emails.
 Conducted UI changes and validations.
 
-total hours - 66
+Dec 22-26, 2023 - 8 h
+Switched some fuctions
+Made login not mandatory before being able to scroll listings
+and some email changes
+
+Total estimated hours - 118

@@ -1,6 +1,7 @@
 const config = require("./utils/config.js");
 const express = require("express");
 const app = express();
+const path = require("path");
 const cors = require("cors");
 const middleware = require("./utils/middleware");
 const logger = require("./utils/logger");
@@ -30,10 +31,10 @@ mongoose
 
 app.use(cors());
 app.use(express.json());
-app.use(express.static("dist copy"));
 app.use(middleware.requestLogger);
 app.use(middleware.extractToken);
 
+app.use(express.static(path.join(__dirname, "dist")));
 app.use("/api/users", usersRouter);
 app.use("/api/login", loginRouter);
 app.use("/api/listings", listingRouter);

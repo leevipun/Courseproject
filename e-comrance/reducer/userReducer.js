@@ -12,9 +12,12 @@ const userSlice = createSlice({
     clearUser() {
       return initialState;
     },
+    setUser(state, action) {
+      return action.payload;
+    },
   },
 });
 
-export const { appendUser, clearUser } = userSlice.actions;
+export const { appendUser, clearUser, setUser } = userSlice.actions;
 
 export default userSlice.reducer;
