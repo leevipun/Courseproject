@@ -1,7 +1,7 @@
-import { useState, useEffect } from "@react";
+import { useState, useEffect } from "react";
 import Navbar from "./../components/navbar";
-import { useDispatch } from "@react-redux";
-import { Input, Button } from "@antd";
+import { useDispatch } from "react-redux";
+import { Input, Button } from "antd";
 import {
   changePassword,
   getUserData,
@@ -9,7 +9,7 @@ import {
   userDelete,
 } from "../services/Services";
 import { addNotification } from "../../reducer/notificationReducer";
-import { useNavigate } from "@react-router-dom";
+import { useNavigate } from "react-router-dom";
 import AdditionalInfo from "../components/registery/additionalInfo";
 import AddressInfo from "../components/registery/addressInfo";
 import PersonalInfo from "../components/registery/personalInfo";

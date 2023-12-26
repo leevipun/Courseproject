@@ -1,14 +1,14 @@
 import Navbar from "./../components/navbar";
-import { useSelector } from "@react-redux";
-import { useEffect, useState } from "@react";
+import { useSelector } from "react-redux";
+import { useEffect, useState } from "react";
 import { getAllFavoriteItems, getUserData } from "../services/Services";
 import { initializefavorite } from "../../reducer/favoriteReducer.js";
-import { useDispatch } from "@react-redux";
+import { useDispatch } from "react-redux";
 import Spinner from "../components/LoadSpinner.jsx";
-import { useNavigate } from "@react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { addNotification } from "../../reducer/notificationReducer.js";
-import { Button } from "@antd";
-import { FaHeart } from "@react-icons/fa";
+import { Button } from "antd";
+import { FaHeart } from "react-icons/fa";
 import { addToFavorites, deleteFavorite } from "../services/Services.js";
 import { appendfavorite } from "../../reducer/favoriteReducer.js";
 

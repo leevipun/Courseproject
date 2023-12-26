@@ -1,16 +1,16 @@
-import { FaHeart } from "@react-icons/fa";
+import { FaHeart } from "react-icons/fa";
 import Navbar from "./../components/navbar";
-import { useDispatch, useSelector } from "@react-redux";
-import { useEffect, useState } from "@react";
+import { useDispatch, useSelector } from "react-redux";
+import { useEffect, useState } from "react";
 import {
   addToCart,
   addToFavorites,
   deleteFavorite,
 } from "../services/Services";
-import { Button, Select, Input } from "@antd";
+import { Button, Select, Input } from "antd";
 import { appendcart } from "../../reducer/cartReducer";
 import { addNotification } from "../../reducer/notificationReducer";
-import { LuSettings2 } from "@react-icons/lu";
+import { LuSettings2 } from "react-icons/lu";
 import "../styles/Homepage.css";
 import { initializeListing } from "../../reducer/listingReducer";
 import categoriesWithOptions from "../../Data/categoryData";

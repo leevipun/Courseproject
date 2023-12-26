@@ -1,4 +1,4 @@
-import { FaHeart } from "@react-icons/fa";
+import { FaHeart } from "react-icons/fa";
 import Navbar from "./../components/navbar";
 
 const PurchaseHistory = () => {

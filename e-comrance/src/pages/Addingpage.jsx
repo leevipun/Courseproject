@@ -1,14 +1,14 @@
-import { useState, useEffect } from "@react";
+import { useState, useEffect } from "react";
 import Navbar from "./../components/navbar";
 import "../styles/AddingPage.css";
-import { Select, Input, Button } from "@antd";
+import { Select, Input, Button } from "antd";
 const { TextArea } = Input;
 import CountriesData from "./../../Data/countryData";
 import { Adding, getUserData } from "../services/Services.js";
-import { useNavigate } from "@react-router-dom";
-import { useDispatch } from "@react-redux";
+import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
 import { appendlisting } from "../../reducer/listingReducer.js";
-import { v4 as uuidv4 } from "@uuid";
+import { v4 as uuidv4 } from "uuid";
 import { addNotification } from "../../reducer/notificationReducer.js";
 import categoriesWithOptions from "../../Data/categoryData.js";
 import Spinner from "../components/LoadSpinner.jsx";
@@ -95,7 +95,7 @@ const AddingPage = () => {
     (option?.label ?? "").toLowerCase().includes(input.toLowerCase());
 
   if (user.length === 0) {
-    <div></div>;
+    <div>No.</div>;
   }
 
   return (

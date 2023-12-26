@@ -1,7 +1,7 @@
 import Navbar from "./../components/navbar";
-import { useDispatch, useSelector } from "@react-redux";
-import { Button, Input } from "@antd";
-import { useState } from "@react";
+import { useDispatch, useSelector } from "react-redux";
+import { Button, Input } from "antd";
+import { useState } from "react";
 import {
   deleteUserListing,
   updateListing,
@@ -10,9 +10,9 @@ import {
   getUserData,
 } from "../services/Services";
 import { initializeUserListing } from "../../reducer/ownlistingReducer";
-import { useEffect } from "@react";
+import { useEffect } from "react";
 import Spinner from "../components/LoadSpinner";
-import { useNavigate } from "@react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { addNotification } from "../../reducer/notificationReducer";
 
 const Ownlistings = () => {
