@@ -1,5 +1,6 @@
 const path = require("path");
 const webpack = require("webpack");
+const HtmlWebpackPlugin = require("html-webpack-plugin");
 
 const config = (env, argv) => {
   console.log("argv", argv.mode);
@@ -11,11 +12,11 @@ const config = (env, argv) => {
   return {
     entry: "./src/main.jsx",
     output: {
-      path: path.resolve(__dirname, "build"),
+      path: path.resolve(__dirname, "dist"),
       filename: "main.js",
     },
     devServer: {
-      static: path.resolve(__dirname, "build"),
+      static: path.resolve(__dirname, "dist"),
       compress: true,
       port: 3000,
     },
@@ -41,6 +42,10 @@ const config = (env, argv) => {
     plugins: [
       new webpack.DefinePlugin({
         BACKEND_URL: JSON.stringify(backend_url),
+      }),
+      new HtmlWebpackPlugin({
+        title: "E-comrance",
+        filename: "index.html",
       }),
     ],
   };
