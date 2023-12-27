@@ -15,7 +15,6 @@ import Notfound from "./pages/Notfound.jsx";
 import Contactpage from "./pages/Contactpage.jsx";
 import AddingPage from "./pages/Addingpage.jsx";
 import { useDispatch, useSelector } from "react-redux";
-import PurchaseHistory from "./pages/Purchasepage.jsx";
 import Notification from "./components/notification.jsx";
 import { initializeListing } from "../reducer/listingReducer.js";
 import Ownlisting from "./pages/Ownlistingpage.jsx";
@@ -85,7 +84,6 @@ const App = () => {
           <Route path="/user" Component={Userpage} />
           <Route path="/contacts" Component={Contactpage} />
           <Route path="/add" Component={AddingPage} />
-          <Route path="/history" Component={PurchaseHistory} />
           <Route path="/ownlisting" Component={Ownlisting} />
           <Route path="/payment-successful" Component={PaymentSucess} />
           <Route path="/*" Component={Notfound} />

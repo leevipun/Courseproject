@@ -14,11 +14,7 @@ import React, { useEffect, useState } from "react";
 import "../App.css";
 import { Dropdown, Space, Input } from "antd";
 import { CiLogin } from "react-icons/ci";
-import {
-  UserOutlined,
-  LogoutOutlined,
-  TransactionOutlined,
-} from "@ant-design/icons";
+import { UserOutlined, LogoutOutlined } from "@ant-design/icons";
 import { useDispatch, useSelector } from "react-redux";
 import { filterChange } from "../../reducer/filterReducer";
 import { clearUser } from "../../reducer/userReducer";
@@ -89,10 +85,6 @@ const Navbar = () => {
     navigate("/login");
   };
 
-  const handlePurchaseHistory = () => {
-    navigate("/history");
-  };
-
   const handleUserInfo = () => {
     navigate("/user");
   };
@@ -113,12 +105,6 @@ const Navbar = () => {
       key: "2",
       icon: <FaList />,
       onClick: handleOwnlisting,
-    },
-    {
-      label: "Purchase history",
-      key: "3",
-      icon: <TransactionOutlined />,
-      onClick: handlePurchaseHistory,
     },
     {
       label: "Log out",
