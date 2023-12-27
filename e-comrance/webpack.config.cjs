@@ -46,6 +46,7 @@ const config = (env, argv) => {
       new HtmlWebpackPlugin({
         title: "E-comrance",
         filename: "index.html",
+        template: "./src/index.html",
       }),
     ],
   };
