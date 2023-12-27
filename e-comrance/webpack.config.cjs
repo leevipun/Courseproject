@@ -10,7 +10,7 @@ const config = (env, argv) => {
       : "http://localhost:3003";
 
   return {
-    entry: "./src/main.jsx",
+    entry: (__dirname, "./src/main.jsx"),
     output: {
       path: path.resolve(__dirname, "dist"),
       filename: "main.js",
@@ -46,7 +46,7 @@ const config = (env, argv) => {
       new HtmlWebpackPlugin({
         title: "E-comrance",
         filename: "index.html",
-        template: "./src/index.html",
+        template: path.resolve(__dirname, "/src/index.html"),
       }),
     ],
   };
