@@ -14,7 +14,6 @@ export default function CheckoutForm() {
   const elements = useElements();
   const dispatch = useDispatch();
 
-  const [email, setEmail] = useState("");
   const [isLoading, setIsLoading] = useState(false);
 
   const user = useSelector((state) => state.user);
@@ -80,8 +79,7 @@ export default function CheckoutForm() {
       elements,
       confirmParams: {
         // Make sure to change this to your payment completion page
-        return_url: "/payment-successful",
-        receipt_email: email,
+        return_url: "https://courseproject-ten.vercel.app/payment-successful",
       },
     });
 
@@ -90,9 +88,14 @@ export default function CheckoutForm() {
     // your `return_url`. For some payment methods like iDEAL, your customer will
     // be redirected to an intermediate site first to authorize the payment, then
     // redirected to the `return_url`.
+    if (error) {
+      console.error("Stripe Confirm Payment Error:", error);
+      // Handle the error and display relevant information to the user
+    }
     if (error.type === "card_error" || error.type === "validation_error") {
       dispatch(addNotification(error.message));
     } else {
+      console.log(error);
       dispatch(addNotification("An unexpected error occurred."));
     }
 
@@ -111,14 +114,6 @@ export default function CheckoutForm() {
   return (
     <body id="body">
       <form id="payment-form" onSubmit={handleSubmit}>
-        <input
-          id="email"
-          type="text"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          placeholder="Enter email address"
-        />
-
         <PaymentElement id="payment-element" options={options} />
         <button disabled={isLoading || !stripe || !elements} id="submit">
           <span id="button-text">

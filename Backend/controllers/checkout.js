@@ -3,7 +3,6 @@ const checkOutRouter = express.Router();
 const API_KEY = process.env.SECRET_STRIPE;
 const stripe = require("stripe")(API_KEY);
 const User = require("../models/user");
-const { transporter } = require("./email");
 
 const calculateOrderAmount = (items) => {
   const total = items.reduce((acc, item) => {
@@ -38,6 +37,7 @@ checkOutRouter.post("/create-payment-intent", async (req, res) => {
       enabled: true,
     },
     transfer_data: {
+      application_fee_amount: calculateOrderAmount(items) * 0.05,
       destination: user.stripeAccountId,
     },
   });
