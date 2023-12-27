@@ -19,7 +19,7 @@ export default function CheckoutForm() {
 
   const user = useSelector((state) => state.user);
 
-  const userCart = user[0].cart.author;
+  const userCart = user.cart;
 
   console.log("UserCart", userCart);
 

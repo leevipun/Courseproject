@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const baseURL = BACKEND_URL;
+const baseURL = "https://courseproject-backend-6lyy.onrender.com";
 
 let token = null;
 
@@ -370,6 +370,7 @@ export const updateListing = async (newObject) => {
 
 export const sendReceipt = async (email, sellerEmail, items) => {
   try {
+    console.log("Buyer receipt", email, sellerEmail, items);
     const response = await axios.post(`${baseURL}/api/email/buyer`, {
       email,
       sellerEmail,
@@ -383,11 +384,13 @@ export const sendReceipt = async (email, sellerEmail, items) => {
 
 export const sellerReceipt = async (email, sellerEmail, items) => {
   try {
+    console.log("Seller receipt", email, sellerEmail, items);
     const response = await axios.post(`${baseURL}/api/email/seller`, {
       email,
       sellerEmail,
       items,
     });
+    console.log("sent");
     return response.data;
   } catch (error) {
     throw { error: error.response.data.error };

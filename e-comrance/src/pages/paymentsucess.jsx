@@ -11,11 +11,14 @@ import {
 import { clearCart } from "../../reducer/cartReducer";
 import { appendUser, clearUser } from "../../reducer/userReducer";
 import { useEffect } from "react";
-import React from "react";
+import React, { useState } from "react";
+import Services from "../services/Services.js";
+import { initializecart } from "../../reducer/cartReducer.js";
 
 const PaymentSucess = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const [user, setUser] = useState([]);
 
   useEffect(() => {
     console.log("useEffect");
@@ -24,20 +27,25 @@ const PaymentSucess = () => {
       const user = JSON.parse(sessionUser);
       console.log(user);
       const response = await getUserData();
+      setUser(response);
+      const listings = await Services.getAllCartItems();
+      dispatch(initializecart(listings));
       dispatch(clearUser());
       dispatch(appendUser(response));
     };
     fetchData();
   }, []);
 
+  console.log(user);
+
   const cartItems = useSelector((state) => state.cart);
   console.log(cartItems);
-  const user = useSelector((state) => state.user);
 
   const handleBackToHome = async () => {
-    const email = user[0].email;
+    const email = user.email;
     const sellerEmail = cartItems[0].author;
-    await sendReceipt(email, sellerEmail, cartItems);
+    console.log(email, sellerEmail);
+    //await sendReceipt(email, sellerEmail, cartItems);
     console.log("send receipt s");
     await sellerReceipt(email, sellerEmail, cartItems);
     console.log("send receipt b");
@@ -51,6 +59,9 @@ const PaymentSucess = () => {
     navigate("/");
     dispatch(clearCart());
   };
+
+  console.log(cartItems);
+
   return (
     <div>
       <h1>Payment Sucess</h1>

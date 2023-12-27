@@ -76,6 +76,7 @@ emailRouter.post("/seller", async (req, res) => {
     }
     console.log("Sent Seller: " + info.response);
   });
+  res.status(200).json({ message: "Email sent" });
 });
 
 emailRouter.post("/buyer", async (req, res) => {
