@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { getAllFavoriteItems } from "./../src/services/Services";
+import { getAllFavoriteItems } from "./../src/services/Services.js";
 
 const initialState = [];
 

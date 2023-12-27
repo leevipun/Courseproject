@@ -1,19 +1,19 @@
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import Services, { getUserData } from "./services/Services.js";
-import { useEffect } from "@react";
+import React, { useEffect } from "react";
 
 import "./App.css";
 
-import Loginpage from "./pages/Loginpage";
-import Homepage from "./pages/Homepage";
-import Aboutpage from "./pages/Aboutpage";
-import Cartpage from "./pages/Cartpage";
-import Registerypage from "./pages/Reqisterypage";
-import Favoritepage from "./pages/Favorites";
-import Userpage from "./pages/Userpage";
-import Notfound from "./pages/Notfound";
-import Contactpage from "./pages/Contactpage";
-import AddingPage from "./pages/Addingpage";
+import Loginpage from "./pages/Loginpage.jsx";
+import Homepage from "./pages/Homepage.jsx";
+import Aboutpage from "./pages/Aboutpage.jsx";
+import Cartpage from "./pages/Cartpage.jsx";
+import Registerypage from "./pages/Reqisterypage.jsx";
+import Favoritepage from "./pages/Favorites.jsx";
+import Userpage from "./pages/Userpage.jsx";
+import Notfound from "./pages/Notfound.jsx";
+import Contactpage from "./pages/Contactpage.jsx";
+import AddingPage from "./pages/Addingpage.jsx";
 import { useDispatch, useSelector } from "react-redux";
 import PurchaseHistory from "./pages/Purchasepage.jsx";
 import Notification from "./components/notification.jsx";

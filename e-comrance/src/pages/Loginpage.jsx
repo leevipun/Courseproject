@@ -6,7 +6,8 @@ import { useDispatch } from "react-redux";
 import { appendUser } from "../../reducer/userReducer";
 import Services from "../services/Services";
 import { addNotification } from "../../reducer/notificationReducer";
-import LoginForm from "../components/loginForm";
+import LoginForm from "../components/loginForm.jsx";
+import React from "react";
 
 const Loginpage = () => {
   const navigate = useNavigate();

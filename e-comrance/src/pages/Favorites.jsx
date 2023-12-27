@@ -1,4 +1,4 @@
-import Navbar from "./../components/navbar";
+import Navbar from "./../components/navbar.jsx";
 import { useSelector } from "react-redux";
 import { useEffect, useState } from "react";
 import { getAllFavoriteItems, getUserData } from "../services/Services";
@@ -11,6 +11,7 @@ import { Button } from "antd";
 import { FaHeart } from "react-icons/fa";
 import { addToFavorites, deleteFavorite } from "../services/Services.js";
 import { appendfavorite } from "../../reducer/favoriteReducer.js";
+import React from "react";
 
 const Favoritepage = () => {
   const dispatch = useDispatch();

@@ -1,10 +1,10 @@
 import { FaShoppingBasket } from "react-icons/fa";
-import Navbar from "./../components/navbar";
+import Navbar from "./../components/navbar.jsx";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useState } from "react";
 import Services, { deleteCartItem, getUserData } from "../services/Services";
 import { initializecart } from "../../reducer/cartReducer";
-import "../styles/Cartpage.css";
+import "../styles/CartStyles.css";
 import {
   LoadingOutlined,
   SmileOutlined,
@@ -14,8 +14,9 @@ import { Steps, Input, Button } from "antd";
 import { CiCreditCard1 } from "react-icons/ci";
 import { PaymentElement } from "@stripe/react-stripe-js";
 import { useNavigate } from "react-router-dom";
-import Spinner from "../components/LoadSpinner";
+import Spinner from "../components/LoadSpinner.jsx";
 import { addNotification } from "../../reducer/notificationReducer";
+import React from "react";
 
 const Cartpage = () => {
   const navigate = useNavigate();

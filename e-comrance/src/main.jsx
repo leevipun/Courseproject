@@ -1,5 +1,5 @@
-import ReactDOM from "@react-dom/client";
-import { Provider } from "@react-redux";
+import ReactDOM from "react-dom/client";
+import { Provider } from "react-redux";
 import { combineReducers, configureStore } from "@reduxjs/toolkit";
 import userReducer from "../reducer/userReducer.js";
 import listingReducer from "../reducer/listingReducer.js";
@@ -15,6 +15,17 @@ import {
 } from "../reducer/filterReducer.js";
 import favoriteReducer from "../reducer/favoriteReducer.js";
 import ownlistingReducer from "../reducer/ownlistingReducer.js";
+import React from "react";
+import "core-js/stable/index.js";
+import "regenerator-runtime/runtime.js";
+import "./App.css";
+import "./styles/AddingStyles.css";
+import "./styles/CartStyles.css";
+import "./styles/HomeStyles.css";
+import "./styles/loginStyles.css";
+import "./styles/registeryStyles.css";
+import "./styles/stripe.css";
+import "./styles/usernavbarStyles.css";
 
 const combineFilter = combineReducers({
   filter: filterReducer,

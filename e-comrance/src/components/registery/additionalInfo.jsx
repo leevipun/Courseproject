@@ -1,4 +1,5 @@
-import { Input, Radio } from "@antd";
+import { Input, Radio } from "antd";
+import React from "react";
 
 const AdditionalInfo = ({
   iban,

@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import Navbar from "./../components/navbar";
+import Navbar from "./../components/navbar.jsx";
 import { useDispatch } from "react-redux";
 import { Input, Button } from "antd";
 import {
@@ -10,10 +10,11 @@ import {
 } from "../services/Services";
 import { addNotification } from "../../reducer/notificationReducer";
 import { useNavigate } from "react-router-dom";
-import AdditionalInfo from "../components/registery/additionalInfo";
-import AddressInfo from "../components/registery/addressInfo";
-import PersonalInfo from "../components/registery/personalInfo";
-import Spinner from "../components/LoadSpinner";
+import AdditionalInfo from "../components/registery/additionalInfo.jsx";
+import AddressInfo from "../components/registery/addressInfo.jsx";
+import PersonalInfo from "../components/registery/personalInfo.jsx";
+import Spinner from "../components/LoadSpinner.jsx";
+import React from "react";
 
 const Userpage = () => {
   const dispatch = useDispatch();

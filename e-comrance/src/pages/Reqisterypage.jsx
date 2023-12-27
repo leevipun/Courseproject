@@ -2,15 +2,16 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { registery, updateStripeId } from "../services/Services";
 import { v4 as uuidv4 } from "uuid";
+import React from "react";
 
 import "../styles/registeryStyles.css";
-import PersonalInfo from "../components/registery/personalInfo";
-import AddressInfo from "../components/registery/addressInfo";
-import AdditionalInfo from "../components/registery/additionalInfo";
+import PersonalInfo from "../components/registery/personalInfo.jsx";
+import AddressInfo from "../components/registery/addressInfo.jsx";
+import AdditionalInfo from "../components/registery/additionalInfo.jsx";
 import { useDispatch } from "react-redux";
 import { addNotification } from "../../reducer/notificationReducer";
 import { Button, Input } from "antd";
-import Spinner from "../components/LoadSpinner";
+import Spinner from "../components/LoadSpinner.jsx";
 
 const Registerypage = () => {
   const dispatch = useDispatch();

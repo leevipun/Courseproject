@@ -1,4 +1,5 @@
-import Navbar from "../components/navbar";
+import Navbar from "../components/navbar.jsx";
+import React from "react";
 
 const Contactpage = () => {
   const sectionStyle = {

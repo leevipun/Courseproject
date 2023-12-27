@@ -11,6 +11,7 @@ import {
 import { clearCart } from "../../reducer/cartReducer";
 import { appendUser, clearUser } from "../../reducer/userReducer";
 import { useEffect } from "react";
+import React from "react";
 
 const PaymentSucess = () => {
   const dispatch = useDispatch();

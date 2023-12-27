@@ -1,5 +1,6 @@
-import { useDispatch, useSelector } from "@react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { clearNotification } from "../../reducer/notificationReducer";
+import React from "react";
 
 const Notification = () => {
   const dispatch = useDispatch();

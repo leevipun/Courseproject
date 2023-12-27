@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
-import Navbar from "./../components/navbar";
-import "../styles/AddingPage.css";
+import Navbar from "./../components/navbar.jsx";
+import "../styles/AddingStyles.css";
 import { Select, Input, Button } from "antd";
 const { TextArea } = Input;
 import CountriesData from "./../../Data/countryData";
@@ -12,6 +12,7 @@ import { v4 as uuidv4 } from "uuid";
 import { addNotification } from "../../reducer/notificationReducer.js";
 import categoriesWithOptions from "../../Data/categoryData.js";
 import Spinner from "../components/LoadSpinner.jsx";
+import React from "react";
 
 const AddingPage = () => {
   const countryData = CountriesData;

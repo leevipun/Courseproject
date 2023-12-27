@@ -1,5 +1,5 @@
 import { FaHeart } from "react-icons/fa";
-import Navbar from "./../components/navbar";
+import Navbar from "./../components/navbar.jsx";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useState } from "react";
 import {
@@ -11,7 +11,7 @@ import { Button, Select, Input } from "antd";
 import { appendcart } from "../../reducer/cartReducer";
 import { addNotification } from "../../reducer/notificationReducer";
 import { LuSettings2 } from "react-icons/lu";
-import "../styles/Homepage.css";
+import "../styles/HomeStyles.css";
 import { initializeListing } from "../../reducer/listingReducer";
 import categoriesWithOptions from "../../Data/categoryData";
 import CountriesData from "../../Data/countryData";
@@ -26,7 +26,8 @@ import {
   appendfavorite,
   initializefavorite,
 } from "../../reducer/favoriteReducer";
-import Spinner from "../components/LoadSpinner";
+import Spinner from "../components/LoadSpinner.jsx";
+import React from "react";
 
 const Homepage = () => {
   const dispatch = useDispatch();

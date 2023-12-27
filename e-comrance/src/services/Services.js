@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const baseURL = "http://localhost:3003";
+const baseURL = BACKEND_URL;
 
 let token = null;
 

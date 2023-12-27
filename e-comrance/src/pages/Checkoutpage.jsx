@@ -2,7 +2,8 @@ import { useEffect, useState } from "react";
 import { loadStripe } from "@stripe/stripe-js";
 import Services, { createPaymentIntent } from "../services/Services";
 import { Elements } from "@stripe/react-stripe-js";
-import CheckoutForm from "../components/CheckoutForm";
+import CheckoutForm from "../components/CheckoutForm.jsx";
+import React from "react";
 
 const stripePromise = loadStripe(
   "pk_test_51OKnCVIH6vH73ShNYWADAfCZDWGrshfLbylxZJNzr3qJcuGHKavRE0JITdLoMRL3VnEsuD8CG7TlFbqLRNROLKrh000HpEysVB"
