@@ -43,7 +43,7 @@ const AdditionalInfo = ({
           id="phoneInput"
           type="text"
           autoComplete="tel"
-          placeholder="phone number"
+          placeholder="phonenumber"
           value={phoneNumber}
           onChange={(e) => setPhoneNumber(e.target.value)}
         />

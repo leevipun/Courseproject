@@ -137,6 +137,14 @@ const Homepage = () => {
     return filteredListings;
   });
 
+  const handleClearFilter = () => {
+    console.log("Clear filter");
+    dispatch(setCategory("None"));
+    dispatch(setCountry("None"));
+    dispatch(setMinPrice(""));
+    dispatch(setMaxPrice(""));
+  };
+
   if (listing.length === 0) {
     return (
       <div>
@@ -187,7 +195,9 @@ const Homepage = () => {
                 />
               </div>
               <div style={{ margin: 10 }}>
-                <Button>Clear filter</Button>
+                <Button onClick={() => handleClearFilter()}>
+                  Clear filter
+                </Button>
               </div>
             </div>
           )}
@@ -257,7 +267,9 @@ const Homepage = () => {
               />
             </div>
             <div style={{ margin: 10 }}>
-              <Button type="primary">Clear filter</Button>
+              <Button type="primary" onClick={() => handleClearFilter()}>
+                Clear filter
+              </Button>
             </div>
           </div>
         )}

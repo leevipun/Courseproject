@@ -50,10 +50,12 @@ const Cartpage = () => {
           (item) => item !== undefined && item !== null && item !== ""
         );
         if (validListings.length === 0) {
+          console.log("validate");
           dispatch(initializecart([]));
           setLoading(false);
           return;
         } else {
+          console.log("else");
           dispatch(initializecart(validListings));
           console.log("Valid Listings", validListings);
           setLoading(false);
@@ -83,8 +85,10 @@ const Cartpage = () => {
       console.log(id);
       const response = await deleteCartItem(id);
       dispatch(initializecart(response));
+      setLoading(false);
     } catch (error) {
       console.log(error);
+      setLoading(false);
     }
   };
 
