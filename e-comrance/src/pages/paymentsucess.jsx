@@ -45,7 +45,7 @@ const PaymentSucess = () => {
     const email = user.email;
     const sellerEmail = cartItems[0].author;
     console.log(email, sellerEmail);
-    //await sendReceipt(email, sellerEmail, cartItems);
+    await sendReceipt(email, sellerEmail, cartItems);
     console.log("send receipt s");
     await sellerReceipt(email, sellerEmail, cartItems);
     console.log("send receipt b");

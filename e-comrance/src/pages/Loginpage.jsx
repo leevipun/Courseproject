@@ -8,6 +8,8 @@ import Services from "../services/Services";
 import { addNotification } from "../../reducer/notificationReducer";
 import LoginForm from "../components/loginForm.jsx";
 import React from "react";
+import { initializecart } from "../../reducer/cartReducer.js";
+import { initializefavorite } from "../../reducer/favoriteReducer.js";
 
 const Loginpage = () => {
   const navigate = useNavigate();
@@ -25,7 +27,10 @@ const Loginpage = () => {
         "loggedNoteappUser",
         JSON.stringify(user.token)
       );
+      dispatch(initializecart());
+      dispatch(initializefavorite());
       navigate("/");
+      dispatch(addNotification("Welcome back"));
     } catch (error) {
       dispatch(addNotification(error.error));
     }

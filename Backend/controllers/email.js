@@ -145,4 +145,24 @@ emailRouter.post("/buyer", async (req, res) => {
   res.status(200).json({ message: "Email sent" });
 });
 
+emailRouter.post("/contact", async (req, res) => {
+  const { email, name, message } = req.body;
+
+  const options = {
+    from: "nordicexchange@outlook.com",
+    to: "nordicexchange@outlook.com",
+    subject: "Contact Form Submission",
+    text: `Name: ${name}\nEmail: ${email}\nMessage: ${message}`,
+  };
+
+  transporter.sendMail(options, function (err, info) {
+    if (err) {
+      console.log(err);
+      return;
+    }
+    console.log("Sent: " + info.response);
+  });
+  res.status(200).json({ message: "Email sent" });
+});
+
 module.exports = { transporter, emailRouter };
