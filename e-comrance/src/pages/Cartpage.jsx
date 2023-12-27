@@ -5,14 +5,7 @@ import { useEffect, useState } from "react";
 import Services, { deleteCartItem, getUserData } from "../services/Services";
 import { initializecart } from "../../reducer/cartReducer";
 import "../styles/CartStyles.css";
-import {
-  LoadingOutlined,
-  SmileOutlined,
-  SolutionOutlined,
-} from "@ant-design/icons";
-import { Steps, Input, Button } from "antd";
-import { CiCreditCard1 } from "react-icons/ci";
-import { PaymentElement } from "@stripe/react-stripe-js";
+import { Button } from "antd";
 import { useNavigate } from "react-router-dom";
 import Spinner from "../components/LoadSpinner.jsx";
 import { addNotification } from "../../reducer/notificationReducer";
@@ -21,9 +14,6 @@ import React from "react";
 const Cartpage = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const [showFillInformation, setShowFillInformation] = useState(false);
-  const [showConfirm, setShowConfirm] = useState(false);
-  const [showCheckout, setShowCheckout] = useState(false);
   const [loading, setLoading] = useState(false);
   const [spinTip, setSpinTip] = useState("");
   const [user, setUser] = useState([]);
@@ -109,13 +99,6 @@ const Cartpage = () => {
       return;
     }
     navigate("/checkout");
-    if (!user[0].name) {
-      setShowCheckout(true);
-      setShowFillInformation(true);
-    } else {
-      setShowCheckout(true);
-      setShowConfirm(true);
-    }
   };
 
   return (
@@ -162,55 +145,6 @@ const Cartpage = () => {
           Check out
         </Button>
       </div>
-      {showCheckout && (
-        <div>
-          <Steps
-            items={[
-              {
-                title: "Fill information",
-                status: "process",
-                icon: <LoadingOutlined />,
-              },
-              {
-                title: "Confirm",
-                status: "wait",
-                icon: <SolutionOutlined />,
-              },
-              {
-                title: "Pay",
-                status: "wait",
-                icon: <CiCreditCard1 />,
-              },
-              {
-                title: "Done",
-                status: "wait",
-                icon: <SmileOutlined />,
-              },
-            ]}
-          />
-          {showFillInformation && (
-            <div>
-              <Input type="text" placeholder="Name" value={user[0].name} />
-              <Input
-                type="text"
-                placeholder="Address"
-                value={user[0].address}
-              />
-              <Input type="text" placeholder="Email" value={user[0].email} />
-              <Button type="primary">Submit</Button>
-            </div>
-          )}
-          {showConfirm && (
-            <div>
-              <div>
-                <h2>Confirm your order</h2>
-                <h3>Total price: {totalPrice} €</h3>
-              </div>
-              <PaymentElement />
-            </div>
-          )}
-        </div>
-      )}
       <Spinner loading={loading} spinTip={spinTip} />
     </div>
   );

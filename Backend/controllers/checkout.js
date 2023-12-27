@@ -37,7 +37,6 @@ checkOutRouter.post("/create-payment-intent", async (req, res) => {
       enabled: true,
     },
     transfer_data: {
-      application_fee_amount: calculateOrderAmount(items) * 0.05,
       destination: user.stripeAccountId,
     },
   });
