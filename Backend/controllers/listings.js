@@ -4,7 +4,6 @@ const List = require("../models/list");
 require("express-async-errors");
 const User = require("../models/user");
 const middleware = require("../utils/middleware");
-const { last } = require("lodash");
 
 const extractUser = middleware.extractUser;
 const extractToken = middleware.extractToken;
