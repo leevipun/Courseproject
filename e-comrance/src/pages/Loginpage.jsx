@@ -19,9 +19,7 @@ const Loginpage = () => {
     event.preventDefault();
     try {
       const user = await Login(email, password);
-      console.log("User Loginissa", user);
       dispatch(appendUser(user));
-      console.log(user.token);
       Services.setToken(user.token);
       window.sessionStorage.setItem(
         "loggedNoteappUser",

@@ -21,8 +21,6 @@ usersRouter.post("/", async (req, res) => {
 
   console.log(req.ip);
 
-  console.log("new object", newObject);
-
   const user = new User({
     email: newObject.email,
     firstname: newObject.firstName,

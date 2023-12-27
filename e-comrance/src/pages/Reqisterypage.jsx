@@ -40,7 +40,6 @@ const Registerypage = () => {
 
     try {
       const id = uuidv4();
-      console.log("phone", phoneNumber);
       const splitBirthday = birthDay.split("-");
       const formattedDate = `${splitBirthday[1]}/${splitBirthday[2]}/${splitBirthday[0]}`;
       const newObject = {

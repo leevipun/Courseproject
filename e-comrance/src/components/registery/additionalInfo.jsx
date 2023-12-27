@@ -37,12 +37,13 @@ const AdditionalInfo = ({
   return (
     <div>
       <div>
+        <label htmlFor="phoneInput">Please iclude the country code: </label>
         <Input
-          style={{ width: 300 }}
-          id="input"
+          style={{ width: 300, margin: 5 }}
+          id="phoneInput"
           type="text"
           autoComplete="tel"
-          placeholder="Phone number"
+          placeholder="phone number"
           value={phoneNumber}
           onChange={(e) => setPhoneNumber(e.target.value)}
         />

@@ -10,7 +10,6 @@ const setToken = (newToken) => {
 };
 
 export const Login = async (email, password) => {
-  console.log(email, password);
   try {
     const response = await axios.post(`${baseURL}/api/login`, {
       email: email,
@@ -32,8 +31,6 @@ export const Login = async (email, password) => {
 
 export const registery = async (newObject) => {
   try {
-    console.log("axios", newObject);
-    console.log(newObject.phone);
     const response = await axios.post(`${baseURL}/api/users`, {
       newObject,
     });
