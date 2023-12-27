@@ -41,25 +41,7 @@ export const registery = async (newObject) => {
   }
 };
 
-export const Adding = async (
-  name,
-  country,
-  price,
-  currency,
-  category,
-  description,
-  pics
-) => {
-  const newObject = {
-    name,
-    country,
-    price,
-    currency,
-    category,
-    description,
-    pics,
-  };
-
+export const Adding = async (newObject) => {
   const config = {
     headers: { Authorization: token },
   };

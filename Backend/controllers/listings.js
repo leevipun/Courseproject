@@ -35,6 +35,7 @@ listingRouter.post("/", extractUser, extractToken, async (req, res, next) => {
   const body = req.body;
 
   console.log(req.token);
+  console.log("body", body);
   console.log("Request user", req.user);
   console.log("Authorization Header:", req.headers.authorization);
 
@@ -56,6 +57,7 @@ listingRouter.post("/", extractUser, extractToken, async (req, res, next) => {
     pics: body.pics,
     author: user.email,
     lastPrice: body.price,
+    pics: body.pics,
     status: "Aviable",
   });
 

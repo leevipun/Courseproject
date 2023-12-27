@@ -26,7 +26,7 @@ const AddingPage = () => {
   const [user, setUser] = useState([]);
   const currencyCode = "EUR";
 
-  const [selectedFile, setSelectedFile] = useState([]);
+  const [selectedFile, setSelectedFile] = useState("");
   const [description, setDescription] = useState("");
 
   const id = uuidv4();
@@ -57,16 +57,17 @@ const AddingPage = () => {
   const handleAdding = async () => {
     try {
       setLoading(true);
-      const response = await Adding(
-        name,
-        selectedCountry,
-        price,
-        currencyCode,
-        category,
-        description,
-        selectedFile,
-        id
-      );
+      const newObject = {
+        name: name,
+        country: selectedCountry,
+        price: price,
+        currency: currencyCode,
+        category: category,
+        description: description,
+        pics: selectedFile,
+        id: id,
+      };
+      const response = await Adding(newObject);
 
       if (response.error) {
         setLoading(false);
@@ -87,9 +88,14 @@ const AddingPage = () => {
     }
   };
 
-  const handleFileChange = (e) => {
-    const files = e.target.files;
-    setSelectedFile(Array.from(files));
+  const convertToBase64 = (e) => {
+    const reader = new FileReader();
+    reader.readAsDataURL(e.target.files[0]);
+    reader.onload = () => {
+      const base64 = reader.result;
+      console.log(base64);
+      setSelectedFile(base64);
+    };
   };
 
   const filterOption = (input, option) =>
@@ -110,7 +116,7 @@ const AddingPage = () => {
           <div id="Prev">
             <div>
               <img
-                src="https://hips.hearstapps.com/hmg-prod/images/dog-puppy-on-garden-royalty-free-image-1586966191.jpg?crop=0.752xw:1.00xh;0.175xw,0&resize=1200:*"
+                src={selectedFile}
                 alt="previewPic"
                 style={{
                   maxWidth: "100%",
@@ -175,7 +181,7 @@ const AddingPage = () => {
             />
           </div>
           <div id="ainputdiv">
-            <Input type="file" multiple onChange={handleFileChange} />
+            <Input type="file" multiple onChange={convertToBase64} />
           </div>
           <div id="ainputdiv">
             <Button type="primary" onClick={handleAdding}>

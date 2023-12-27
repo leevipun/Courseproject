@@ -13,6 +13,7 @@ const cartRouter = require("./controllers/cart.js");
 const favoriteRouter = require("./controllers/favorite.js");
 const checkoutRouter = require("./controllers/checkout.js");
 const { emailRouter } = require("./controllers/email.js");
+var bodyParser = require("body-parser");
 
 mongoose.set("strictQuery", false);
 
@@ -28,6 +29,9 @@ mongoose
   .catch((error) => {
     logger.error("error connection to MongoDB:", error.message);
   });
+
+app.use(bodyParser.json({ limit: "50mb" }));
+app.use(bodyParser.urlencoded({ limit: "50mb", extended: true }));
 
 app.use(cors());
 app.use(express.json());

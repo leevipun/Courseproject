@@ -16,6 +16,7 @@
 }
 
 #divContainer {
+  width: calc(70%);
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -24,6 +25,7 @@
 }
 
 #InputDiv {
+  width: calc(30%);
   display: flex;
   flex-direction: column;
   align-items: flex-end;
