@@ -1,4 +1,3 @@
-import { FaShoppingBasket } from "react-icons/fa";
 import Navbar from "./../components/navbar.jsx";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useState } from "react";
@@ -102,10 +101,9 @@ const Cartpage = () => {
   };
 
   return (
-    <div>
+    <div className="App">
       <div>
         <Navbar />
-        User Profile <FaShoppingBasket />
       </div>
       <div id="listingstyle">
         {cartItems.map((listing) => (
@@ -141,10 +139,16 @@ const Cartpage = () => {
         ))}
       </div>
       <div>
-        <h2>Total price: {totalPrice} €</h2>
+        <h2 style={{ color: "#fcfbfc", marginLeft: 10 }}>
+          Total price: {totalPrice} €
+        </h2>
       </div>
       <div>
-        <Button type="primary" onClick={handleCheckout}>
+        <Button
+          type="primary"
+          style={{ marginLeft: 10 }}
+          onClick={handleCheckout}
+        >
           Check out
         </Button>
       </div>

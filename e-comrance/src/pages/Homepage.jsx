@@ -28,6 +28,7 @@ import {
 import Spinner from "../components/LoadSpinner.jsx";
 import React from "react";
 import { SpeedInsights } from "@vercel/speed-insights/react";
+import Footer from "../components/Footer.jsx";
 
 const Homepage = () => {
   const dispatch = useDispatch();
@@ -124,6 +125,7 @@ const Homepage = () => {
     const filteredListings = state.listing.filter((item) => {
       return (
         item.status !== "In cart" &&
+        item.status !== "Sold" &&
         (state.filter.minPrice === "" || item.price >= state.filter.minPrice) &&
         (state.filter.maxPrice === "" || item.price <= state.filter.maxPrice) &&
         (state.filter.country === "None" ||
@@ -153,7 +155,12 @@ const Homepage = () => {
         </div>
         <div id="itemstyle">
           <p id="welcome"></p>
-          <Button type="primary" id="Filtericon" onClick={handleFiltershow}>
+          <Button
+            type="primary"
+            style={{ marginRight: 10 }}
+            id="Filtericon"
+            onClick={handleFiltershow}
+          >
             <LuSettings2 />
           </Button>
         </div>
@@ -216,13 +223,18 @@ const Homepage = () => {
     );
   } else {
     return (
-      <div>
+      <div id="homepage">
         <div>
           <Navbar />
         </div>
         <div id="itemstyle">
           <div id="welcome"></div>
-          <Button type="primary" id="Filtericon" onClick={handleFiltershow}>
+          <Button
+            type="primary"
+            style={{ marginRight: 10 }}
+            id="Filtericon"
+            onClick={handleFiltershow}
+          >
             <LuSettings2 />
           </Button>
         </div>
@@ -337,6 +349,7 @@ const Homepage = () => {
           <SpeedInsights />
           <Spinner loading={loading} spinTip={spinTip} />
         </div>
+        <Footer />
       </div>
     );
   }

@@ -49,7 +49,7 @@ const Loginpage = () => {
   };
 
   return (
-    <div>
+    <div className="App">
       <LoginForm
         handleLogin={handleLogin}
         handleRegister={handleRegister}

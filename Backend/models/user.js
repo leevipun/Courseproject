@@ -38,6 +38,12 @@ const userSchema = mongoose.Schema({
       ref: "List",
     },
   ],
+  history: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "List",
+    },
+  ],
   cart: [
     {
       type: mongoose.Schema.Types.ObjectId,

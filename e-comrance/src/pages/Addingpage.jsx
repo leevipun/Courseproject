@@ -107,7 +107,7 @@ const AddingPage = () => {
   }
 
   return (
-    <div>
+    <div className="App">
       <div>
         <Navbar />
         <h1 id="ah1">Add a new item</h1>

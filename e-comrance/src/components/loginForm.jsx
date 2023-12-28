@@ -9,6 +9,10 @@ const LoginForm = ({
   email,
   password,
 }) => {
+  const handleForgotPassword = () => {
+    window.location.href = "/forgotpassword";
+  };
+
   return (
     <div
       style={{
@@ -18,8 +22,8 @@ const LoginForm = ({
       }}
     >
       <div>
-        <h1>Login</h1>
-        <form onSubmit={handleLogin}>
+        <form onSubmit={handleLogin} style={{ marginTop: 100 }}>
+          <h1 style={{ color: "#fcfbfc" }}>Login</h1>
           <Input
             id="input"
             type="text"
@@ -40,7 +44,12 @@ const LoginForm = ({
             <Button type="primary" id="button" htmlType="submit">
               Log in
             </Button>
-            <p>Forgot password?</p>
+            <p
+              style={{ color: "#fcfbfc", cursor: "pointer" }}
+              onClick={handleForgotPassword}
+            >
+              Forgot password?
+            </p>
           </div>
           <div>
             <Button type="primary" id="button" onClick={() => handleRegister()}>

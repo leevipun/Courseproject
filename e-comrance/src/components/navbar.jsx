@@ -120,6 +120,9 @@ const Navbar = () => {
       <nav>
         <ul id="navbar">
           <li id="navitem">
+            <Link to="/">Nordic Exchange</Link>
+          </li>
+          <li id="navitem">
             <Link to="/">
               Home <FaHome />
             </Link>
@@ -144,6 +147,7 @@ const Navbar = () => {
               placeholder="input search text"
               onChange={handleChange}
               style={{ width: 250 }}
+              id="NavsearchInput"
               enterButton
             />
           )}

@@ -11,9 +11,11 @@ const Contactpage = () => {
   const [name, setName] = useState("");
   const [message, setMessage] = useState("");
   const sectionStyle = {
-    backgroundColor: "#f8f8f8",
+    backgroundColor: "#336699", // Updated background color
+    backgroundImage: "linear-gradient(90deg, #336699 0%, #66a3cc 100%)", // Updated background gradient
     padding: "50px 0",
     display: "flex",
+    color: "#fcfbfc", // Updated text color
   };
 
   const containerStyle = {
@@ -23,13 +25,13 @@ const Contactpage = () => {
   };
 
   const headingStyle = {
-    color: "#333",
+    color: "#fcfbfc", // Updated heading text color
   };
 
   const paragraphStyle = {
     marginBottom: "20px",
     lineHeight: "1.6",
-    color: "#777",
+    color: "#fcfbfc", // Updated paragraph text color
   };
 
   const formStyle = {
@@ -46,7 +48,7 @@ const Contactpage = () => {
   };
 
   const buttonStyle = {
-    background: "#28a745", // or your brand color
+    background: "#28a745", // Updated button background color
     color: "#fff",
     padding: "10px 20px",
     border: "none",
@@ -65,7 +67,7 @@ const Contactpage = () => {
   };
 
   return (
-    <div>
+    <div className="App">
       <Navbar />
       <section style={sectionStyle}>
         <div style={containerStyle}>

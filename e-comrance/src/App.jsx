@@ -14,9 +14,8 @@ import Userpage from "./pages/Userpage.jsx";
 import Notfound from "./pages/Notfound.jsx";
 import Contactpage from "./pages/Contactpage.jsx";
 import AddingPage from "./pages/Addingpage.jsx";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import Notification from "./components/notification.jsx";
-import { initializeListing } from "../reducer/listingReducer.js";
 import Ownlisting from "./pages/Ownlistingpage.jsx";
 import Checkoutpage from "./pages/Checkoutpage.jsx";
 import PaymentSucess from "./pages/paymentsucess.jsx";
@@ -24,6 +23,7 @@ import { setUser } from "../reducer/userReducer.js";
 import { SpeedInsights } from "@vercel/speed-insights/react";
 import AuthorPage from "./pages/AuthorPage.jsx";
 import AuthorInspect from "./pages/AuthorInspect.jsx";
+import BuyHistoryPage from "./pages/Buyhistorypage.jsx";
 
 const App = () => {
   useEffect(() => {
@@ -75,6 +75,7 @@ const App = () => {
           <Route path="/ownlisting" Component={Ownlisting} />
           <Route path="/users/:id" Component={AuthorInspect} />
           <Route path="/payment-successful" Component={PaymentSucess} />
+          <Route path="/buyhistory" Component={BuyHistoryPage} />
           <Route path="/*" Component={Notfound} />
         </Routes>
       </Router>

@@ -4,9 +4,11 @@ import { SpeedInsights } from "@vercel/speed-insights/react";
 
 const Aboutpage = () => {
   const sectionStyle = {
-    backgroundColor: "#f8f8f8",
+    backgroundColor: "#336699", // Updated background color
+    backgroundImage: "linear-gradient(90deg, #336699 0%, #66a3cc 100%)", // Updated background gradient
     padding: "50px 0",
     display: "flex",
+    color: "#fcfbfc", // Updated text color
   };
 
   const containerStyle = {
@@ -16,27 +18,27 @@ const Aboutpage = () => {
   };
 
   const headingStyle = {
-    color: "#333",
+    color: "#fcfbfc", // Updated heading text color
   };
 
   const introStyle = {
     fontSize: "1.2em",
-    color: "#555",
+    color: "#fcfbfc", // Updated intro text color
   };
 
   const paragraphStyle = {
     marginBottom: "20px",
     lineHeight: "1.6",
-    color: "#777",
+    color: "#fcfbfc", // Updated paragraph text color
   };
 
   const closingStyle = {
     fontWeight: "bold",
-    color: "#28a745", // or your brand color
+    color: "#fcfbfc", // or your brand color
   };
 
   return (
-    <div>
+    <div className="App">
       <Navbar />
       <section style={sectionStyle}>
         <div style={containerStyle}>

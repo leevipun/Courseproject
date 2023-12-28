@@ -1,5 +1,8 @@
 #input {
   margin: 10px;
+  background-color: transparent;
+  border-color: hsl(210, 50%, 40%);
+  text-emphasis-color: #fcfbfc;
 }
 
 #button {

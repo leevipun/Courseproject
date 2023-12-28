@@ -87,7 +87,7 @@ const Favoritepage = () => {
 
   if (!favorites || favorites.length === 0) {
     return (
-      <div>
+      <div className="App">
         <Navbar />
         <div
           style={{
@@ -103,7 +103,7 @@ const Favoritepage = () => {
     );
   }
   return (
-    <div>
+    <div className="App">
       <Navbar />
       <div id="listingstyle">
         {favorites.map((favorite) => (

@@ -76,7 +76,7 @@ const AuthorPage = () => {
     );
   } else {
     return (
-      <div>
+      <div className="App">
         <Navbar />
         <h1>Authors</h1>
         <div className="authors">

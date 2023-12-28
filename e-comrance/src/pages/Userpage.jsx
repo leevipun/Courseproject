@@ -134,7 +134,7 @@ const Userpage = () => {
 
   if (user.length === 0) {
     return (
-      <div>
+      <div className="App">
         <Navbar />
         <div
           style={{
@@ -162,7 +162,7 @@ const Userpage = () => {
     );
   } else {
     return (
-      <div>
+      <div className="App">
         <div>
           <Navbar />
           <h1>Userpage</h1>
