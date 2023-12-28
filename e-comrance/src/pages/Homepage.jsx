@@ -15,7 +15,6 @@ import "../styles/HomeStyles.css";
 import { initializeListing } from "../../reducer/listingReducer";
 import categoriesWithOptions from "../../Data/categoryData";
 import CountriesData from "../../Data/countryData";
-import Services from "../services/Services";
 import {
   setCategory,
   setCountry,
@@ -43,13 +42,13 @@ const Homepage = () => {
     return state.filter;
   });
 
+  document.title = "Nordic Exchange";
+
   useEffect(() => {
     const fetchData = async () => {
       try {
         setLoading(true);
-        const listings = await Services.getAllListings();
-        console.log("Listings", listings);
-        dispatch(initializeListing(listings));
+        dispatch(initializeListing());
         setLoading(false);
       } catch (error) {
         console.error("Error fetching listings:", error);

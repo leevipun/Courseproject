@@ -27,6 +27,8 @@ import "./styles/registeryStyles.css";
 import "./styles/stripe.css";
 import "./styles/usernavbarStyles.css";
 import { SpeedInsights } from "@vercel/speed-insights/react";
+import authorReducer from "../reducer/authorReducer.js";
+import allUsersReducer from "../reducer/allUsersReducer.js";
 
 const combineFilter = combineReducers({
   filter: filterReducer,
@@ -45,6 +47,8 @@ const store = configureStore({
     filter: combineFilter,
     favorite: favoriteReducer,
     userListings: ownlistingReducer,
+    author: authorReducer,
+    allUsers: allUsersReducer,
   },
 });
 

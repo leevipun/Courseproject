@@ -125,6 +125,11 @@ const Navbar = () => {
             </Link>
           </li>
           <li id="navitem">
+            <Link to="/authors">
+              Authors <FaUser />
+            </Link>
+          </li>
+          <li id="navitem">
             <Link to="/about">
               About-us <FaQuestionCircle />
             </Link>

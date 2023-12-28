@@ -297,4 +297,18 @@ usersRouter.delete("/stripe", (req, res) => {
   return res.status(200).json({ message: "Stripe account deleted" });
 });
 
+usersRouter.get("/:id", async (req, res) => {
+  try {
+    const id = req.params.id;
+    console.log(id);
+    const user = await User.findById(id);
+    console.log("user", user);
+    res.json(user);
+    console.log("Lähetetty");
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+});
+
 module.exports = usersRouter;

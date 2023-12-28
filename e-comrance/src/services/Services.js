@@ -1,6 +1,7 @@
 import axios from "axios";
 
-const baseURL = "https://courseproject-backend-6lyy.onrender.com";
+const baseURL =
+  "http://localhost:3003" || "https://courseproject-backend-6lyy.onrender.com";
 
 let token = null;
 
@@ -388,6 +389,27 @@ export const sendContactEmail = async (email, name, message) => {
     return response.data;
   } catch (error) {
     throw { error: error.response.data.error };
+  }
+};
+
+export const getUsers = async () => {
+  try {
+    const response = await axios.get(`${baseURL}/api/users`);
+    console.log("response", response.data);
+
+    return response.data;
+  } catch (error) {
+    throw { error: error.response.data.error };
+  }
+};
+
+export const getAuthor = async (id) => {
+  try {
+    console.log(id);
+    const response = await axios.get(`${baseURL}/api/users/${id}`);
+    return response.data;
+  } catch (error) {
+    throw error.response.data.error;
   }
 };
 

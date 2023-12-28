@@ -1,0 +1,41 @@
+/* UserDisplay.css */
+
+.authors {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.user-display {
+  display: flex;
+  cursor: pointer;
+  align-items: center;
+  background-color: #282c34;
+  color: #61dafb;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  max-width: 400px;
+  margin: 20px;
+}
+
+.avatar {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  margin-right: 20px;
+}
+
+.user-info {
+  flex-grow: 1;
+}
+
+.username {
+  font-size: 1.5rem;
+  margin-bottom: 5px;
+}
+
+.bio {
+  font-size: 1rem;
+  line-height: 1.4;
+}

@@ -22,29 +22,15 @@ import Checkoutpage from "./pages/Checkoutpage.jsx";
 import PaymentSucess from "./pages/paymentsucess.jsx";
 import { setUser } from "../reducer/userReducer.js";
 import { SpeedInsights } from "@vercel/speed-insights/react";
+import AuthorPage from "./pages/AuthorPage.jsx";
+import AuthorInspect from "./pages/AuthorInspect.jsx";
 
 const App = () => {
-  const dispatch = useDispatch();
-
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const listings = await Services.getAllListings();
-        dispatch(initializeListing(listings));
-        console.log("Listings", listings);
-      } catch (error) {
-        console.error("Error fetching listings:", error);
-      }
-    };
-
-    fetchData();
-  }, []);
-
   useEffect(() => {
     const user = JSON.parse(sessionStorage.getItem("loggedNoteappUser"));
     const fetchData = async () => {
       Services.setToken(user);
-      if (!user && user.lenght === 0) {
+      if (!user || user.lenght === 0) {
         console.log("No user logged in");
         return;
       }
@@ -85,7 +71,9 @@ const App = () => {
           <Route path="/user" Component={Userpage} />
           <Route path="/contacts" Component={Contactpage} />
           <Route path="/add" Component={AddingPage} />
+          <Route path="authors" Component={AuthorPage} />
           <Route path="/ownlisting" Component={Ownlisting} />
+          <Route path="/users/:id" Component={AuthorInspect} />
           <Route path="/payment-successful" Component={PaymentSucess} />
           <Route path="/*" Component={Notfound} />
         </Routes>
