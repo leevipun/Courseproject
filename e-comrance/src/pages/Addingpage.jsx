@@ -79,7 +79,7 @@ const AddingPage = () => {
         navigate("/");
         dispatch(appendlisting(response));
         console.log(response);
-        dispatch(addNotification(response.name, "was listed"));
+        dispatch(addNotification(`${response.name} was listed`));
         console.log("Navigoidaan");
       }
     } catch (error) {

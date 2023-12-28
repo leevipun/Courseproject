@@ -308,6 +308,16 @@ export const deleteUserListing = async (id) => {
   }
 };
 
+export const getListing = async (id) => {
+  try {
+    const response = await axios.get(`${baseURL}/api/listings/${id}`);
+    console.log(response.data);
+    return response.data;
+  } catch (error) {
+    throw { error: error.response.data.error };
+  }
+};
+
 export const createPaymentIntent = async (items, userId) => {
   try {
     const response = await axios.post(
