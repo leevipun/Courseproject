@@ -15,6 +15,7 @@ import AddressInfo from "../components/registery/addressInfo.jsx";
 import PersonalInfo from "../components/registery/personalInfo.jsx";
 import Spinner from "../components/LoadSpinner.jsx";
 import React from "react";
+import { SpeedInsights } from "@vercel/speed-insights/react";
 
 const Userpage = () => {
   const dispatch = useDispatch();
@@ -280,6 +281,7 @@ const Userpage = () => {
               </Button>
             </div>
           </div>
+          <SpeedInsights />
           <Spinner loading={loading} spinTip={spinTip} />
         </div>
       </div>

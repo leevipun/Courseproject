@@ -13,6 +13,7 @@ import { addNotification } from "../../reducer/notificationReducer.js";
 import categoriesWithOptions from "../../Data/categoryData.js";
 import Spinner from "../components/LoadSpinner.jsx";
 import React from "react";
+import { SpeedInsights } from "@vercel/speed-insights/react";
 
 const AddingPage = () => {
   const countryData = CountriesData;
@@ -191,6 +192,7 @@ const AddingPage = () => {
         </div>
         <Spinner loading={loading} spinTip="Adding listing" />
       </div>
+      <SpeedInsights />
     </div>
   );
 };

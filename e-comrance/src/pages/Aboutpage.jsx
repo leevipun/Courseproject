@@ -1,5 +1,6 @@
 import Navbar from "./../components/navbar.jsx";
 import React from "react";
+import { SpeedInsights } from "@vercel/speed-insights/react";
 
 const Aboutpage = () => {
   const sectionStyle = {
@@ -73,6 +74,7 @@ const Aboutpage = () => {
           </p>
         </div>
       </section>
+      <SpeedInsights />
     </div>
   );
 };

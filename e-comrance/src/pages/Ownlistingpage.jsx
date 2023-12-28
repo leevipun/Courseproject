@@ -15,6 +15,7 @@ import Spinner from "../components/LoadSpinner.jsx";
 import { useNavigate } from "react-router-dom";
 import { addNotification } from "../../reducer/notificationReducer";
 import React from "react";
+import { SpeedInsights } from "@vercel/speed-insights/react";
 
 const Ownlistings = () => {
   const dispatch = useDispatch();
@@ -238,6 +239,7 @@ const Ownlistings = () => {
             <Spinner loading={loading} tip={spinTip} />
           </div>
         )}
+        <SpeedInsights />
       </div>
     );
   }

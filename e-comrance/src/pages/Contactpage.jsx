@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import { sendContactEmail } from "../services/Services.js";
 import { useDispatch } from "react-redux";
 import { addNotification } from "../../reducer/notificationReducer.js";
+import { SpeedInsights } from "@vercel/speed-insights/react";
 
 const Contactpage = () => {
   const dispatch = useDispatch();
@@ -100,6 +101,7 @@ const Contactpage = () => {
           </form>
         </div>
       </section>
+      <SpeedInsights />
     </div>
   );
 };

@@ -12,6 +12,7 @@ import { FaHeart } from "react-icons/fa";
 import { addToFavorites, deleteFavorite } from "../services/Services.js";
 import { appendfavorite } from "../../reducer/favoriteReducer.js";
 import React from "react";
+import { SpeedInsights } from "@vercel/speed-insights/react";
 
 const Favoritepage = () => {
   const dispatch = useDispatch();
@@ -108,7 +109,10 @@ const Favoritepage = () => {
         {favorites.map((favorite) => (
           <div key={favorite.id} id="listing">
             <img
-              src="https://hips.hearstapps.com/hmg-prod/images/dog-puppy-on-garden-royalty-free-image-1586966191.jpg?crop=0.752xw:1.00xh;0.175xw,0&resize=1200:*" // assuming you have an 'imageUrl' property
+              src={
+                favorite.pics ||
+                "https://hips.hearstapps.com/hmg-prod/images/dog-puppy-on-garden-royalty-free-image-1586966191.jpg?crop=0.752xw:1.00xh;0.175xw,0&resize=1200:*"
+              }
               alt={favorite.name}
               style={{
                 maxWidth: "100%",
@@ -149,6 +153,7 @@ const Favoritepage = () => {
           </div>
         ))}
       </div>
+      <SpeedInsights />
       <Spinner loading={loading} tip={spinTip} />
     </div>
   );

@@ -14,15 +14,21 @@ import { useEffect } from "react";
 import React, { useState } from "react";
 import Services from "../services/Services.js";
 import { initializecart } from "../../reducer/cartReducer.js";
+import { SpeedInsights } from "@vercel/speed-insights/react";
+import Spinner from "../components/LoadSpinner.jsx";
 
 const PaymentSucess = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [user, setUser] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [spinTip, setSpinTip] = useState("");
 
   useEffect(() => {
     console.log("useEffect");
+    setSpinTip("Loading receipt...");
     const fetchData = async () => {
+      setLoading(true);
       const sessionUser = window.sessionStorage.getItem("loggedNoteappUser");
       const user = JSON.parse(sessionUser);
       console.log(user);
@@ -32,6 +38,7 @@ const PaymentSucess = () => {
       dispatch(initializecart(listings));
       dispatch(clearUser());
       dispatch(appendUser(response));
+      setLoading(false);
     };
     fetchData();
   }, []);
@@ -42,22 +49,32 @@ const PaymentSucess = () => {
   console.log(cartItems);
 
   const handleBackToHome = async () => {
+    setSpinTip("Sending receipt...");
+    setLoading(true);
     const email = user.email;
     const sellerEmail = cartItems[0].author;
     console.log(email, sellerEmail);
-    await sendReceipt(email, sellerEmail, cartItems);
-    console.log("send receipt s");
-    await sellerReceipt(email, sellerEmail, cartItems);
-    console.log("send receipt b");
-    cartItems.forEach(async (item) => {
-      console.log("delete user listing");
-      await deleteUserListing(item.id);
-      console.log("delete cart item");
-      await deleteCartItem(item.id);
-    });
 
-    navigate("/");
-    dispatch(clearCart());
+    try {
+      await sendReceipt(email, sellerEmail, cartItems);
+      console.log("send receipt s");
+      await sellerReceipt(email, sellerEmail, cartItems);
+      console.log("send receipt b");
+
+      for (const item of cartItems) {
+        console.log("delete user listing");
+        await deleteUserListing(item.id);
+        console.log("delete cart item");
+        await deleteCartItem(item.id);
+      }
+
+      navigate("/");
+      dispatch(clearCart());
+    } catch (error) {
+      console.error("Error:", error);
+    } finally {
+      setLoading(false);
+    }
   };
 
   console.log(cartItems);
@@ -78,7 +95,10 @@ const PaymentSucess = () => {
           <div key={cartItem.id} id="Cartlisting">
             <div>
               <img
-                src="https://hips.hearstapps.com/hmg-prod/images/dog-puppy-on-garden-royalty-free-image-1586966191.jpg?crop=0.752xw:1.00xh;0.175xw,0&resize=1200:*"
+                src={
+                  cartItem.pics ||
+                  "https://hips.hearstapps.com/hmg-prod/images/dog-puppy-on-garden-royalty-free-image-1586966191.jpg?crop=0.752xw:1.00xh;0.175xw,0&resize=1200:*"
+                }
                 alt={cartItem.name}
                 style={{
                   maxWidth: "100%",
@@ -105,6 +125,8 @@ const PaymentSucess = () => {
         <Button type="primary" onClick={handleBackToHome}>
           Back to Home
         </Button>
+        <SpeedInsights />
+        <Spinner loading={loading} tip={spinTip} />
       </div>
     </div>
   );

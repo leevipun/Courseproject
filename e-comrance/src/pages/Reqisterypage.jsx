@@ -12,6 +12,7 @@ import { useDispatch } from "react-redux";
 import { addNotification } from "../../reducer/notificationReducer";
 import { Button, Input } from "antd";
 import Spinner from "../components/LoadSpinner.jsx";
+import { SpeedInsights } from "@vercel/speed-insights/react";
 
 const Registerypage = () => {
   const dispatch = useDispatch();
@@ -182,6 +183,7 @@ const Registerypage = () => {
           )}
         </form>
         <Spinner loading={loading} spinTip={spinTip} />
+        <SpeedInsights />
       </div>
     </div>
   );

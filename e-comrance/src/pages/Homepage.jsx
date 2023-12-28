@@ -28,6 +28,7 @@ import {
 } from "../../reducer/favoriteReducer";
 import Spinner from "../components/LoadSpinner.jsx";
 import React from "react";
+import { SpeedInsights } from "@vercel/speed-insights/react";
 
 const Homepage = () => {
   const dispatch = useDispatch();
@@ -334,6 +335,7 @@ const Homepage = () => {
           ))}
         </div>
         <div>
+          <SpeedInsights />
           <Spinner loading={loading} spinTip={spinTip} />
         </div>
       </div>

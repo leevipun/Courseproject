@@ -89,10 +89,15 @@ emailRouter.post("/buyer", async (req, res) => {
   const itemHTML = items
     .map(
       (cartItem) => `
-    <div key=${cartItem.id} id="Cartlisting" border: 1px solid #ccc; margin: 10px; padding: 10px; border-radius: 10px;">
+    <div key=${
+      cartItem.id
+    } id="Cartlisting" border: 1px solid #ccc; margin: 10px; padding: 10px; border-radius: 10px;">
       <div>
         <img
-          src="https://hips.hearstapps.com/hmg-prod/images/dog-puppy-on-garden-royalty-free-image-1586966191.jpg?crop=0.752xw:1.00xh;0.175xw,0&resize=600:*"
+          src=${
+            cartItem.pics ||
+            "https://hips.hearstapps.com/hmg-prod/images/dog-puppy-on-garden-royalty-free-image-1586966191.jpg?crop=0.752xw:1.00xh;0.175xw,0&resize=600:*"
+          }
           alt=${cartItem.name}
           style="
             max-width: 100%;
@@ -103,7 +108,9 @@ emailRouter.post("/buyer", async (req, res) => {
         />
       </div>
       <div>
-        <div style="margin: 5px; font-weight: bold;">Name: ${cartItem.name}</div>
+        <div style="margin: 5px; font-weight: bold;">Name: ${
+          cartItem.name
+        }</div>
         <div style="margin: 5px;">Country: ${cartItem.country}</div>
         <div style="margin: 5px;">
           Price: ${cartItem.price} ${cartItem.currency}
@@ -129,7 +136,7 @@ emailRouter.post("/buyer", async (req, res) => {
         ${itemHTML}
       </div>
       <p style="text-align: center; margin-top: 20px; font-size: 16px; color: #555;">
-        If you have any questions or concerns, please contact us at nordicexchange@outlook.com or the seller ${sellerEmail}.
+        If you have any questions or concerns, please contact us at nordicexchange@outlook.com or the seller at ${sellerEmail}.
       </p>
     </div>
   `,
