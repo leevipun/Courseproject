@@ -7,7 +7,7 @@ import { useNavigate } from "react-router-dom";
 import { clearAuthor, setAuthor } from "../../reducer/authorReducer.js";
 import { useSelector } from "react-redux";
 import React, { useState } from "react";
-import Spinner from "../components/LoadSpinner";
+import Spinner from "../components/LoadSpinner.jsx";
 import { setauthorListings } from "../../reducer/authorListingsReducer.js";
 import { addToCart } from "../services/Services.js";
 import { appendcart } from "../../reducer/cartReducer.js";

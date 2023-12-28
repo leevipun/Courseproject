@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { getUsers } from "../src/services/Services";
+import { getUsers } from "../src/services/Services.js";
 
 const initialState = [];
 
