@@ -26,6 +26,7 @@ import "./styles/loginStyles.css";
 import "./styles/registeryStyles.css";
 import "./styles/stripe.css";
 import "./styles/usernavbarStyles.css";
+import { SpeedInsights } from "@vercel/speed-insights/react";
 
 const combineFilter = combineReducers({
   filter: filterReducer,
@@ -52,5 +53,6 @@ console.log(store.getState());
 ReactDOM.createRoot(document.getElementById("root")).render(
   <Provider store={store}>
     <App />
+    <SpeedInsights />
   </Provider>
 );

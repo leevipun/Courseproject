@@ -21,6 +21,7 @@ import Ownlisting from "./pages/Ownlistingpage.jsx";
 import Checkoutpage from "./pages/Checkoutpage.jsx";
 import PaymentSucess from "./pages/paymentsucess.jsx";
 import { setUser } from "../reducer/userReducer.js";
+import { SpeedInsights } from "@vercel/speed-insights/react";
 
 const App = () => {
   const dispatch = useDispatch();
@@ -89,6 +90,7 @@ const App = () => {
           <Route path="/*" Component={Notfound} />
         </Routes>
       </Router>
+      <SpeedInsights />
     </div>
   );
 };
