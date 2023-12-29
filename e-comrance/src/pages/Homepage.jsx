@@ -12,9 +12,11 @@ import { SpeedInsights } from "@vercel/speed-insights/react";
 import Footer from "../components/Footer.jsx";
 import ListingCard from "../components/ListingCard.jsx";
 import FilterCard from "../components/FilterCard.jsx";
+import { useNavigate } from "react-router-dom";
 
 const Homepage = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const [showFilter, setShowFilter] = useState(false);
   const [loading, setLoading] = useState(false);
   const spinTip = "Loading listings...";
@@ -32,6 +34,15 @@ const Homepage = () => {
         dispatch(initializeListing());
         setLoading(false);
       } catch (error) {
+        if (error.status === 401) {
+          navigate("/login");
+          dispatch(
+            addNotification(
+              "Please login first your session has expired",
+              "error"
+            )
+          );
+        }
         console.error("Error fetching listings:", error);
         dispatch(addNotification(error));
         setLoading(false);
@@ -65,7 +76,7 @@ const Homepage = () => {
 
   if (listing.length === 0) {
     return (
-      <div>
+      <div className="App">
         <div>
           <Navbar />
         </div>

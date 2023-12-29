@@ -3,13 +3,13 @@ import React from "react";
 
 const UserNavbar = () => {
   return (
-    <div>
+    <div className="App">
       <nav>
-        <ul id="ul">
-          <li id="li">Info</li>
-          <li id="li">Purchase history</li>
-          <li id="li">Orders</li>
-          <li id="li">Log out</li>
+        <ul>
+          <li className="nav-item">Info</li>
+          <li className="nav-item">Purchase history</li>
+          <li className="nav-item">Orders</li>
+          <li className="nav-item">Log out</li>
         </ul>
       </nav>
     </div>

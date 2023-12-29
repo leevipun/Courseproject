@@ -15,6 +15,7 @@ import Spinner from "../components/LoadSpinner.jsx";
 import { setauthorListings } from "../../reducer/authorListingsReducer.js";
 import Navbar from "../components/navbar.jsx";
 import ListingCard from "../components/ListingCard.jsx";
+import "../styles/AuthorInspect.css";
 
 const AuthorInspect = () => {
   const dispatch = useDispatch();
@@ -86,26 +87,41 @@ const AuthorInspect = () => {
   return (
     <div className="App">
       <Navbar />
-      <h1
-        style={{ display: "flex", justifyContent: "center" }}
-      >{`${author.firstname} ${author.lastname}`}</h1>
-      <Button onClick={() => handleBack()}>Back</Button>
-      <Button
-        type="primary"
-        onClick={() => handleSendFriendReq(author.id)}
-        disabled={disabled}
-      >
-        {buttonText}
-      </Button>
-      <div>
-        <p>{`Name: ${author.firstname} ${author.lastname}`}</p>
-        <p>{author.email}</p>
+
+      <div className="user-profile">
+        <Button className="back-button" onClick={() => handleBack()}>
+          Back
+        </Button>
+        <h1>{`${author.firstname} ${author.lastname}`}</h1>
+
+        <Button
+          type="primary"
+          onClick={() => handleSendFriendReq(author.id)}
+          disabled={disabled}
+        >
+          {buttonText}
+        </Button>
+
+        <div className="user-details">
+          <p>{`Name: ${author.firstname} ${author.lastname}`}</p>
+          <p>Email: {author.email}</p>
+          <p>Phone: {author.phone}</p>
+
+          <div className="address-details">
+            <h3>Address</h3>
+            <p>{author.address}</p>
+            <p>{author.city}</p>
+            <p>{author.country}</p>
+          </div>
+        </div>
+
+        <Spinner loading={loading} tip={spinTip} />
       </div>
-      <div>
+      <div style={{ marginTop: 10 }} className="listing-container">
         <h3>Listings</h3>
+        <p>{`Number of listings: ${listings.length}`}</p>
         <ListingCard listings={listings} user={user} />
       </div>
-      <Spinner loading={loading} tip={spinTip} />
     </div>
   );
 };

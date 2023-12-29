@@ -1,6 +1,7 @@
 import axios from "axios";
 
-const baseURL = "https://courseproject-backend-6lyy.onrender.com";
+const baseURL =
+  "http://localhost:3003" || "https://courseproject-backend-6lyy.onrender.com";
 
 let token = null;
 

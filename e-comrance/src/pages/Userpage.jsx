@@ -145,7 +145,7 @@ const Userpage = () => {
           }}
         >
           <div>
-            <p>Please login first</p>
+            <p>Please login first your session has expired</p>
             <Button type="primary" onClick={() => navigate("/login")}>
               Login
             </Button>
@@ -167,13 +167,7 @@ const Userpage = () => {
           <Navbar />
           <h1>Userpage</h1>
           <div id="userPageDiv">
-            <div
-              style={{
-                display: "flex",
-                justifyContent: "center",
-                backgroundColor: "aqua",
-              }}
-            >
+            <div>
               <ul id="usernavbar">
                 <li id="usernavitem" onClick={handleShowPersonalInfo}>
                   Personal Info

@@ -55,7 +55,7 @@ const Ownlistings = () => {
           navigate("/login");
           dispatch(
             addNotification(
-              "Please login first so we can keep your favorites stored",
+              "Please login first your session has expired so we can keep your favorites stored",
               "error"
             )
           );

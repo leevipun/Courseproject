@@ -19,7 +19,9 @@ const ListingCard = ({ listings, user }) => {
   const handleAddToCart = async (id) => {
     try {
       if (user.length === 0) {
-        dispatch(addNotification("Please login first"));
+        dispatch(
+          addNotification("Please login first your session has expired")
+        );
         return;
       }
       const response = await addToCart(id);
@@ -54,7 +56,11 @@ const ListingCard = ({ listings, user }) => {
 
   const handleAddToFavorites = async (id) => {
     if (user.length === 0) {
-      dispatch(addNotification("Please login first"));
+      dispatch(
+        addNotification(
+          "Please login first your session has expired your session has expired"
+        )
+      );
       return;
     }
     if (userFavoriteId.includes(id)) {
@@ -74,7 +80,13 @@ const ListingCard = ({ listings, user }) => {
   };
 
   return (
-    <div id="listingstyle">
+    <div
+      id="listingstyle"
+      style={{
+        fontFamily:
+          'system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif',
+      }}
+    >
       {listings.map((listing) => (
         <div key={listing.id} id="listing">
           <div>

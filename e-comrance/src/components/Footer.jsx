@@ -20,6 +20,7 @@ const Footer = () => {
 
   return (
     <div
+      className="App"
       style={{ minHeight: "33vh", display: "flex", flexDirection: "column" }}
     >
       <main style={{ flex: 1 }}>{/* Your main content goes here */}</main>

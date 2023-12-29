@@ -54,7 +54,7 @@ const Cartpage = () => {
           navigate("/login");
           dispatch(
             addNotification(
-              "Please login first so we can keep your cart up to date",
+              "Please login first your session has expired so we can keep your cart up to date",
               "error"
             )
           );
@@ -94,7 +94,7 @@ const Cartpage = () => {
 
   const handleCheckout = () => {
     if (!user) {
-      alert("Please login first");
+      alert("Please login first your session has expired");
       return;
     }
     navigate("/checkout");

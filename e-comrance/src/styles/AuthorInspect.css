@@ -1,0 +1,44 @@
+/* UserProfile.css */
+
+.user-profile {
+  max-width: calc(90% - 40px);
+  margin: 0 auto;
+  padding: 20px;
+  background-color: rgba(153, 204, 255, 0.5);
+  backdrop-filter: blur(10px);
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  color: #fdfcfd;
+}
+
+h1 {
+  color: #fdfcfd;
+}
+
+.back-button,
+.primary-button {
+  margin-right: 10px;
+}
+
+.user-details {
+  margin-top: 20px;
+}
+
+.address-details {
+  margin-top: 10px;
+}
+
+.listing-container {
+  max-width: calc(90% - 40px);
+  margin: 0 auto;
+  padding: 20px;
+  background-color: rgba(153, 204, 255, 0.5);
+  backdrop-filter: blur(10px);
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  color: #fdfcfd;
+}
+
+.spinner {
+  margin-top: 20px;
+}

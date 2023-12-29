@@ -18,10 +18,12 @@ import { CiLogin } from "react-icons/ci";
 import { UserOutlined, LogoutOutlined } from "@ant-design/icons";
 import { useDispatch, useSelector } from "react-redux";
 import { filterChange } from "../../reducer/filterReducer";
-import { clearUser } from "../../reducer/userReducer";
+import { clearUser, setUser } from "../../reducer/userReducer";
 import { clearCart } from "../../reducer/cartReducer";
 import { clearFavorite } from "../../reducer/favoriteReducer";
 import { clearListing } from "../../reducer/listingReducer";
+import { getUserData } from "../services/Services";
+import { addNotification } from "../../reducer/notificationReducer";
 
 const Navbar = () => {
   const navigate = useNavigate();
@@ -32,21 +34,30 @@ const Navbar = () => {
   const [showCart, setShowCart] = useState(false);
 
   useEffect(() => {
-    const fetchData = () => {
-      const loggerUser = window.sessionStorage.getItem("loggedNoteappUser");
+    const fetchData = async () => {
+      try {
+        const loggerUser = window.sessionStorage.getItem("loggedNoteappUser");
 
-      if (loggerUser) {
-        const user = JSON.parse(loggerUser);
+        if (loggerUser) {
+          const user = JSON.parse(loggerUser);
 
-        const userStatus = user.style;
-        if (userStatus === "seller" || userStatus === "both") {
-          setShowAdd(true);
+          const userStatus = user.style;
+          if (userStatus === "seller" || userStatus === "both") {
+            setShowAdd(true);
+          }
+          if (userStatus !== "seller") {
+            setShowCart(true);
+          }
+          if (user.length > 0) {
+            setIsLogged(true);
+          }
         }
-        if (userStatus !== "seller") {
-          setShowCart(true);
-        }
-        if (user.length > 0) {
-          setIsLogged(true);
+        const response = await getUserData(loggerUser);
+        setUser(response);
+      } catch (error) {
+        if (error.status === 401) {
+          navigate("/login");
+          dispatch(addNotification("Please login, your session has expired"));
         }
       }
     };
@@ -127,7 +138,12 @@ const Navbar = () => {
   ];
 
   return (
-    <div>
+    <div
+      style={{
+        fontFamily:
+          'system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif',
+      }}
+    >
       <nav>
         <ul id="navbar">
           <li id="navitem">

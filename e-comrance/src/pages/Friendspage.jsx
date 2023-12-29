@@ -64,7 +64,7 @@ const Friendspage = () => {
           navigate("/login");
           dispatch(
             addNotification(
-              "Please login first so we can add your listing to your account and you could get the money from it",
+              "Please login first your session has expired so we can add your listing to your account and you could get the money from it",
               "error"
             )
           );
