@@ -45,3 +45,23 @@
   font-size: 1rem;
   line-height: 1.4;
 }
+
+.actions button {
+  background-color: #336699; /* Use the background color from #homepage */
+  color: #61dafb; /* Use the text color from .user-display */
+  border: none;
+  padding: 10px 20px; /* Adjust padding for a more balanced look */
+  margin-right: 10px;
+  margin-left: 10px;
+  cursor: pointer;
+  border-radius: 5px; /* Round the button corners */
+  transition: background-color 0.3s ease; /* Add a smooth transition effect */
+}
+
+.actions button:hover {
+  background-color: #1a6071; /* Darken the color on hover */
+}
+
+.actions button:active {
+  background-color: #1a3b4a; /* Darken the color on click */
+}

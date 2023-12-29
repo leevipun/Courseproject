@@ -4,7 +4,6 @@ import {
   getAuthor,
   getListing,
   sendFriendRequest,
-  startToFollow,
 } from "../services/Services.js";
 import { addNotification } from "../../reducer/notificationReducer.js";
 import { Button } from "antd";
@@ -82,26 +81,6 @@ const AuthorInspect = () => {
     }
   };
 
-  const handleFollow = async (id) => {
-    setSpinTip("Following...");
-    try {
-      setLoading(true);
-      console.log(id);
-      const response = await startToFollow(id);
-      console.log(response);
-      console.log(response.status);
-      if (response.status === "Pending") {
-        setButtonText("Pending");
-        setDisabled(true);
-      }
-      dispatch(addNotification("Followed"));
-    } catch (error) {
-      dispatch(addNotification(error.error));
-    } finally {
-      setLoading(false);
-    }
-  };
-
   if (loading) return <Spinner loading={loading} tip={spinTip} />;
 
   return (
@@ -118,7 +97,6 @@ const AuthorInspect = () => {
       >
         {buttonText}
       </Button>
-      <Button onClick={() => handleFollow(author.id)}>Start to follow</Button>
       <div>
         <p>{`Name: ${author.firstname} ${author.lastname}`}</p>
         <p>{author.email}</p>

@@ -6,54 +6,6 @@ const extractUser = require("../utils/middleware").extractUser;
 const User = require("../models/user");
 const FriendReq = require("../models/friendReq");
 
-friendsRouter.post("/", extractUser, extractToken, async (req, res, next) => {
-  try {
-    const body = req.body;
-    console.log("body", body);
-    console.log("Request user", req.user);
-
-    if (!req.token) {
-      return res.status(401).json({ error: "Token not provided" });
-    }
-
-    const deCodedToken = jwt.verify(req.token, process.env.SECRET);
-
-    if (!deCodedToken.id) {
-      return res.status(401).json({ error: "Invalid token" });
-    }
-
-    const reciverId = body.id;
-    const reciver = await User.findById(reciverId);
-    console.log("reciver", reciver);
-
-    if (!reciver) {
-      return res.status(400).json({ error: "User not found" });
-    }
-
-    if (reciverId === deCodedToken.id) {
-      return res.status(400).json({ error: "You cannot add yourself" });
-    }
-
-    const sender = await User.findById(deCodedToken.id);
-    console.log("sender", sender);
-
-    if (sender.friends.includes(reciverId)) {
-      return res.status(400).json({ error: "You are already friends" });
-    }
-
-    sender.friends = sender.friends.concat(reciverId);
-
-    const savedSender = await sender.save();
-
-    res.json(savedSender);
-  } catch (error) {
-    console.error(error);
-    return res
-      .status(400)
-      .send({ error: "Error occurred while adding friend" });
-  }
-});
-
 friendsRouter.post(
   "/sendRequest",
   extractUser,
@@ -93,6 +45,7 @@ friendsRouter.post(
         sender: sender._id,
         senderName: `${sender.firstname} ${sender.lastname}`,
         receiver: reciver._id,
+        receiverName: `${reciver.firstname} ${reciver.lastname}`,
         status: "Pending",
       });
 
@@ -278,6 +231,46 @@ friendsRouter.delete("/requests/:id", extractToken, async (req, res) => {
     return res
       .status(400)
       .json({ error: "Error occurred while deleting friend request" });
+  }
+});
+
+friendsRouter.delete("/:id", extractToken, async (req, res) => {
+  try {
+    const deCodedToken = jwt.verify(req.token, process.env.SECRET);
+    if (!deCodedToken.id) {
+      return res.status(401).json({ error: "Invalid token" });
+    }
+    const friendId = req.params.id;
+    const user = await User.findById(deCodedToken.id);
+    if (!user) {
+      return res.status(400).json({ error: "User not found" });
+    }
+    const friend = await User.findById(friendId);
+
+    await User.findOneAndUpdate(
+      { _id: user._id },
+      { $pull: { friends: friendId } }
+    );
+    await User.findOneAndUpdate(
+      { _id: friendId },
+      { $pull: { friends: user._id } }
+    );
+    await FriendReq.findOneAndRemove({
+      $or: [
+        { sender: user._id, receiver: friend._id },
+        { sender: friend._id, receiver: user._id },
+      ],
+    });
+
+    const filteredFriends = user.friends.filter(
+      (id) => id.toString() !== friendId.toString()
+    );
+    res.json(filteredFriends);
+  } catch (error) {
+    console.error(error);
+    return res
+      .status(400)
+      .json({ error: "Error occurred while deleting friend" });
   }
 });
 

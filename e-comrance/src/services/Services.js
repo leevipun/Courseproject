@@ -1,6 +1,7 @@
 import axios from "axios";
 
-const baseURL = "https://courseproject-backend-6lyy.onrender.com";
+const baseURL =
+  "http://localhost:3003" || "https://courseproject-backend-6lyy.onrender.com";
 
 let token = null;
 
@@ -422,22 +423,6 @@ export const getAuthor = async (id) => {
   }
 };
 
-export const startToFollow = async (id) => {
-  try {
-    const config = {
-      headers: { Authorization: token },
-    };
-    const response = await axios.post(
-      `${baseURL}/api/friends/`,
-      { id },
-      config
-    );
-    return response.data;
-  } catch (error) {
-    throw { error: error.response.data.error };
-  }
-};
-
 export const sendFriendRequest = async (id) => {
   try {
     const config = {
@@ -504,6 +489,19 @@ export const deleteFriendRequest = async (id) => {
       `${baseURL}/api/friends/requests/${id}`,
       config
     );
+    console.log(response.data, "response");
+    return response.data;
+  } catch (error) {
+    throw { error: error.response.data.error };
+  }
+};
+
+export const deleteFriend = async (id) => {
+  try {
+    const config = {
+      headers: { Authorization: token },
+    };
+    const response = await axios.delete(`${baseURL}/api/friends/${id}`, config);
     console.log(response.data, "response");
     return response.data;
   } catch (error) {

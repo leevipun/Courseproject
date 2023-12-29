@@ -13,6 +13,10 @@ const friendReqSchema = mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: "User",
   },
+  receiverName: {
+    type: String,
+    required: true,
+  },
   status: {
     type: String,
     required: true,

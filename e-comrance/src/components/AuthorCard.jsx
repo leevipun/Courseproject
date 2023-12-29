@@ -1,13 +1,31 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import "../styles/AuthorStyles.css";
+import { deleteFriend } from "../services/Services.js";
+import { initializeFollowers } from "../../reducer/followersReducer";
+import { useDispatch } from "react-redux";
+import { addNotification } from "../../reducer/notificationReducer.js";
 
-const AuthorCard = ({ users }) => {
+const AuthorCard = ({ users, canDelete }) => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const handleReDirect = (id) => {
     console.log(id);
     navigate(`/users/${id}`);
+  };
+
+  const handleDelete = async (id) => {
+    try {
+      await deleteFriend(id);
+      initializeFollowers();
+    } catch (error) {
+      if (error.status === 401) {
+        navigate("/login");
+        dispatch(addNotification("error", "Please login to continue"));
+      }
+      console.log(error);
+    }
   };
 
   return (
@@ -28,6 +46,11 @@ const AuthorCard = ({ users }) => {
               I have {author.listings.length} listings for you
             </p>
           </div>
+          {canDelete && (
+            <div className="actions">
+              <button onClick={() => handleDelete(author.id)}>Delete</button>
+            </div>
+          )}
         </div>
       ))}
     </div>

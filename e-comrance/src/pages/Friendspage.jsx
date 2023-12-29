@@ -28,6 +28,7 @@ const Friendspage = () => {
   const [Declined, setDeclined] = useState(false);
   const [loading, setLoading] = useState(false);
   const [spinTip, setSpinTip] = useState("");
+  const canDelete = true;
   console.log(user);
 
   const filterRequests = (FriendReq) => {
@@ -104,7 +105,7 @@ const Friendspage = () => {
       </div>
       <div>
         <h2>Friends</h2>
-        <AuthorCard users={followers} />
+        <AuthorCard users={followers} canDelete={canDelete} />
         <h3>Friend Request</h3>
         <Radio.Group onChange={onChange} defaultValue="b" buttonStyle="solid">
           <Radio.Button value="a">Pending {pendingFriend.length}</Radio.Button>
