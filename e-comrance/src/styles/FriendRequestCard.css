@@ -1,16 +1,27 @@
 .friend-request-card {
-  border: 1px solid #ccc;
-  padding: 15px;
-  margin: 10px;
+  border: 2px solid rgba(153, 204, 255, 0.5); /* Use the border color from #listing */
+  padding: 20px;
+  margin: 15px;
   display: flex;
   align-items: center;
+  background-color: rgba(
+    153,
+    204,
+    255,
+    0.5
+  ); /* Use the background color from #listing */
+  border-radius: 10px; /* Match the border-radius from #listing */
+  box-shadow: 0 8px 12px rgba(0, 0, 0, 0.1);
+  max-width: 500px;
+  min-width: 300px; /* Match the box-shadow from #listing */
 }
 
 .profile-image {
   border-radius: 50%;
-  width: 50px;
-  height: 50px;
-  margin-right: 15px;
+  width: 60px; /* Slightly increase the size */
+  height: 60px; /* Slightly increase the size */
+  margin-right: 20px;
+  border: 2px solid rgba(153, 204, 255, 0.5); /* Match the border color of the card */
 }
 
 .user-info {
@@ -18,18 +29,20 @@
 }
 
 .actions button {
-  background-color: #4caf50;
-  color: #fff;
+  background-color: #336699; /* Use the background color from #homepage */
+  color: #61dafb; /* Use the text color from .user-display */
   border: none;
-  padding: 8px 16px;
-  margin-right: 8px;
+  padding: 10px 20px; /* Adjust padding for a more balanced look */
+  margin-right: 10px;
   cursor: pointer;
+  border-radius: 5px; /* Round the button corners */
+  transition: background-color 0.3s ease; /* Add a smooth transition effect */
 }
 
 .actions button:hover {
-  background-color: #45a049;
+  background-color: #1a6071; /* Darken the color on hover */
 }
 
 .actions button:active {
-  background-color: #3e8e41;
+  background-color: #1a3b4a; /* Darken the color on click */
 }

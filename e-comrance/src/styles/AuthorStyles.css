@@ -10,11 +10,16 @@
   display: flex;
   cursor: pointer;
   align-items: center;
-  background-color: #282c34;
-  color: #61dafb;
+  background-color: rgba(
+    153,
+    204,
+    255,
+    0.5
+  ); /* Use the background color from #listing */
+  color: #336699; /* Use the text color from #homepage */
   padding: 20px;
-  border-radius: 8px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  border-radius: 10px; /* Match the border-radius from .friend-request-card */
+  box-shadow: 0 8px 12px rgba(0, 0, 0, 0.1); /* Match the box-shadow from .friend-request-card */
   max-width: 400px;
   margin: 20px;
 }
@@ -24,6 +29,7 @@
   height: 80px;
   border-radius: 50%;
   margin-right: 20px;
+  border: 2px solid rgba(153, 204, 255, 0.5); /* Match the border color of the card */
 }
 
 .user-info {

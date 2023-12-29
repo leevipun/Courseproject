@@ -4,8 +4,9 @@ import {
   acceptFriendRequest,
   deleteFriendRequest,
 } from "../services/Services.js";
+import { initializeFollowers } from "../../reducer/followersReducer.js";
 
-const FriendRequestCard = ({ users, filterRequests, pending }) => {
+const FriendRequestCard = ({ users, pending }) => {
   const handleAccept = async (id) => {
     console.log(id);
     try {
@@ -16,10 +17,10 @@ const FriendRequestCard = ({ users, filterRequests, pending }) => {
   };
 
   const handleDecline = async (id) => {
-    console.log(id);
+    console.log("id", id);
     try {
-      const response = await deleteFriendRequest(id);
-      filterRequests(response);
+      await deleteFriendRequest(id);
+      initializeFollowers();
     } catch (error) {
       console.log(error);
     }
@@ -42,7 +43,7 @@ const FriendRequestCard = ({ users, filterRequests, pending }) => {
           {pending && (
             <div className="actions">
               <button onClick={() => handleAccept(friend.id)}>Accept</button>
-              <button onClick={handleDecline}>Decline</button>
+              <button onClick={() => handleDecline(friend.id)}>Decline</button>
             </div>
           )}
         </div>

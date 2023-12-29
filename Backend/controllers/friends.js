@@ -102,8 +102,13 @@ friendsRouter.post(
 
       if (senderFriendReq) {
         if (
-          senderFriendReq.receiver.includes(reciver.id) ||
-          senderFriendReq.sender.includes(reciverId.id)
+          sender.friends.includes(reciver._id) ||
+          reciver.friends.includes(sender._id)
+        ) {
+          return res.status(400).json({ error: "You are already friends" });
+        } else if (
+          senderFriendReq.receiver.equals(reciver._id) ||
+          senderFriendReq.sender.equals(reciverId._id)
         ) {
           return res.status(400).json({ error: "Friend request already sent" });
         }
@@ -263,7 +268,7 @@ friendsRouter.delete("/requests/:id", extractToken, async (req, res) => {
       { _id: sender._id },
       { $pull: { friendReq: friendReqId } }
     );
-    await FriendReq.findByIdAndRemove(friendReqId);
+    await FriendReq.findByIdAndUpdate(friendReqId, { status: "Declined" });
     const filteredReqs = reciver.friendReq.filter(
       (id) => id.toString() !== friendReqId.toString()
     );
