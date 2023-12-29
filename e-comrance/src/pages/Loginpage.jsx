@@ -35,7 +35,7 @@ const Loginpage = () => {
       );
       dispatch(initializecart());
       dispatch(initializefavorite());
-      navigate(-1);
+      navigate("/");
       setLoading(false);
       dispatch(addNotification("Welcome back"));
     } catch (error) {
