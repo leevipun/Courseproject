@@ -43,7 +43,7 @@ const Userpage = () => {
   const [user, setUser] = useState([]);
 
   useEffect(() => {
-    const user = JSON.parse(sessionStorage.getItem("user"));
+    const user = JSON.parse(sessionStorage.getItem("loggedNoteappUser"));
     setSpinTip("Loading user info...");
     const fetchUser = async () => {
       try {

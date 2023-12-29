@@ -1,0 +1,133 @@
+import React from "react";
+import Navbar from "../components/navbar.jsx";
+import { useNavigate } from "react-router-dom";
+import {
+  getAllFollowers,
+  getAllRequests,
+  getUserData,
+} from "../services/Services.js";
+import { useEffect, useState } from "react";
+import { useDispatch } from "react-redux";
+import { addNotification } from "../../reducer/notificationReducer.js";
+import AuthorCard from "../components/AuthorCard.jsx";
+import { initializeFollowers } from "../../reducer/followersReducer.js";
+import Spinner from "../components/LoadSpinner.jsx";
+import FriendRequestCard from "../components/FriendReqCard.jsx";
+import { Radio } from "antd";
+
+const Friendspage = () => {
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const [user, setUser] = useState([]);
+  const [followers, setFollowers] = useState([]);
+  const [acceptedFriend, setAcceptedFriend] = useState([]);
+  const [pendingFriend, setPendingFriend] = useState([]);
+  const [declinedFriend, setDeclinedFriend] = useState([]);
+  const [Accepted, setAccepted] = useState(true);
+  const [Pending, setPending] = useState(false);
+  const [Declined, setDeclined] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [spinTip, setSpinTip] = useState("");
+  console.log(user);
+
+  const filterRequests = (FriendReq) => {
+    const accepted = FriendReq.filter((user) => user.status === "Accepted");
+    const pending = FriendReq.filter((user) => user.status === "Pending");
+    const declined = FriendReq.filter((user) => user.status === "Declined");
+    console.log(accepted, "accepted");
+    console.log(pending, "pending");
+    console.log(declined, "declined");
+    setAcceptedFriend(accepted);
+    setPendingFriend(pending);
+    setDeclinedFriend(declined);
+  };
+
+  useEffect(() => {
+    const fetchUser = async () => {
+      setSpinTip("Loading user data...");
+      setLoading(true);
+      try {
+        const user = JSON.parse(sessionStorage.getItem("loggedNoteappUser"));
+        const response = await getUserData(user);
+        console.log(response, "response");
+        setUser(response);
+        dispatch(initializeFollowers());
+        const response2 = await getAllFollowers();
+        console.log(response2, "response2");
+        setFollowers(response2);
+        const response3 = await getAllRequests();
+        console.log(response3, "response3");
+        filterRequests(response3);
+      } catch (error) {
+        if (error.status === 401) {
+          navigate("/login");
+          dispatch(
+            addNotification(
+              "Please login first so we can add your listing to your account and you could get the money from it",
+              "error"
+            )
+          );
+        } else {
+          console.log(error);
+        }
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchUser();
+  }, []);
+
+  const onChange = (e) => {
+    if (e.target.value === "a") {
+      setPending(true);
+      setAccepted(false);
+      setDeclined(false);
+    }
+    if (e.target.value === "b") {
+      setPending(false);
+      setAccepted(true);
+      setDeclined(false);
+    }
+    if (e.target.value === "c") {
+      setPending(false);
+      setAccepted(false);
+      setDeclined(true);
+    }
+  };
+
+  return (
+    <div className="App">
+      <Navbar />
+      <h1>Friendspage</h1>
+      <div>
+        <Spinner loading={loading} tip={spinTip} />
+      </div>
+      <div>
+        <h2>Friends</h2>
+        <AuthorCard users={followers} />
+        <h3>Friend Request</h3>
+        <Radio.Group onChange={onChange} defaultValue="b" buttonStyle="solid">
+          <Radio.Button value="a">Pending {pendingFriend.length}</Radio.Button>
+          <Radio.Button value="b">
+            Accepted {acceptedFriend.length}
+          </Radio.Button>
+          <Radio.Button value="c">
+            Declined {declinedFriend.length}
+          </Radio.Button>
+        </Radio.Group>
+        {Pending && (
+          <FriendRequestCard users={pendingFriend} pending={Pending} />
+        )}
+        {Accepted && <FriendRequestCard users={acceptedFriend} />}
+        {Declined && (
+          <FriendRequestCard
+            users={declinedFriend}
+            filterRequests={filterRequests}
+          />
+        )}
+      </div>
+    </div>
+  );
+};
+
+export default Friendspage;

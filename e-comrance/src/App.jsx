@@ -24,6 +24,7 @@ import { SpeedInsights } from "@vercel/speed-insights/react";
 import AuthorPage from "./pages/AuthorPage.jsx";
 import AuthorInspect from "./pages/AuthorInspect.jsx";
 import BuyHistoryPage from "./pages/Buyhistorypage.jsx";
+import Friendspage from "./pages/Friendspage.jsx";
 
 const App = () => {
   useEffect(() => {
@@ -68,6 +69,7 @@ const App = () => {
           <Route path="/login" Component={Loginpage} />
           <Route path="/register" Component={Registerypage} />
           <Route path="/favorites" Component={Favoritepage} />
+          <Route path="/friends" Component={Friendspage} />
           <Route path="/user" Component={Userpage} />
           <Route path="/contacts" Component={Contactpage} />
           <Route path="/add" Component={AddingPage} />

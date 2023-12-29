@@ -56,6 +56,12 @@ const userSchema = mongoose.Schema({
       ref: "List",
     },
   ],
+  friends: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+    },
+  ],
   id: {
     type: String,
     required: true,
@@ -92,6 +98,12 @@ const userSchema = mongoose.Schema({
     type: String,
     required: false,
   },
+  friendReq: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "FriendReq",
+    },
+  ],
 });
 
 userSchema.plugin(uniqueValidator);
@@ -106,5 +118,18 @@ userSchema.set("toJSON", {
 });
 
 const User = mongoose.model("User", userSchema);
+
+userSchema.pre("save", async function (next) {
+  const user = this;
+
+  // Check for unique email before saving
+  const existingUser = await User.findOne({ email: user.email });
+  if (existingUser) {
+    const error = new Error("Email must be unique");
+    return next(error);
+  }
+
+  next();
+});
 
 module.exports = User;

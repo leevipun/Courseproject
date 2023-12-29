@@ -117,7 +117,7 @@ const AddingPage = () => {
           <div id="Prev">
             <div>
               <img
-                src={selectedFile}
+                src={selectedFile || "https://via.placeholder.com/500"}
                 alt="previewPic"
                 style={{
                   maxWidth: "100%",

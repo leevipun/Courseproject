@@ -30,6 +30,7 @@ import { SpeedInsights } from "@vercel/speed-insights/react";
 import authorReducer from "../reducer/authorReducer.js";
 import allUsersReducer from "../reducer/allUsersReducer.js";
 import authorListingsReducer from "../reducer/authorListingsReducer.js";
+import followersReducer from "../reducer/followersReducer.js";
 
 const combineFilter = combineReducers({
   filter: filterReducer,
@@ -51,6 +52,7 @@ const store = configureStore({
     author: authorReducer,
     allUsers: allUsersReducer,
     authorListings: authorListingsReducer,
+    followers: followersReducer,
   },
 });
 

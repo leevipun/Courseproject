@@ -32,8 +32,6 @@ const Ownlistings = () => {
   const userListings = useSelector((state) => state.userListings);
   console.log(userListings);
 
-  console.log("User", user);
-
   document.title = "Own Listings";
 
   useEffect(() => {
@@ -43,7 +41,11 @@ const Ownlistings = () => {
         setLoading(true);
         const user = JSON.parse(sessionStorage.getItem("loggedNoteappUser"));
         const response = await getUserData(user);
+        console.log("Response", response);
         setUser(response);
+        console.log("User", user);
+
+        console.log("User", user);
         const userListings = await getUsersListings();
         console.log("User listings", userListings);
         dispatch(initializeUserListing(userListings));
@@ -59,17 +61,11 @@ const Ownlistings = () => {
           );
         }
         setLoading(false);
-        console.error(error);
+        console.error("error", error);
       }
     };
-    if (user.lenght > 0) {
-      fetchData();
-    }
+    fetchData();
   }, []);
-
-  console.log(user);
-
-  console.log("Userlength", user.length);
 
   const handleEdit = (id) => {
     console.log(id);
@@ -120,129 +116,97 @@ const Ownlistings = () => {
     dispatch(initializeUserListing(response));
   };
 
-  if (user.length === 0) {
-    return (
-      <div>
-        <Navbar />
-        <div
-          style={{
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-            height: "80vh",
-          }}
-        >
-          <div>
-            <p>Please login first</p>
-            <Button type="primary" onClick={() => navigate("/login")}>
-              Login
-            </Button>
-            <Button
-              style={{ margin: 5 }}
-              type="primary"
-              onClick={() => navigate("/register")}
-            >
-              Register
-            </Button>
+  if (!user) {
+    <Spinner loading={loading} tip={spinTip} />;
+  }
+
+  return (
+    <div className="App">
+      <Navbar />
+      <div id="listingstyle">
+        {userListings.map((listing) => (
+          <div key={listing.id} id="listing">
+            <div>
+              <img
+                src="https://hips.hearstapps.com/hmg-prod/images/dog-puppy-on-garden-royalty-free-image-1586966191.jpg?crop=0.752xw:1.00xh;0.175xw,0&resize=1200:*"
+                alt={listing.name}
+                style={{
+                  maxWidth: "100%",
+                  maxHeight: "100%",
+                  objectFit: "cover",
+                  borderRadius: 10,
+                }}
+              />
+            </div>
+            <div>
+              <div style={{ margin: 5 }}>Name: {listing.name}</div>
+              <div style={{ margin: 5 }}>Country: {listing.country}</div>
+              <div style={{ margin: 5 }}>
+                Price: {listing.price} {listing.currency}
+              </div>
+              <div style={{ margin: 5 }}>
+                Description: {listing.description}
+              </div>
+            </div>
+            <div id="itemstyle">
+              <Button type="primary" onClick={() => handleEdit(listing.id)}>
+                Edit
+              </Button>
+              <Button type="primary" onClick={() => handleDelete(listing.id)}>
+                Delete
+              </Button>
+            </div>
           </div>
-        </div>
-        <Spinner loading={loading} tip={spinTip} />
+        ))}
       </div>
-    );
-  } else {
-    return (
-      <div>
-        <Navbar />
-        User Profile
-        <div id="listingstyle">
-          {userListings.map((listing) => (
-            <div key={listing.id} id="listing">
-              <div>
-                <img
-                  src="https://hips.hearstapps.com/hmg-prod/images/dog-puppy-on-garden-royalty-free-image-1586966191.jpg?crop=0.752xw:1.00xh;0.175xw,0&resize=1200:*"
-                  alt={listing.name}
-                  style={{
-                    maxWidth: "100%",
-                    maxHeight: "100%",
-                    objectFit: "cover",
-                    borderRadius: 10,
-                  }}
-                />
-              </div>
-              <div>
-                <div style={{ margin: 5 }}>Name: {listing.name}</div>
-                <div style={{ margin: 5 }}>Country: {listing.country}</div>
-                <div style={{ margin: 5 }}>
-                  Price: {listing.price} {listing.currency}
-                </div>
-                <div style={{ margin: 5 }}>
-                  Description: {listing.description}
-                </div>
-              </div>
-              <div id="itemstyle">
-                <Button type="primary" onClick={() => handleEdit(listing.id)}>
-                  Edit
-                </Button>
-                <Button type="primary" onClick={() => handleDelete(listing.id)}>
-                  Delete
-                </Button>
-              </div>
-            </div>
-          ))}
-        </div>
-        {edit && (
+      {edit && (
+        <div>
           <div>
-            <div>
-              <Input
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-                style={{ margin: 10, width: 300 }}
-              />
-            </div>
-            <div>
-              <Input
-                value={country}
-                onChange={(e) => setCountry(e.target.value)}
-                style={{ margin: 10, width: 300 }}
-              />
-            </div>
             <Input
-              value={price}
-              onChange={(e) => setPrice(e.target.value)}
+              value={name}
+              onChange={(e) => setName(e.target.value)}
               style={{ margin: 10, width: 300 }}
             />
-            <div>
-              <Input
-                value={description}
-                onChange={(e) => setDescription(e.target.value)}
-                style={{ margin: 10, width: 300 }}
-              />
-            </div>
-            <div>
-              <Button
-                type="primary"
-                onClick={() => {
-                  setEdit(false);
-                  setLastId("");
-                }}
-              >
-                Cancel
-              </Button>
-              <Button
-                onClick={handleSave}
-                style={{ margin: 10 }}
-                type="primary"
-              >
-                Save
-              </Button>
-            </div>
-            <Spinner loading={loading} tip={spinTip} />
           </div>
-        )}
-        <SpeedInsights />
-      </div>
-    );
-  }
+          <div>
+            <Input
+              value={country}
+              onChange={(e) => setCountry(e.target.value)}
+              style={{ margin: 10, width: 300 }}
+            />
+          </div>
+          <Input
+            value={price}
+            onChange={(e) => setPrice(e.target.value)}
+            style={{ margin: 10, width: 300 }}
+          />
+          <div>
+            <Input
+              value={description}
+              onChange={(e) => setDescription(e.target.value)}
+              style={{ margin: 10, width: 300 }}
+            />
+          </div>
+          <div>
+            <Button
+              type="primary"
+              onClick={() => {
+                setEdit(false);
+                setLastId("");
+              }}
+            >
+              Cancel
+            </Button>
+            <Button onClick={handleSave} style={{ margin: 10 }} type="primary">
+              Save
+            </Button>
+          </div>
+          <Spinner loading={loading} tip={spinTip} />
+        </div>
+      )}
+      <SpeedInsights />
+    </div>
+  );
 };
 
 export default Ownlistings;

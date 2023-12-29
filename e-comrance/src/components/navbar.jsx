@@ -7,6 +7,7 @@ import {
   FaPlus,
   FaUser,
   FaList,
+  FaUserFriends,
 } from "react-icons/fa";
 import { Link, useNavigate } from "react-router-dom";
 import { FaMagnifyingGlass } from "react-icons/fa6";
@@ -93,6 +94,10 @@ const Navbar = () => {
     navigate("/ownlisting");
   };
 
+  const handleFriends = () => {
+    navigate("/friends");
+  };
+
   const items = [
     {
       label: "User info",
@@ -105,6 +110,12 @@ const Navbar = () => {
       key: "2",
       icon: <FaList />,
       onClick: handleOwnlisting,
+    },
+    {
+      label: "Friends",
+      key: "3",
+      icon: <FaUserFriends />,
+      onClick: handleFriends,
     },
     {
       label: "Log out",
