@@ -54,7 +54,7 @@ const Chatpage = () => {
         const user = JSON.parse(sessionStorage.getItem("loggedNoteappUser"));
         const response = await getUserData(user);
         console.log("Response", response);
-        dispatch(setUser(response));
+        setUser(response);
         console.log("User", user);
         const id = window.location.pathname.split("/")[2];
         console.log("id", id);
@@ -62,6 +62,7 @@ const Chatpage = () => {
         if (id) {
           const response1 = await getAllMessages(id);
           dispatch(setMessages(response1.messages));
+          console.log("response1", response1);
         }
         dispatch(initializeChats());
         getChats();

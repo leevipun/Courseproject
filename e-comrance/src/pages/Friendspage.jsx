@@ -1,11 +1,7 @@
 import React from "react";
 import Navbar from "../components/navbar.jsx";
 import { useNavigate } from "react-router-dom";
-import {
-  getAllFollowers,
-  getAllRequests,
-  getUserData,
-} from "../services/Services.js";
+import { getAllRequests, getUserData } from "../services/Services.js";
 import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { addNotification } from "../../reducer/notificationReducer.js";
@@ -20,7 +16,6 @@ import { useSelector } from "react-redux";
 const Friendspage = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const [followers, setFollowers] = useState([]);
   const [acceptedFriend, setAcceptedFriend] = useState([]);
   const [pendingFriend, setPendingFriend] = useState([]);
   const [declinedFriend, setDeclinedFriend] = useState([]);
@@ -31,6 +26,7 @@ const Friendspage = () => {
   const [spinTip, setSpinTip] = useState("");
   const canDelete = true;
   const canStartConv = true;
+  const followers = useSelector((state) => state.followers);
   const user = useSelector((state) => state.user);
   console.log(user);
 
@@ -56,9 +52,6 @@ const Friendspage = () => {
         console.log(response, "response");
         dispatch(setUser(response));
         dispatch(initializeFollowers());
-        const response2 = await getAllFollowers();
-        console.log(response2, "response2");
-        setFollowers(response2);
         const response3 = await getAllRequests();
         console.log(response3, "response3");
         filterRequests(response3);
