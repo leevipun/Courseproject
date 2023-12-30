@@ -32,6 +32,7 @@ const Navbar = () => {
   const [showInput, setShowInput] = useState(false);
   const [showAdd, setShowAdd] = useState(true);
   const [showCart, setShowCart] = useState(false);
+  const user = useSelector((state) => state.user);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -39,8 +40,10 @@ const Navbar = () => {
         const loggerUser = window.sessionStorage.getItem("loggedNoteappUser");
 
         if (loggerUser) {
-          const user = JSON.parse(loggerUser);
-
+          const response = await getUserData(loggerUser);
+          dispatch(setUser(response));
+          console.log("User", user.length);
+          console.log(user.length);
           const userStatus = user.style;
           if (userStatus === "seller" || userStatus === "both") {
             setShowAdd(true);
@@ -48,12 +51,10 @@ const Navbar = () => {
           if (userStatus !== "seller") {
             setShowCart(true);
           }
-          if (user.length > 0) {
+          if (user) {
             setIsLogged(true);
           }
         }
-        const response = await getUserData(loggerUser);
-        setUser(response);
       } catch (error) {
         if (error.status === 401) {
           navigate("/login");
@@ -140,7 +141,7 @@ const Navbar = () => {
     },
     {
       label: "Log out",
-      key: "4",
+      key: "5",
       icon: <LogoutOutlined />,
       danger: true,
       onClick: handleLogout,

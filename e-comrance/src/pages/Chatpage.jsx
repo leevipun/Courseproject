@@ -1,12 +1,12 @@
 import React, { useState } from "react";
-import { Input, Button } from "antd";
-import Spinner from "../components/LoadSpinner";
+import { Input, Button, Select } from "antd";
+import Spinner from "../components/LoadSpinner.jsx";
 import {
   getAllChats,
   getAllMessages,
   getUserData,
   sendMessage,
-} from "../services/Services";
+} from "../services/Services.js";
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { addNotification } from "../../reducer/notificationReducer";
@@ -15,7 +15,8 @@ import "../styles/ChatPageStyles.css";
 import { useSelector } from "react-redux";
 import { appendMessage, setMessages } from "../../reducer/messageReducer";
 import { initializeChats } from "../../reducer/ChatsReducer";
-import Navbar from "../components/navbar";
+import Navbar from "../components/navbar.jsx";
+import { initializeFollowers } from "../../reducer/followersReducer";
 
 const Chatpage = () => {
   const dispatch = useDispatch();
@@ -23,7 +24,10 @@ const Chatpage = () => {
   const [message, setMessage] = useState("");
   const [user, setUser] = useState([]);
   const messages = useSelector((state) => state.messages);
+  const friends = useSelector((state) => state.friends);
   const [chats, setChats] = useState([]);
+  const [newChat, setNewChat] = useState(false);
+  const [options, setOptions] = useState([]);
   const [loading, setLoading] = useState(false);
   const [spinTip, setSpinTip] = useState("");
 
@@ -49,6 +53,7 @@ const Chatpage = () => {
         }
         dispatch(initializeChats());
         getChats();
+        dispatch(initializeFollowers());
         setLoading(false);
       } catch (error) {
         if (error.status === 401) {
@@ -85,6 +90,15 @@ const Chatpage = () => {
     console.log(messages);
 
     setMessage("");
+  };
+
+  const selectOptions = () => {
+    console.log("friends", friends);
+    let data = [];
+    friends.forEach((friend) => {
+      data.push({ value: friend.id, label: friend.id });
+    });
+    setOptions(data);
   };
 
   const getMessages = async () => {
@@ -141,26 +155,30 @@ const Chatpage = () => {
         <div id="messages">
           {id ? (
             <div>
-              <div id="">
-                <h1>Messages</h1>
-                <Button type="primary" onClick={() => getMessages()}>
-                  Refresh
-                </Button>
-                <div id="messages-section">
-                  {messages.map((message) => (
-                    <div
-                      key={message.id}
-                      className={
-                        message.senderId === user.id
-                          ? "message-container own-message-container"
-                          : "message-container"
-                      }
-                    >
-                      <p className="message-content">{message.content}</p>
-                      <p className="message-sender">{message.sender}</p>
-                      <p className="message-date">{message.date}</p>
-                    </div>
-                  ))}
+              <div>
+                <div style={{ marginBottom: 10 }}>
+                  <h1>Messages</h1>
+                  <Button type="primary" onClick={() => getMessages()}>
+                    Refresh
+                  </Button>
+                </div>
+                <div className="container">
+                  <div id="messages-section">
+                    {messages.map((message) => (
+                      <div
+                        key={message.id}
+                        className={
+                          message.senderId === user.id
+                            ? "message-container own-message-container"
+                            : "message-container"
+                        }
+                      >
+                        <p className="message-content">{message.content}</p>
+                        <p className="message-sender">{message.sender}</p>
+                        <p className="message-date">{message.date}</p>
+                      </div>
+                    ))}
+                  </div>
                 </div>
               </div>
               <div id="inputDiv">

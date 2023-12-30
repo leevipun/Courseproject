@@ -3,7 +3,9 @@
   flex-direction: column; /* Display messages in a column */
   justify-content: center;
   background-color: inherit;
-  background-image: inherit; /* Light background color */
+  background-image: inherit;
+  overflow-y: auto;
+  /* Light background color */
   padding: 20px;
 }
 
@@ -18,9 +20,14 @@
   width: calc(20%);
 }
 
+.container {
+  max-height: 70vh;
+  overflow-y: auto;
+}
+
 #messages {
-  height: 100vh;
-  border: 10px solid #336699;
+  height: 88vh;
+  border-left: 10px solid #336699;
   overflow-y: auto;
   width: calc(80%);
 }
@@ -74,4 +81,5 @@
   justify-content: center;
   align-items: center;
   display: flex;
+  margin-bottom: 10px;
 }

@@ -29,6 +29,7 @@ const Friendspage = () => {
   const [loading, setLoading] = useState(false);
   const [spinTip, setSpinTip] = useState("");
   const canDelete = true;
+  const canStartConv = true;
   console.log(user);
 
   const filterRequests = (FriendReq) => {
@@ -105,7 +106,11 @@ const Friendspage = () => {
       </div>
       <div>
         <h2>Friends</h2>
-        <AuthorCard users={followers} canDelete={canDelete} />
+        <AuthorCard
+          users={followers}
+          canDelete={canDelete}
+          canStartConv={canStartConv}
+        />
         <h3>Friend Request</h3>
         <Radio.Group onChange={onChange} defaultValue="b" buttonStyle="solid">
           <Radio.Button value="a">Pending {pendingFriend.length}</Radio.Button>
@@ -117,13 +122,18 @@ const Friendspage = () => {
           </Radio.Button>
         </Radio.Group>
         {Pending && (
-          <FriendRequestCard users={pendingFriend} pending={Pending} />
+          <FriendRequestCard
+            friends={pendingFriend}
+            pending={Pending}
+            user={user}
+          />
         )}
-        {Accepted && <FriendRequestCard users={acceptedFriend} />}
+        {Accepted && <FriendRequestCard friends={acceptedFriend} user={user} />}
         {Declined && (
           <FriendRequestCard
-            users={declinedFriend}
+            friends={declinedFriend}
             filterRequests={filterRequests}
+            user={user}
           />
         )}
       </div>

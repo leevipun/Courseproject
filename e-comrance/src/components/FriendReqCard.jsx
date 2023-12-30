@@ -6,7 +6,7 @@ import {
 } from "../services/Services.js";
 import { initializeFollowers } from "../../reducer/followersReducer.js";
 
-const FriendRequestCard = ({ users, pending }) => {
+const FriendRequestCard = ({ user, friends, pending }) => {
   const handleAccept = async (id) => {
     console.log(id);
     try {
@@ -25,12 +25,15 @@ const FriendRequestCard = ({ users, pending }) => {
       console.log(error);
     }
   };
-  if (users.length === 0) {
+  if (friends.length === 0) {
     return <div>No friend requests</div>;
   }
+
+  console.log(friends);
+
   return (
     <div>
-      {users.map((friend) => (
+      {friends.map((friend) => (
         <div className="friend-request-card">
           <img
             src="https://www.w3schools.com/howto/img_avatar.png"
@@ -38,12 +41,22 @@ const FriendRequestCard = ({ users, pending }) => {
             className="profile-image"
           />
           <div className="user-info">
-            <h3>{`${friend.senderName}`}</h3>
+            <h3>{`${friend.receiverName}`}</h3>
           </div>
           {pending && (
             <div className="actions">
-              <button onClick={() => handleAccept(friend.id)}>Accept</button>
-              <button onClick={() => handleDecline(friend.id)}>Decline</button>
+              {friend.sender === user.id ? (
+                <></>
+              ) : (
+                <>
+                  <button onClick={() => handleAccept(friend.id)}>
+                    Accept
+                  </button>
+                  <button onClick={() => handleDecline(friend.id)}>
+                    Decline
+                  </button>
+                </>
+              )}
             </div>
           )}
         </div>
