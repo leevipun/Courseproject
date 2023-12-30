@@ -16,12 +16,13 @@ import Services from "../services/Services.js";
 import { initializecart } from "../../reducer/cartReducer.js";
 import { SpeedInsights } from "@vercel/speed-insights/react";
 import Spinner from "../components/LoadSpinner.jsx";
+import { setUser } from "../../reducer/userReducer.js";
 
 const PaymentSucess = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const [user, setUser] = useState([]);
   const [loading, setLoading] = useState(false);
+  const user = useSelector((state) => state.user);
   const [spinTip, setSpinTip] = useState("");
 
   useEffect(() => {
@@ -33,7 +34,7 @@ const PaymentSucess = () => {
       const user = JSON.parse(sessionUser);
       console.log(user);
       const response = await getUserData();
-      setUser(response);
+      dispatch(setUser(response));
       const listings = await Services.getAllCartItems();
       dispatch(initializecart(listings));
       dispatch(clearUser());

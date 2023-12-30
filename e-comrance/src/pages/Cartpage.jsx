@@ -9,14 +9,14 @@ import { useNavigate } from "react-router-dom";
 import Spinner from "../components/LoadSpinner.jsx";
 import { addNotification } from "../../reducer/notificationReducer";
 import React from "react";
+import { setUser } from "../../reducer/userReducer.js";
 
 const Cartpage = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(false);
   const [spinTip, setSpinTip] = useState("");
-  const [user, setUser] = useState([]);
-
+  const user = useSelector((state) => state.user);
   const cartItems = useSelector((state) => {
     return state.cart;
   });
@@ -32,7 +32,7 @@ const Cartpage = () => {
         setLoading(true);
         const user = JSON.parse(sessionStorage.getItem("loggedNoteappUser"));
         const response = await getUserData(user);
-        setUser(response);
+        dispatch(setUser(response));
         const listings = await Services.getAllCartItems();
         console.log("Listings", listings);
         const validListings = listings.filter(

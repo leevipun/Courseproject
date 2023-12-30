@@ -14,11 +14,12 @@ import { initializeFollowers } from "../../reducer/followersReducer.js";
 import Spinner from "../components/LoadSpinner.jsx";
 import FriendRequestCard from "../components/FriendReqCard.jsx";
 import { Radio } from "antd";
+import { setUser } from "../../reducer/userReducer.js";
+import { useSelector } from "react-redux";
 
 const Friendspage = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const [user, setUser] = useState([]);
   const [followers, setFollowers] = useState([]);
   const [acceptedFriend, setAcceptedFriend] = useState([]);
   const [pendingFriend, setPendingFriend] = useState([]);
@@ -30,6 +31,7 @@ const Friendspage = () => {
   const [spinTip, setSpinTip] = useState("");
   const canDelete = true;
   const canStartConv = true;
+  const user = useSelector((state) => state.user);
   console.log(user);
 
   const filterRequests = (FriendReq) => {
@@ -52,7 +54,7 @@ const Friendspage = () => {
         const user = JSON.parse(sessionStorage.getItem("loggedNoteappUser"));
         const response = await getUserData(user);
         console.log(response, "response");
-        setUser(response);
+        dispatch(setUser(response));
         dispatch(initializeFollowers());
         const response2 = await getAllFollowers();
         console.log(response2, "response2");

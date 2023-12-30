@@ -13,14 +13,14 @@ import { addToFavorites, deleteFavorite } from "../services/Services.js";
 import { appendfavorite } from "../../reducer/favoriteReducer.js";
 import React from "react";
 import { SpeedInsights } from "@vercel/speed-insights/react";
+import { setUser } from "../../reducer/userReducer.js";
 
 const Favoritepage = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
   const [spinTip, setSpinTip] = useState("");
-  const [user, setUser] = useState([]);
-
+  const user = useSelector((state) => state.user);
   const userFavoriteId = useSelector((state) => {
     const favorites = state.favorite;
     const mappedFavorites = favorites.map((favorite) => {
@@ -57,7 +57,7 @@ const Favoritepage = () => {
         setLoading(true);
         const user = JSON.parse(sessionStorage.getItem("loggedNoteappUser"));
         const userData = await getUserData(user);
-        setUser(userData);
+        dispatch(setUser(userData));
         const response = await getAllFavoriteItems();
         dispatch(initializefavorite(response));
         setLoading(false);

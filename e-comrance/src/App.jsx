@@ -1,6 +1,7 @@
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import Services, { getUserData } from "./services/Services.js";
 import React, { useEffect } from "react";
+import { useDispatch } from "react-redux";
 
 import "./App.css";
 
@@ -28,6 +29,7 @@ import Friendspage from "./pages/Friendspage.jsx";
 import Chatpage from "./pages/Chatpage.jsx";
 
 const App = () => {
+  const dispatch = useDispatch();
   useEffect(() => {
     const user = JSON.parse(sessionStorage.getItem("loggedNoteappUser"));
     const fetchData = async () => {
@@ -41,7 +43,7 @@ const App = () => {
         console.log(user);
         const loggedUser = await getUserData(user);
         console.log("Logged user", loggedUser);
-        setUser(loggedUser);
+        dispatch(setUser(loggedUser));
       } catch (error) {
         if (error.error === "token expired") {
           console.log("Token expired");

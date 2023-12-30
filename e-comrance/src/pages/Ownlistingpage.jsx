@@ -16,6 +16,7 @@ import { useNavigate } from "react-router-dom";
 import { addNotification } from "../../reducer/notificationReducer";
 import React from "react";
 import { SpeedInsights } from "@vercel/speed-insights/react";
+import { setUser } from "../../reducer/userReducer.js";
 
 const Ownlistings = () => {
   const dispatch = useDispatch();
@@ -28,7 +29,6 @@ const Ownlistings = () => {
   const [edit, setEdit] = useState(false);
   const [loading, setLoading] = useState(false);
   const [spinTip, setSpinTip] = useState("");
-  const [user, setUser] = useState([]);
   const userListings = useSelector((state) => state.userListings);
   console.log(userListings);
 
@@ -42,7 +42,7 @@ const Ownlistings = () => {
         const user = JSON.parse(sessionStorage.getItem("loggedNoteappUser"));
         const response = await getUserData(user);
         console.log("Response", response);
-        setUser(response);
+        dispatch(setUser(response));
         console.log("User", user);
 
         console.log("User", user);
@@ -116,100 +116,118 @@ const Ownlistings = () => {
     dispatch(initializeUserListing(response));
   };
 
-  if (!user) {
-    <Spinner loading={loading} tip={spinTip} />;
-  }
+  console.log(userListings.length);
 
-  return (
-    <div className="App">
-      <Navbar />
-      <div id="listingstyle">
-        {userListings.map((listing) => (
-          <div key={listing.id} id="listing">
+  if (userListings.length < 1) {
+    return (
+      <div className="App">
+        <Navbar />
+        <div>
+          <div style={{ display: "flex", justifyContent: "center" }}>
+            <h1>You have no listings</h1>
+          </div>
+        </div>
+        <div style={{ display: "flex", justifyContent: "center" }}>
+          <Button onClick={() => navigate("/add")}>Add listing</Button>
+        </div>
+      </div>
+    );
+  } else {
+    return (
+      <div className="App">
+        <Navbar />
+        <div id="listingstyle">
+          {userListings.map((listing) => (
+            <div key={listing.id} id="listing">
+              <div>
+                <img
+                  src={
+                    listing.pics ||
+                    "https://hips.hearstapps.com/hmg-prod/images/dog-puppy-on-garden-royalty-free-image-1586966191.jpg?crop=0.752xw:1.00xh;0.175xw,0&resize=1200:*"
+                  }
+                  alt={listing.name}
+                  style={{
+                    maxWidth: "100%",
+                    maxHeight: "100%",
+                    objectFit: "cover",
+                    borderRadius: 10,
+                  }}
+                />
+              </div>
+              <div>
+                <div style={{ margin: 5 }}>Name: {listing.name}</div>
+                <div style={{ margin: 5 }}>Country: {listing.country}</div>
+                <div style={{ margin: 5 }}>
+                  Price: {listing.price} {listing.currency}
+                </div>
+                <div style={{ margin: 5 }}>
+                  Description: {listing.description}
+                </div>
+              </div>
+              <div id="itemstyle">
+                <Button type="primary" onClick={() => handleEdit(listing.id)}>
+                  Edit
+                </Button>
+                <Button type="primary" onClick={() => handleDelete(listing.id)}>
+                  Delete
+                </Button>
+              </div>
+            </div>
+          ))}
+        </div>
+        {edit && (
+          <div>
             <div>
-              <img
-                src={
-                  listing.pics ||
-                  "https://hips.hearstapps.com/hmg-prod/images/dog-puppy-on-garden-royalty-free-image-1586966191.jpg?crop=0.752xw:1.00xh;0.175xw,0&resize=1200:*"
-                }
-                alt={listing.name}
-                style={{
-                  maxWidth: "100%",
-                  maxHeight: "100%",
-                  objectFit: "cover",
-                  borderRadius: 10,
-                }}
+              <Input
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                style={{ margin: 10, width: 300 }}
               />
             </div>
             <div>
-              <div style={{ margin: 5 }}>Name: {listing.name}</div>
-              <div style={{ margin: 5 }}>Country: {listing.country}</div>
-              <div style={{ margin: 5 }}>
-                Price: {listing.price} {listing.currency}
-              </div>
-              <div style={{ margin: 5 }}>
-                Description: {listing.description}
-              </div>
+              <Input
+                value={country}
+                onChange={(e) => setCountry(e.target.value)}
+                style={{ margin: 10, width: 300 }}
+              />
             </div>
-            <div id="itemstyle">
-              <Button type="primary" onClick={() => handleEdit(listing.id)}>
-                Edit
+            <Input
+              value={price}
+              onChange={(e) => setPrice(e.target.value)}
+              style={{ margin: 10, width: 300 }}
+            />
+            <div>
+              <Input
+                value={description}
+                onChange={(e) => setDescription(e.target.value)}
+                style={{ margin: 10, width: 300 }}
+              />
+            </div>
+            <div>
+              <Button
+                type="primary"
+                onClick={() => {
+                  setEdit(false);
+                  setLastId("");
+                }}
+              >
+                Cancel
               </Button>
-              <Button type="primary" onClick={() => handleDelete(listing.id)}>
-                Delete
+              <Button
+                onClick={handleSave}
+                style={{ margin: 10 }}
+                type="primary"
+              >
+                Save
               </Button>
             </div>
+            <Spinner loading={loading} tip={spinTip} />
           </div>
-        ))}
+        )}
+        <SpeedInsights />
       </div>
-      {edit && (
-        <div>
-          <div>
-            <Input
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-              style={{ margin: 10, width: 300 }}
-            />
-          </div>
-          <div>
-            <Input
-              value={country}
-              onChange={(e) => setCountry(e.target.value)}
-              style={{ margin: 10, width: 300 }}
-            />
-          </div>
-          <Input
-            value={price}
-            onChange={(e) => setPrice(e.target.value)}
-            style={{ margin: 10, width: 300 }}
-          />
-          <div>
-            <Input
-              value={description}
-              onChange={(e) => setDescription(e.target.value)}
-              style={{ margin: 10, width: 300 }}
-            />
-          </div>
-          <div>
-            <Button
-              type="primary"
-              onClick={() => {
-                setEdit(false);
-                setLastId("");
-              }}
-            >
-              Cancel
-            </Button>
-            <Button onClick={handleSave} style={{ margin: 10 }} type="primary">
-              Save
-            </Button>
-          </div>
-          <Spinner loading={loading} tip={spinTip} />
-        </div>
-      )}
-      <SpeedInsights />
-    </div>
-  );
+    );
+  }
 };
 
 export default Ownlistings;

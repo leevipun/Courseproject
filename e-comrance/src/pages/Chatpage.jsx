@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Input, Button, Select } from "antd";
+import { Input, Button } from "antd";
 import Spinner from "../components/LoadSpinner.jsx";
 import {
   getAllChats,
@@ -9,31 +9,42 @@ import {
 } from "../services/Services.js";
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { addNotification } from "../../reducer/notificationReducer";
+import { addNotification } from "../../reducer/notificationReducer.js";
 import { useDispatch } from "react-redux";
 import "../styles/ChatPageStyles.css";
 import { useSelector } from "react-redux";
-import { appendMessage, setMessages } from "../../reducer/messageReducer";
-import { initializeChats } from "../../reducer/ChatsReducer";
+import {
+  appendMessage,
+  clearMessage,
+  setMessages,
+} from "../../reducer/messageReducer.js";
+import { initializeChats } from "../../reducer/ChatsReducer.js";
 import Navbar from "../components/navbar.jsx";
-import { initializeFollowers } from "../../reducer/followersReducer";
 
 const Chatpage = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [message, setMessage] = useState("");
   const [user, setUser] = useState([]);
-  const messages = useSelector((state) => state.messages);
-  const friends = useSelector((state) => state.friends);
+  let messages = useSelector((state) => state.messages);
   const [chats, setChats] = useState([]);
-  const [newChat, setNewChat] = useState(false);
-  const [options, setOptions] = useState([]);
   const [loading, setLoading] = useState(false);
   const [spinTip, setSpinTip] = useState("");
 
   let id = window.location.pathname.split("/")[2];
 
   document.title = "Chat";
+
+  const handleRedirect = async (id) => {
+    if (window.location.pathname.split("/")[2] === id) {
+      dispatch(addNotification("You are already in this chat", "error"));
+      return;
+    }
+    const newMessages = await getAllMessages(id);
+    dispatch(setMessages(newMessages.messages));
+    console.log("messages", messages);
+    navigate(`/chats/${id}`);
+  };
 
   useEffect(() => {
     const fetchData = async () => {
@@ -43,17 +54,17 @@ const Chatpage = () => {
         const user = JSON.parse(sessionStorage.getItem("loggedNoteappUser"));
         const response = await getUserData(user);
         console.log("Response", response);
-        setUser(response);
+        dispatch(setUser(response));
         console.log("User", user);
         const id = window.location.pathname.split("/")[2];
         console.log("id", id);
+        dispatch(clearMessage());
         if (id) {
-          const messages = await getAllMessages(id);
-          console.log("messages", messages);
+          const response1 = await getAllMessages(id);
+          dispatch(setMessages(response1.messages));
         }
         dispatch(initializeChats());
         getChats();
-        dispatch(initializeFollowers());
         setLoading(false);
       } catch (error) {
         if (error.status === 401) {
@@ -92,15 +103,6 @@ const Chatpage = () => {
     setMessage("");
   };
 
-  const selectOptions = () => {
-    console.log("friends", friends);
-    let data = [];
-    friends.forEach((friend) => {
-      data.push({ value: friend.id, label: friend.id });
-    });
-    setOptions(data);
-  };
-
   const getMessages = async () => {
     const id = window.location.pathname.split("/")[2];
     const response = await getAllMessages(id);
@@ -112,15 +114,6 @@ const Chatpage = () => {
     const response = await getAllChats();
     console.log("response", response);
     setChats(response);
-  };
-
-  const handleRedirect = (id) => {
-    if (window.location.pathname.split("/")[2] === id) {
-      dispatch(addNotification("You are already in this chat", "error"));
-      return;
-    }
-
-    navigate(`/chats/${id}`);
   };
 
   return (

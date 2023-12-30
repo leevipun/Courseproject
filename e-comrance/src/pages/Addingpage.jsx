@@ -14,6 +14,8 @@ import categoriesWithOptions from "../../Data/categoryData.js";
 import Spinner from "../components/LoadSpinner.jsx";
 import React from "react";
 import { SpeedInsights } from "@vercel/speed-insights/react";
+import { setUser } from "../../reducer/userReducer.js";
+import { useSelector } from "react-redux";
 
 const AddingPage = () => {
   const countryData = CountriesData;
@@ -24,7 +26,7 @@ const AddingPage = () => {
   const [name, setName] = useState("");
   const [category, setCategory] = useState("None");
   const [loading, setLoading] = useState(false);
-  const [user, setUser] = useState([]);
+  const user = useSelector((state) => state.user);
   const currencyCode = "EUR";
 
   const [selectedFile, setSelectedFile] = useState("");
@@ -39,7 +41,7 @@ const AddingPage = () => {
       try {
         const user = JSON.parse(sessionStorage.getItem("loggedNoteappUser"));
         const response = await getUserData(user);
-        setUser(response);
+        dispatch(setUser(response));
       } catch (error) {
         if (error.status === 401) {
           navigate("/login");

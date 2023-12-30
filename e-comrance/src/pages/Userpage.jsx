@@ -16,6 +16,8 @@ import PersonalInfo from "../components/registery/personalInfo.jsx";
 import Spinner from "../components/LoadSpinner.jsx";
 import React from "react";
 import { SpeedInsights } from "@vercel/speed-insights/react";
+import { setUser } from "../../reducer/userReducer.js";
+import { useSelector } from "react-redux";
 
 const Userpage = () => {
   const dispatch = useDispatch();
@@ -40,7 +42,7 @@ const Userpage = () => {
   const [birthDay, setBirthDay] = useState("");
   const [iban, setIban] = useState("");
   const [spinTip, setSpinTip] = useState("");
-  const [user, setUser] = useState([]);
+  const user = useSelector((state) => state.user);
 
   useEffect(() => {
     const user = JSON.parse(sessionStorage.getItem("loggedNoteappUser"));
@@ -49,7 +51,7 @@ const Userpage = () => {
       try {
         setLoading(true);
         const response = await getUserData(user);
-        setUser(response);
+        dispatch(setUser(response));
         console.log("response", response);
         setEmail(response.email);
         setFirstName(response.firstname);
