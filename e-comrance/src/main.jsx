@@ -25,12 +25,13 @@ import "./styles/HomeStyles.css";
 import "./styles/loginStyles.css";
 import "./styles/registeryStyles.css";
 import "./styles/stripe.css";
-import "./styles/usernavbarStyles.css";
 import { SpeedInsights } from "@vercel/speed-insights/react";
 import authorReducer from "../reducer/authorReducer.js";
 import allUsersReducer from "../reducer/allUsersReducer.js";
 import authorListingsReducer from "../reducer/authorListingsReducer.js";
 import followersReducer from "../reducer/followersReducer.js";
+import messageReducer from "../reducer/messageReducer.js";
+import ChatsReducer from "../reducer/ChatsReducer.js";
 
 const combineFilter = combineReducers({
   filter: filterReducer,
@@ -53,6 +54,8 @@ const store = configureStore({
     allUsers: allUsersReducer,
     authorListings: authorListingsReducer,
     followers: followersReducer,
+    messages: messageReducer,
+    chats: ChatsReducer,
   },
 });
 

@@ -166,7 +166,7 @@ const Userpage = () => {
         <div>
           <Navbar />
           <h1>Userpage</h1>
-          <div id="userPageDiv">
+          <div id="userPageDiv" style={{ display: "flex" }}>
             <div>
               <ul id="usernavbar">
                 <li id="usernavitem" onClick={handleShowPersonalInfo}>

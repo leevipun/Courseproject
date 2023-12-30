@@ -10,7 +10,7 @@ import {
   FaUserFriends,
 } from "react-icons/fa";
 import { Link, useNavigate } from "react-router-dom";
-import { FaMagnifyingGlass } from "react-icons/fa6";
+import { FaMagnifyingGlass, FaPeopleGroup } from "react-icons/fa6";
 import React, { useEffect, useState } from "react";
 import "../App.css";
 import { Dropdown, Space, Input } from "antd";
@@ -109,6 +109,10 @@ const Navbar = () => {
     navigate("/friends");
   };
 
+  const handleChats = () => {
+    navigate("/chats");
+  };
+
   const items = [
     {
       label: "User info",
@@ -127,6 +131,12 @@ const Navbar = () => {
       key: "3",
       icon: <FaUserFriends />,
       onClick: handleFriends,
+    },
+    {
+      label: "Chats",
+      key: "4",
+      icon: <FaPeopleGroup />,
+      onClick: handleChats,
     },
     {
       label: "Log out",

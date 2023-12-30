@@ -104,6 +104,12 @@ const userSchema = mongoose.Schema({
       ref: "FriendReq",
     },
   ],
+  chats: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Chat",
+    },
+  ],
 });
 
 userSchema.plugin(uniqueValidator);

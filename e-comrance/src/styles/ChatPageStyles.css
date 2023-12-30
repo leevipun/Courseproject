@@ -1,0 +1,77 @@
+#messages-section {
+  display: flex;
+  flex-direction: column; /* Display messages in a column */
+  justify-content: center;
+  background-color: inherit;
+  background-image: inherit; /* Light background color */
+  padding: 20px;
+}
+
+#chat-bar {
+  display: flex;
+  flex-direction: column;
+  justify-content: top;
+  align-items: top;
+  background-color: inherit;
+  background-image: inherit;
+  padding: 20px;
+  width: calc(20%);
+}
+
+#messages {
+  height: 100vh;
+  border: 10px solid #336699;
+  overflow-y: auto;
+  width: calc(80%);
+}
+
+#chat {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.message-container {
+  background-color: rgba(153, 204, 255, 0.5);
+  backdrop-filter: blur(10px); /* White background color for each message */
+  border: 1px solid; /* Light border color */
+  border-color: hsl(210, 50%, 40%);
+  border-radius: 8px;
+  margin: 10px;
+  padding: 15px;
+  max-width: 400px;
+  color: #fdfcfd; /* White text color */
+  align-self: flex-end; /* Other messages on the right side */
+}
+
+.own-message-container {
+  align-self: flex-start; /* Own messages on the left side */
+}
+
+.message-content {
+  font-size: 1.2rem;
+  margin-bottom: 5px;
+  color: #fdfcfd; /* White text color */
+}
+
+.message-sender {
+  color: #336699; /* Text color for the sender */
+  font-weight: bold;
+}
+
+.message-date {
+  color: #888888; /* Color for the date */
+  font-size: 0.9rem;
+  color: #fdfcfd; /* White text color */
+}
+
+#chat-bar h1 {
+  margin: 0;
+  font-size: 1.5em;
+}
+
+#inputDiv {
+  justify-content: center;
+  align-items: center;
+  display: flex;
+}

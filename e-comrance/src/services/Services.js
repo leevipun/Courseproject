@@ -1,7 +1,6 @@
 import axios from "axios";
 
-const baseURL =
-  "http://localhost:3003" || "https://courseproject-backend-6lyy.onrender.com";
+const baseURL = "http://localhost:3003";
 
 let token = null;
 
@@ -503,6 +502,59 @@ export const deleteFriend = async (id) => {
     };
     const response = await axios.delete(`${baseURL}/api/friends/${id}`, config);
     console.log(response.data, "response");
+    return response.data;
+  } catch (error) {
+    throw { error: error.response.data.error };
+  }
+};
+
+export const startMessages = async (id) => {
+  try {
+    const config = {
+      headers: { Authorization: token },
+    };
+    console.log(config);
+    const reponse = await axios.post(`${baseURL}/api/chats`, { id }, config);
+    return reponse.data;
+  } catch (error) {
+    throw { error: error.response.data.error };
+  }
+};
+
+export const sendMessage = async (newObject, id) => {
+  try {
+    const config = {
+      headers: { Authorization: token },
+    };
+    const response = await axios.post(
+      `${baseURL}/api/chats/post/${id}`,
+      newObject,
+      config
+    );
+    return response.data;
+  } catch (error) {
+    throw { error: error.response.data.error };
+  }
+};
+
+export const getAllMessages = async (id) => {
+  try {
+    const config = {
+      headers: { Authorization: token },
+    };
+    const response = await axios.get(`${baseURL}/api/chats/${id}`, config);
+    return response.data;
+  } catch (error) {
+    throw { error: error.response.data.error };
+  }
+};
+
+export const getAllChats = async () => {
+  try {
+    const config = {
+      headers: { Authorization: token },
+    };
+    const response = await axios.get(`${baseURL}/api/chats`, config);
     return response.data;
   } catch (error) {
     throw { error: error.response.data.error };

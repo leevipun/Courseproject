@@ -25,6 +25,7 @@ import AuthorPage from "./pages/AuthorPage.jsx";
 import AuthorInspect from "./pages/AuthorInspect.jsx";
 import BuyHistoryPage from "./pages/Buyhistorypage.jsx";
 import Friendspage from "./pages/Friendspage.jsx";
+import Chatpage from "./pages/Chatpage.jsx";
 
 const App = () => {
   useEffect(() => {
@@ -58,7 +59,7 @@ const App = () => {
   console.log("App.js user", user);
 
   return (
-    <div>
+    <>
       <Notification />
       <Router>
         <Routes>
@@ -72,17 +73,19 @@ const App = () => {
           <Route path="/friends" Component={Friendspage} />
           <Route path="/user" Component={Userpage} />
           <Route path="/contacts" Component={Contactpage} />
+          <Route path="/chats" Component={Chatpage} />
           <Route path="/add" Component={AddingPage} />
           <Route path="authors" Component={AuthorPage} />
           <Route path="/ownlisting" Component={Ownlisting} />
           <Route path="/users/:id" Component={AuthorInspect} />
           <Route path="/payment-successful" Component={PaymentSucess} />
+          <Route path="/chats/:id" Component={Chatpage} />
           <Route path="/buyhistory" Component={BuyHistoryPage} />
           <Route path="/*" Component={Notfound} />
         </Routes>
       </Router>
       <SpeedInsights />
-    </div>
+    </>
   );
 };
 

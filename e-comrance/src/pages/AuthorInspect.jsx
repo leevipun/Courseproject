@@ -3,7 +3,9 @@ import { useDispatch } from "react-redux";
 import {
   getAuthor,
   getListing,
+  getUserData,
   sendFriendRequest,
+  startMessages,
 } from "../services/Services.js";
 import { addNotification } from "../../reducer/notificationReducer.js";
 import { Button } from "antd";
@@ -16,17 +18,18 @@ import { setauthorListings } from "../../reducer/authorListingsReducer.js";
 import Navbar from "../components/navbar.jsx";
 import ListingCard from "../components/ListingCard.jsx";
 import "../styles/AuthorInspect.css";
+import { setMessages } from "../../reducer/messageReducer.js";
 
 const AuthorInspect = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
   const [spinTip, setSpinTip] = useState("");
+  let user = getUserData();
   const [buttonText, setButtonText] = useState("Send friend request");
   const [disabled, setDisabled] = useState(false);
   const author = useSelector((state) => state.author);
   const listings = useSelector((state) => state.authorListings);
-  const user = useSelector((state) => state.user);
   const id = window.location.pathname.split("/")[2];
   useEffect(() => {
     const fetchData = async () => {
@@ -39,6 +42,7 @@ const AuthorInspect = () => {
         console.log("response", response);
         fetchListingsAndDispatch(response);
         console.log("response", response);
+        checkFriendStatus();
       } catch (error) {
         dispatch(addNotification(error));
       } finally {
@@ -47,6 +51,19 @@ const AuthorInspect = () => {
     };
     fetchData();
   }, []);
+
+  console.log(user);
+
+  const checkFriendStatus = () => {
+    let friends = user.friends;
+    console.log("friends", friends);
+    if (friends) {
+      setButtonText("Friends");
+      setDisabled(true);
+    } else {
+      setButtonText("Send friend request :D ");
+    }
+  };
 
   console.log("listings", listings);
   const handleBack = () => {
@@ -82,6 +99,16 @@ const AuthorInspect = () => {
     }
   };
 
+  const handleStartMessage = async (id) => {
+    try {
+      const response = await startMessages(id);
+      navigate(`/chats/${response.id}`);
+      dispatch(setMessages(response.messages));
+    } catch (error) {
+      dispatch(addNotification(error.error));
+    }
+  };
+
   if (loading) return <Spinner loading={loading} tip={spinTip} />;
 
   return (
@@ -100,6 +127,9 @@ const AuthorInspect = () => {
           disabled={disabled}
         >
           {buttonText}
+        </Button>
+        <Button type="primary" onClick={() => handleStartMessage(author.id)}>
+          Send message
         </Button>
 
         <div className="user-details">
