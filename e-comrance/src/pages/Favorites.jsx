@@ -1,7 +1,7 @@
 import Navbar from "./../components/navbar.jsx";
 import { useSelector } from "react-redux";
 import { useEffect, useState } from "react";
-import { getAllFavoriteItems, getUserData } from "../services/Services";
+import { getAllFavoriteItems } from "../services/Services";
 import { initializefavorite } from "../../reducer/favoriteReducer.js";
 import { useDispatch } from "react-redux";
 import Spinner from "../components/LoadSpinner.jsx";
@@ -13,7 +13,6 @@ import { addToFavorites, deleteFavorite } from "../services/Services.js";
 import { appendfavorite } from "../../reducer/favoriteReducer.js";
 import React from "react";
 import { SpeedInsights } from "@vercel/speed-insights/react";
-import { setUser } from "../../reducer/userReducer.js";
 
 const Favoritepage = () => {
   const dispatch = useDispatch();
@@ -55,9 +54,6 @@ const Favoritepage = () => {
       setSpinTip("Loading favorite items");
       try {
         setLoading(true);
-        const user = JSON.parse(sessionStorage.getItem("loggedNoteappUser"));
-        const userData = await getUserData(user);
-        dispatch(setUser(userData));
         const response = await getAllFavoriteItems();
         dispatch(initializefavorite(response));
         setLoading(false);

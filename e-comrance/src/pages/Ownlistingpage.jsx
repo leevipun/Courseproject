@@ -7,7 +7,6 @@ import {
   updateListing,
   updateUsersListing,
   getUsersListings,
-  getUserData,
 } from "../services/Services";
 import { initializeUserListing } from "../../reducer/ownlistingReducer";
 import { useEffect } from "react";
@@ -16,7 +15,6 @@ import { useNavigate } from "react-router-dom";
 import { addNotification } from "../../reducer/notificationReducer";
 import React from "react";
 import { SpeedInsights } from "@vercel/speed-insights/react";
-import { setUser } from "../../reducer/userReducer.js";
 
 const Ownlistings = () => {
   const dispatch = useDispatch();
@@ -39,13 +37,6 @@ const Ownlistings = () => {
       setSpinTip("Loading user listings...");
       try {
         setLoading(true);
-        const user = JSON.parse(sessionStorage.getItem("loggedNoteappUser"));
-        const response = await getUserData(user);
-        console.log("Response", response);
-        dispatch(setUser(response));
-        console.log("User", user);
-
-        console.log("User", user);
         const userListings = await getUsersListings();
         console.log("User listings", userListings);
         dispatch(initializeUserListing(userListings));

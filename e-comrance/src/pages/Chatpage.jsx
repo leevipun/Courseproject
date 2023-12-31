@@ -4,7 +4,6 @@ import Spinner from "../components/LoadSpinner.jsx";
 import {
   getAllChats,
   getAllMessages,
-  getUserData,
   sendMessage,
 } from "../services/Services.js";
 import { useEffect } from "react";
@@ -25,7 +24,7 @@ const Chatpage = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [message, setMessage] = useState("");
-  const [user, setUser] = useState([]);
+  let user = useSelector((state) => state.user);
   let messages = useSelector((state) => state.messages);
   const [chats, setChats] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -51,11 +50,6 @@ const Chatpage = () => {
       setSpinTip("Loading user listings...");
       try {
         setLoading(true);
-        const user = JSON.parse(sessionStorage.getItem("loggedNoteappUser"));
-        const response = await getUserData(user);
-        console.log("Response", response);
-        setUser(response);
-        console.log("User", user);
         const id = window.location.pathname.split("/")[2];
         console.log("id", id);
         dispatch(clearMessage());

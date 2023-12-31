@@ -1,7 +1,5 @@
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
-import Services, { getUserData } from "./services/Services.js";
-import React, { useEffect } from "react";
-import { useDispatch } from "react-redux";
+import React from "react";
 
 import "./App.css";
 
@@ -15,12 +13,10 @@ import Userpage from "./pages/Userpage.jsx";
 import Notfound from "./pages/Notfound.jsx";
 import Contactpage from "./pages/Contactpage.jsx";
 import AddingPage from "./pages/Addingpage.jsx";
-import { useSelector } from "react-redux";
 import Notification from "./components/notification.jsx";
 import Ownlisting from "./pages/Ownlistingpage.jsx";
 import Checkoutpage from "./pages/Checkoutpage.jsx";
 import PaymentSucess from "./pages/paymentsucess.jsx";
-import { setUser } from "../reducer/userReducer.js";
 import { SpeedInsights } from "@vercel/speed-insights/react";
 import AuthorPage from "./pages/AuthorPage.jsx";
 import AuthorInspect from "./pages/AuthorInspect.jsx";
@@ -30,37 +26,6 @@ import Chatpage from "./pages/Chatpage.jsx";
 import Adminpage from "./pages/Adminpage";
 
 const App = () => {
-  const dispatch = useDispatch();
-  useEffect(() => {
-    const user = JSON.parse(sessionStorage.getItem("loggedNoteappUser"));
-    const fetchData = async () => {
-      Services.setToken(user);
-      if (!user || user.lenght === 0) {
-        console.log("No user logged in");
-        return;
-      }
-      try {
-        console.log("Fetching user data");
-        console.log(user);
-        const loggedUser = await getUserData(user);
-        console.log("Logged user", loggedUser);
-        dispatch(setUser(loggedUser));
-      } catch (error) {
-        if (error.error === "token expired") {
-          console.log("Token expired");
-          sessionStorage.removeItem("loggedNoteappUser");
-          return;
-        }
-        console.error("Error fetching user:", error);
-      }
-    };
-    fetchData();
-  }, []);
-
-  const user = useSelector((state) => state.user);
-
-  console.log("App.js user", user);
-
   return (
     <>
       <Notification />

@@ -30,9 +30,6 @@ const PaymentSucess = () => {
     setSpinTip("Loading receipt...");
     const fetchData = async () => {
       setLoading(true);
-      const sessionUser = window.sessionStorage.getItem("loggedNoteappUser");
-      const user = JSON.parse(sessionUser);
-      console.log(user);
       const response = await getUserData();
       dispatch(setUser(response));
       const listings = await Services.getAllCartItems();

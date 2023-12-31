@@ -1,7 +1,7 @@
 import React from "react";
 import Navbar from "../components/navbar.jsx";
 import { useNavigate } from "react-router-dom";
-import { getAllRequests, getUserData } from "../services/Services.js";
+import { getAllRequests } from "../services/Services.js";
 import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { addNotification } from "../../reducer/notificationReducer.js";
@@ -10,7 +10,6 @@ import { initializeFollowers } from "../../reducer/followersReducer.js";
 import Spinner from "../components/LoadSpinner.jsx";
 import FriendRequestCard from "../components/FriendReqCard.jsx";
 import { Radio } from "antd";
-import { setUser } from "../../reducer/userReducer.js";
 import { useSelector } from "react-redux";
 
 const Friendspage = () => {
@@ -47,10 +46,6 @@ const Friendspage = () => {
       setSpinTip("Loading user data...");
       setLoading(true);
       try {
-        const user = JSON.parse(sessionStorage.getItem("loggedNoteappUser"));
-        const response = await getUserData(user);
-        console.log(response, "response");
-        dispatch(setUser(response));
         dispatch(initializeFollowers());
         const response3 = await getAllRequests();
         console.log(response3, "response3");

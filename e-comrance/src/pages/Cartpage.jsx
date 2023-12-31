@@ -1,7 +1,7 @@
 import Navbar from "./../components/navbar.jsx";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useState } from "react";
-import Services, { deleteCartItem, getUserData } from "../services/Services";
+import Services, { deleteCartItem } from "../services/Services";
 import { initializecart } from "../../reducer/cartReducer";
 import "../styles/CartStyles.css";
 import { Button } from "antd";
@@ -9,7 +9,6 @@ import { useNavigate } from "react-router-dom";
 import Spinner from "../components/LoadSpinner.jsx";
 import { addNotification } from "../../reducer/notificationReducer";
 import React from "react";
-import { setUser } from "../../reducer/userReducer.js";
 
 const Cartpage = () => {
   const navigate = useNavigate();
@@ -30,9 +29,6 @@ const Cartpage = () => {
       try {
         setSpinTip("Loading cart items");
         setLoading(true);
-        const user = JSON.parse(sessionStorage.getItem("loggedNoteappUser"));
-        const response = await getUserData(user);
-        dispatch(setUser(response));
         const listings = await Services.getAllCartItems();
         console.log("Listings", listings);
         const validListings = listings.filter(
