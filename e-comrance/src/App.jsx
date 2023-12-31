@@ -23,7 +23,7 @@ import AuthorInspect from "./pages/AuthorInspect.jsx";
 import BuyHistoryPage from "./pages/Buyhistorypage.jsx";
 import Friendspage from "./pages/Friendspage.jsx";
 import Chatpage from "./pages/Chatpage.jsx";
-import Adminpage from "./pages/Adminpage";
+import Adminpage from "./pages/Adminpage.jsx";
 
 const App = () => {
   return (
