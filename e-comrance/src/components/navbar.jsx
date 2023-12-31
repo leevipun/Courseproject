@@ -45,21 +45,9 @@ const Navbar = () => {
           console.log("Response Nav", response);
           setUser(response);
           console.log("User", user);
-          const userStatus = user.style;
+          const userStatus = status;
           console.log("User status", userStatus);
-          if (userStatus === "admin") {
-            console.log("Admin");
-            setShowAdd(true);
-            setShowCart(true);
-            setIsAdmin(true);
-          } else if (userStatus === "seller" || userStatus === "both") {
-            setShowAdd(true);
-          } else if (userStatus !== "seller") {
-            setShowCart(true);
-          }
-          if (user) {
-            setIsLogged(true);
-          }
+          checkStatus(response.style);
         }
       } catch (error) {
         if (error.status === 401) {
@@ -102,6 +90,25 @@ const Navbar = () => {
     dispatch(clearListing());
     console.log("User cleared");
     navigate("/login");
+  };
+
+  const checkStatus = (status) => {
+    const loggerUser = window.sessionStorage.getItem("loggedNoteappUser");
+    if (loggerUser) {
+      setIsLogged(true);
+    }
+    if (status) {
+      setIsLogged(true);
+      if (status === "admin") {
+        setShowAdd(true);
+        setShowCart(true);
+        setIsAdmin(true);
+      } else if (status === "seller" || status === "both") {
+        setShowAdd(true);
+      } else if (status !== "seller") {
+        setShowCart(true);
+      }
+    }
   };
 
   const handleUserInfo = () => {

@@ -1,7 +1,7 @@
 import React from "react";
 import { Button } from "antd";
 import { FaHeart } from "react-icons/fa";
-import { addToCart } from "../services/Services.js";
+import { addToCart, deleteUserListing } from "../services/Services.js";
 import { appendcart } from "../../reducer/cartReducer.js";
 import { addNotification } from "../../reducer/notificationReducer.js";
 import { useDispatch, useSelector } from "react-redux";
@@ -13,7 +13,7 @@ import {
   appendfavorite,
 } from "../../reducer/favoriteReducer.js";
 
-const ListingCard = ({ listings, user }) => {
+const ListingCard = ({ listings, user, isAdmin }) => {
   const dispatch = useDispatch();
 
   const handleAddToCart = async (id) => {
@@ -79,6 +79,17 @@ const ListingCard = ({ listings, user }) => {
     }
   };
 
+  const handleDeleteListing = async (id) => {
+    try {
+      const response = await deleteUserListing(id);
+      console.log("Response", response);
+      dispatch(initializeListing());
+      dispatch(addNotification(`listing was deleted succesfully`));
+    } catch (error) {
+      dispatch(addNotification(error));
+    }
+  };
+
   return (
     <div
       id="listingstyle"
@@ -119,7 +130,17 @@ const ListingCard = ({ listings, user }) => {
               >
                 Add to cart
               </Button>
+              {isAdmin ? (
+                <Button
+                  type="primary"
+                  style={{ margin: 10 }}
+                  onClick={() => handleDeleteListing(listing.id)}
+                >
+                  Delete
+                </Button>
+              ) : null}
               <Button
+                type="ghost"
                 style={{
                   margin: 10,
                   color:

@@ -22,6 +22,7 @@ export const { appendlisting, setlisting, clearListing } = listingSlice.actions;
 export const initializeListing = () => {
   return async (dispatch) => {
     const listings = await Services.getAllListings();
+    console.log(listings);
     dispatch(setlisting(listings));
   };
 };

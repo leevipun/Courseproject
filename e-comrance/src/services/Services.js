@@ -1,6 +1,7 @@
 import axios from "axios";
 
-const baseURL = "https://courseproject-backend-6lyy.onrender.com";
+const baseURL =
+  "http://localhost:3003" || "https://courseproject-backend-6lyy.onrender.com";
 
 let token = null;
 
@@ -196,15 +197,9 @@ export const deleteFavorite = async (id) => {
   }
 };
 
-export const updateUserInfo = async (email, name, address, phone) => {
+export const updateUserInfo = async (newObject) => {
   const config = {
     headers: { Authorization: token },
-  };
-  const newObject = {
-    email: email,
-    name: name,
-    address: address,
-    phone: phone,
   };
   console.log(token);
   console.log(newObject);
@@ -238,12 +233,29 @@ export const changePassword = async (password) => {
   }
 };
 
-export const userDelete = async () => {
+export const userDelete = async (id) => {
   try {
     const config = {
       headers: { Authorization: token },
     };
-    const response = await axios.delete(`${baseURL}/api/users`, config);
+    console.log(token);
+    const response = await axios.delete(`${baseURL}/api/users/${id}`, config);
+    return response.data;
+  } catch (error) {
+    throw { error: error.response.data.error };
+  }
+};
+
+export const adminUserDelete = async (id) => {
+  try {
+    const config = {
+      headers: { Authorization: token },
+    };
+    console.log(token);
+    const response = await axios.delete(
+      `${baseURL}/api/users/admin/${id}`,
+      config
+    );
     return response.data;
   } catch (error) {
     throw { error: error.response.data.error };

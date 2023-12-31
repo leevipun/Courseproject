@@ -30,20 +30,30 @@
   list-style-type: none;
   margin: 0;
   padding: 0;
-  justify-content: center; /* Align navigation items to the right */
+  display: flex;
+  justify-content: center;
+  background-color: inherit; /* White background */
 }
 
 #usernavitem {
   cursor: pointer;
-  margin: 10px 10px;
-  padding: 10px;
+  margin: 10px;
+  padding: 10px 20px;
   border-radius: 5px;
   background-color: #3498db; /* Blue color */
   color: #fff; /* White text color */
   transition: background-color 0.3s ease;
 }
 
-/* Hover effect for navigation items */
+#info-conteiner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background-color: #336699;
+  background-image: linear-gradient(90deg, #336699 0%, #66a3cc 100%);
+}
+
 #usernavitem:hover {
   background-color: #2980b9; /* Darker blue on hover */
 }

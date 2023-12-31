@@ -27,6 +27,7 @@ import AuthorInspect from "./pages/AuthorInspect.jsx";
 import BuyHistoryPage from "./pages/Buyhistorypage.jsx";
 import Friendspage from "./pages/Friendspage.jsx";
 import Chatpage from "./pages/Chatpage.jsx";
+import Adminpage from "./pages/Adminpage";
 
 const App = () => {
   const dispatch = useDispatch();
@@ -66,6 +67,7 @@ const App = () => {
       <Router>
         <Routes>
           <Route path="/" exact Component={Homepage} />
+          <Route path="/admin" Component={Adminpage} />
           <Route path="/about" Component={Aboutpage} />
           <Route path="/cart" Component={Cartpage} />
           <Route path="/checkout" Component={Checkoutpage} />

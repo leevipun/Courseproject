@@ -1,5 +1,16 @@
-import { Input, Radio } from "antd";
-import React from "react";
+import { Input, Radio, Tag, Form } from "antd";
+import React, { useState } from "react";
+
+const customizeRequiredMark = (label, { required }) => (
+  <>
+    {required ? (
+      <Tag color="error">Required</Tag>
+    ) : (
+      <Tag color="warning">optional</Tag>
+    )}
+    {label}
+  </>
+);
 
 const AdditionalInfo = ({
   iban,
@@ -37,25 +48,44 @@ const AdditionalInfo = ({
     // Update the state with the formatted date
   };
 
+  const [form] = Form.useForm();
+
+  const [requiredMark, setRequiredMarkType] = useState("optional");
+
+  const onRequiredTypeChange = ({ requiredMarkValue }) => {
+    setRequiredMarkType(requiredMarkValue);
+  };
+
   console.log(birthDay);
   return (
-    <div>
-      <div>
-        <label htmlFor="phoneInput">Please iclude the country code: </label>
+    <Form
+      style={{ padding: "30px" }}
+      form={form}
+      layout="vertical"
+      initialValues={{
+        requiredMarkValue: true,
+      }}
+      onValuesChange={onRequiredTypeChange}
+      requiredMark={
+        requiredMark === "customize" ? customizeRequiredMark : requiredMark
+      }
+    >
+      <Form.Item
+        label="Phone number"
+        required
+        tooltip="Please include the country code"
+      >
         <Input
-          style={{ width: 300, margin: 5 }}
-          id="phoneInput"
+          id="personalLongInput"
           type="text"
           autoComplete="tel"
           placeholder="phonenumber"
           value={phoneNumber}
           onChange={(e) => setPhoneNumber(e.target.value)}
+          required
         />
-      </div>
-      <div style={{ display: "flex" }}>
-        <Input type="date" value={birthDay} onChange={handleDateChange} />
-      </div>
-      <div>
+      </Form.Item>
+      <Form.Item label="IBAN" required>
         <Input
           id="personalLongInput"
           type="text"
@@ -63,24 +93,29 @@ const AdditionalInfo = ({
           autoComplete="iban"
           value={iban}
           onChange={(e) => setIban(e.target.value)}
+          required
         />
-      </div>
-      <div id="personalStyleDiv">
-        <div>
-          <p>What role you wanna take</p>
-        </div>
-        <div>
-          <Radio.Group
-            id="input"
-            options={options}
-            onChange={(e) => setStyle(e.target.value)}
-            value={style}
-            optionType="button"
-          />
-        </div>
-      </div>
-    </div>
+      </Form.Item>
+      <Form.Item label="Birthday" required>
+        <Input
+          type="date"
+          id="personalInfoInput"
+          value={birthDay}
+          onChange={handleDateChange}
+          required
+        />
+      </Form.Item>
+      <Form.Item label="What role do you want to take?" required>
+        <Radio.Group
+          id="input"
+          options={options}
+          onChange={(e) => setStyle(e.target.value)}
+          value={style}
+          optionType="button"
+          required
+        />
+      </Form.Item>
+    </Form>
   );
 };
-
 export default AdditionalInfo;

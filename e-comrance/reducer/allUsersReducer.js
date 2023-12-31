@@ -25,7 +25,8 @@ export const { appendAllUsers, clearAllUsers, setAllUsers } =
 export const initializeAllusers = () => {
   return async (dispatch) => {
     const response = await getUsers();
-    dispatch(setAllUsers(response.data));
+    console.log(response, "AllUsers");
+    dispatch(setAllUsers(response));
   };
 };
 

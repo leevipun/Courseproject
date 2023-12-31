@@ -1,5 +1,16 @@
-import { Input } from "antd";
-import React from "react";
+import { Input, Tag, Form } from "antd";
+import React, { useState } from "react";
+
+const customizeRequiredMark = (label, { required }) => (
+  <>
+    {required ? (
+      <Tag color="error">Required</Tag>
+    ) : (
+      <Tag color="warning">optional</Tag>
+    )}
+    {label}
+  </>
+);
 
 const PersonalInfo = ({
   firstName,
@@ -9,9 +20,28 @@ const PersonalInfo = ({
   email,
   setEmail,
 }) => {
+  const [form] = Form.useForm();
+
+  const [requiredMark, setRequiredMarkType] = useState("optional");
+
+  const onRequiredTypeChange = ({ requiredMarkValue }) => {
+    setRequiredMarkType(requiredMarkValue);
+  };
+
   return (
-    <div>
-      <div style={{ display: "flex" }}>
+    <Form
+      style={{ padding: "30px" }}
+      form={form}
+      layout="vertical"
+      initialValues={{
+        requiredMarkValue: true,
+      }}
+      onValuesChange={onRequiredTypeChange}
+      requiredMark={
+        requiredMark === "customize" ? customizeRequiredMark : requiredMark
+      }
+    >
+      <Form.Item label="First name" required>
         <Input
           id="personalInfoInput"
           type="text"
@@ -20,6 +50,8 @@ const PersonalInfo = ({
           onChange={(e) => setFirstName(e.target.value)}
           required
         />
+      </Form.Item>
+      <Form.Item label="Last name" required>
         <Input
           id="personalInfoInput"
           type="text"
@@ -28,8 +60,8 @@ const PersonalInfo = ({
           onChange={(e) => setLastname(e.target.value)}
           required
         />
-      </div>
-      <div>
+      </Form.Item>
+      <Form.Item label="Email" required>
         <Input
           id="personalLongInput"
           type="text"
@@ -39,8 +71,8 @@ const PersonalInfo = ({
           onChange={(e) => setEmail(e.target.value)}
           required
         />
-      </div>
-    </div>
+      </Form.Item>
+    </Form>
   );
 };
 

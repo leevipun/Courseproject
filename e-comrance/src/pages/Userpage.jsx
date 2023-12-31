@@ -1,14 +1,9 @@
 import { useState, useEffect } from "react";
 import Navbar from "./../components/navbar.jsx";
 import { useDispatch } from "react-redux";
-import { Input, Button } from "antd";
-import {
-  changePassword,
-  getUserData,
-  updateUserInfo,
-  userDelete,
-} from "../services/Services";
-import { addNotification } from "../../reducer/notificationReducer";
+import { Button } from "antd";
+import { getUserData, updateUserInfo, userDelete } from "../services/Services";
+import { addNotification } from "../../reducer/notificationReducer.js";
 import { useNavigate } from "react-router-dom";
 import AdditionalInfo from "../components/registery/additionalInfo.jsx";
 import AddressInfo from "../components/registery/addressInfo.jsx";
@@ -17,7 +12,8 @@ import Spinner from "../components/LoadSpinner.jsx";
 import React from "react";
 import { SpeedInsights } from "@vercel/speed-insights/react";
 import { setUser } from "../../reducer/userReducer.js";
-import { useSelector } from "react-redux";
+import UserNavbar from "../components/userNavbar.jsx";
+import PasswordChange from "../components/PasswordChangeCard.jsx";
 
 const Userpage = () => {
   const dispatch = useDispatch();
@@ -34,7 +30,6 @@ const Userpage = () => {
   const [phone, setPhone] = useState("");
   const [passwordVis, setPasswordVis] = useState(false);
   const [password, setPassword] = useState("");
-  const [password2, setPassword2] = useState("");
   const [style, setStyle] = useState("");
   const [city, setCity] = useState("");
   const [postalCode, setPostalCode] = useState("");
@@ -42,7 +37,6 @@ const Userpage = () => {
   const [birthDay, setBirthDay] = useState("");
   const [iban, setIban] = useState("");
   const [spinTip, setSpinTip] = useState("");
-  const user = useSelector((state) => state.user);
 
   useEffect(() => {
     const user = JSON.parse(sessionStorage.getItem("loggedNoteappUser"));
@@ -62,6 +56,7 @@ const Userpage = () => {
         setCity(response.city || "");
         setPostalCode(response.postalCode || "");
         setCountry(response.country || "");
+        setPhone(response.phone || "");
         const splitted = response.Dob.split("/");
         const date = `${splitted[2]}-${splitted[0]}-${splitted[1]}`;
         console.log("date", date);
@@ -85,23 +80,26 @@ const Userpage = () => {
   const handleUpdate = async () => {
     try {
       setSpinTip("Updating user info...");
-      const response = await updateUserInfo(email, name, address, phone, style);
+      const newObject = {
+        email: email,
+        firstName: firstName,
+        lastName: lastName,
+        password: password,
+        style: style,
+        country: country,
+        city: city,
+        address: address,
+        postalCode: postalCode,
+        phone: phone,
+        Dob: birthDay,
+        iban: iban,
+      };
+      const response = await updateUserInfo(newObject);
       dispatch(addNotification(response));
       console.log(response);
     } catch (error) {
       console.error(error.error);
       dispatch(addNotification(error.error));
-    }
-  };
-
-  const handlePasswordSave = () => {
-    if (password === password2) {
-      setSpinTip("Changing password...");
-      setLoading(true);
-      changePassword(password);
-      setLoading(false);
-    } else {
-      console.log("passwords do not match");
     }
   };
 
@@ -133,156 +131,90 @@ const Userpage = () => {
     setAddressInfo(false);
     setAdditionalInfo(true);
   };
-
-  if (user.length === 0) {
-    return (
-      <div className="App">
+  return (
+    <div className="App">
+      <div>
         <Navbar />
-        <div
-          style={{
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-            height: "80vh",
-          }}
-        >
+        <h1>Userpage</h1>
+        <UserNavbar
+          handleShowAdditionalInfo={handleShowAdditionalInfo}
+          handleShowAddressInfo={handleShowAddressInfo}
+          handleShowPersonalInfo={handleShowPersonalInfo}
+        />
+        <div id="info-conteiner">
+          {personalInfo && (
+            <div>
+              <PersonalInfo
+                lastName={lastName}
+                setLastname={setLastname}
+                firstName={firstName}
+                setFirstName={setFirstName}
+                email={email}
+                setEmail={setEmail}
+                password={password}
+                setPassword={setPassword}
+              />
+            </div>
+          )}
+          {addressInfo && (
+            <div>
+              <AddressInfo
+                city={city}
+                setCity={setCity}
+                address={address}
+                setAddress={setAddress}
+                postalCode={postalCode}
+                setPostalCode={setPostalCode}
+                selectedCountry={country}
+                setSelectedCountry={setCountry}
+              />
+            </div>
+          )}
+          {additionalInfo && (
+            <div>
+              <AdditionalInfo
+                phoneNumber={phone}
+                setPhoneNumber={setPhone}
+                style={style}
+                setStyle={setStyle}
+                birthDay={birthDay}
+                setBirthDay={setBirthDay}
+                iban={iban}
+                setIban={setIban}
+              />
+            </div>
+          )}
+
           <div>
-            <p>Please login first your session has expired</p>
-            <Button type="primary" onClick={() => navigate("/login")}>
-              Login
+            <Button
+              type="primary"
+              onClick={handleUpdate}
+              style={{ margin: 10 }}
+            >
+              Save changes
             </Button>
             <Button
-              style={{ margin: 5 }}
               type="primary"
-              onClick={() => navigate("/register")}
+              onClick={handlePasswordVis}
+              style={{ margin: 10 }}
             >
-              Register
+              Change Password
+            </Button>
+            <Button type="primary" danger onClick={handleUserDelete}>
+              Delete Account
             </Button>
           </div>
-        </div>
-      </div>
-    );
-  } else {
-    return (
-      <div className="App">
-        <div>
-          <Navbar />
-          <h1>Userpage</h1>
-          <div id="userPageDiv" style={{ display: "flex" }}>
-            <div>
-              <ul id="usernavbar">
-                <li id="usernavitem" onClick={handleShowPersonalInfo}>
-                  Personal Info
-                </li>
-                <li id="usernavitem" onClick={handleShowAddressInfo}>
-                  Address Info
-                </li>
-                <li id="usernavitem" onClick={handleShowAdditionalInfo}>
-                  Additional Info
-                </li>
-              </ul>
-            </div>
-            {personalInfo && (
-              <div>
-                <PersonalInfo
-                  lastName={lastName}
-                  setLastname={setLastname}
-                  firstName={firstName}
-                  setFirstName={setFirstName}
-                  email={email}
-                  setEmail={setEmail}
-                  password={password}
-                  setPassword={setPassword}
-                />
-              </div>
+          <div style={{ margin: 10 }}>
+            {passwordVis && (
+              <PasswordChange setLoading={setLoading} setSpinTip={setSpinTip} />
             )}
-            {addressInfo && (
-              <div>
-                <AddressInfo
-                  city={city}
-                  setCity={setCity}
-                  address={address}
-                  setAddress={setAddress}
-                  postalCode={postalCode}
-                  setPostalCode={setPostalCode}
-                  selectedCountry={country}
-                  setSelectedCountry={setCountry}
-                />
-              </div>
-            )}
-            {additionalInfo && (
-              <div>
-                <AdditionalInfo
-                  phoneNumber={phone}
-                  setPhoneNumber={setPhone}
-                  style={style}
-                  setStyle={setStyle}
-                  birthDay={birthDay}
-                  setBirthDay={setBirthDay}
-                  iban={iban}
-                  setIban={setIban}
-                />
-              </div>
-            )}
-            <div>
-              <Button
-                type="primary"
-                onClick={handleUpdate}
-                style={{ margin: 10 }}
-              >
-                Save changes
-              </Button>
-              <Button
-                type="primary"
-                onClick={handlePasswordVis}
-                style={{ margin: 10 }}
-              >
-                Change Password
-              </Button>
-            </div>
-            <div style={{ margin: 10 }}>
-              {passwordVis && (
-                <form>
-                  <div>
-                    <div style={{ margin: 10 }}>
-                      <label htmlFor="password">Password: </label>
-                      <Input.Password
-                        value={password}
-                        onChange={(e) => setPassword(e.target.value)}
-                        id="password"
-                        autoComplete="new-password"
-                        style={{ width: 300 }}
-                      />
-                    </div>
-                    <div style={{ margin: 10 }}>
-                      <label htmlFor="password2">Repeat Password: </label>
-                      <Input.Password
-                        value={password2}
-                        onChange={(e) => setPassword2(e.target.value)}
-                        id="password2"
-                        autoComplete="new-password"
-                        style={{ width: 300 }}
-                      />
-                    </div>
-                    <Button type="primary" onClick={handlePasswordSave}>
-                      Save Password
-                    </Button>
-                  </div>
-                </form>
-              )}
-            </div>
-            <div style={{ margin: 10 }}>
-              <Button type="primary" danger onClick={handleUserDelete}>
-                Delete Account
-              </Button>
-            </div>
           </div>
-          <SpeedInsights />
-          <Spinner loading={loading} spinTip={spinTip} />
         </div>
       </div>
-    );
-  }
+      <SpeedInsights />
+      <Spinner loading={loading} spinTip={spinTip} />
+    </div>
+  );
 };
 
 export default Userpage;

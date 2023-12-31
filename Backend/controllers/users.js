@@ -9,7 +9,6 @@ const stripe = require("stripe")(API_KEY);
 require("express-async-errors");
 const nodemailer = require("nodemailer");
 const { transporter } = require("./email");
-const { Message } = require("@mui/icons-material");
 const pass = process.env.EMAILPASS;
 const Chat = require("../models/chat");
 const Message = require("../models/message");
@@ -166,9 +165,17 @@ usersRouter.put("/", async (req, res) => {
     console.log(user);
     const item = {
       email: body.email,
-      name: body.name,
+      firstName: body.firstName,
+      lastName: body.lastName,
+      password: body.password,
+      style: body.style,
+      country: body.country,
+      city: body.city,
       address: body.address,
+      postalCode: body.postalCode,
       phone: body.phone,
+      Dob: body.birthDay,
+      iban: body.iban,
     };
     console.log(item);
     const updatedUser = await User.findByIdAndUpdate(user._id, item, {
@@ -176,7 +183,7 @@ usersRouter.put("/", async (req, res) => {
     });
     console.log(updatedUser);
     await user.save();
-    res.json(updatedUser);
+    res.send("User updated successfully");
   } catch (error) {
     console.log("Tänne :(");
     console.error(error);
@@ -200,7 +207,9 @@ usersRouter.put("/password", async (req, res) => {
       user.passwordHash
     );
     if (passwordCorrect) {
-      return res.status(401).json({ error: "Invalid password" });
+      return res
+        .status(401)
+        .json({ error: "You can not use your old password" });
     }
     const passwordHash = await bcrypt.hash(body.password, 10);
     const item = {
@@ -212,7 +221,7 @@ usersRouter.put("/password", async (req, res) => {
     });
     console.log(updatedUser);
     await user.save();
-    res.json(updatedUser);
+    res.send("Password updated successfully");
   } catch (error) {
     console.log("Tänne :(");
     console.error(error);
@@ -220,8 +229,11 @@ usersRouter.put("/password", async (req, res) => {
   }
 });
 
-usersRouter.delete("/", async (req, res) => {
+usersRouter.delete("/", extractToken, async (req, res) => {
   try {
+    const body = req.body;
+    console.log(body);
+    console.log(req.token);
     const deCodedToken = jwt.verify(req.token, process.env.SECRET);
     if (!deCodedToken) {
       return res.status(401).json({ error: "Invalid token" });
@@ -275,6 +287,61 @@ usersRouter.delete("/", async (req, res) => {
         console.log("Sent: " + info.response, "to: " + info.accepted);
       });
       res.status(204).send("User deleted Successfully");
+    }
+  } catch (error) {
+    console.error(error);
+    return res.status(400).send("Error occurred while deleting user");
+  }
+});
+
+usersRouter.delete("/admin/:id", async (req, res) => {
+  console.log("Tultiin tänne");
+  try {
+    console.log("Tultiin tänne");
+    const deCodedToken = jwt.verify(req.token, process.env.SECRET);
+    if (!deCodedToken) {
+      return res.status(401).json({ error: "Invalid token" });
+    }
+    const user = await User.findOne({ email: deCodedToken.email });
+    if (user.style === "admin") {
+      const userToDelete = await User.findById(req.params.id);
+      console.log(userToDelete);
+      const userListings = userToDelete.listings;
+      const userCart = userToDelete.cart;
+      const chats = userToDelete.chats;
+      for (const id of userListings) {
+        console.log(id);
+        await List.findByIdAndRemove(id);
+      }
+
+      const NewItem = {
+        status: "Avialable",
+      };
+      if (userCart) {
+        for (const id of userCart) {
+          await List.findByIdAndUpdate(id, NewItem, { new: true });
+        }
+      }
+      if (chats) {
+        for (const id of chats) {
+          if (chats.messages) {
+            for (const id of chats.messages) {
+              await Message.findByIdAndRemove(id);
+            }
+          }
+          await Chat.findByIdAndRemove(id);
+        }
+      }
+      const deletedStripeAccount = await stripe.accounts.del(
+        userToDelete.stripeId
+      );
+      if (!deletedStripeAccount || deletedStripeAccount.deleted !== true) {
+        return res.status(400).send("Error occurred while deleting account");
+      } else {
+        await User.findByIdAndRemove(userToDelete._id);
+        const restUsers = await User.find({});
+        res.status(204).json(restUsers);
+      }
     }
   } catch (error) {
     console.error(error);
