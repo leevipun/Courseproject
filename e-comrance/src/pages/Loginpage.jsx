@@ -3,7 +3,7 @@ import { useState } from "react";
 import { Login } from "../services/Services";
 import "../styles/loginStyles.css";
 import { useDispatch } from "react-redux";
-import { appendUser } from "../../reducer/userReducer";
+import { setUser } from "../../reducer/userReducer";
 import Services from "../services/Services";
 import { addNotification } from "../../reducer/notificationReducer";
 import LoginForm from "../components/loginForm.jsx";
@@ -27,7 +27,7 @@ const Loginpage = () => {
     try {
       setLoading(true);
       const user = await Login(email, password);
-      dispatch(appendUser(user));
+      dispatch(setUser(user));
       Services.setToken(user.token);
       window.sessionStorage.setItem(
         "loggedNoteappUser",

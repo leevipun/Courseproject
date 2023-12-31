@@ -9,7 +9,10 @@ const stripe = require("stripe")(API_KEY);
 require("express-async-errors");
 const nodemailer = require("nodemailer");
 const { transporter } = require("./email");
+const { Message } = require("@mui/icons-material");
 const pass = process.env.EMAILPASS;
+const Chat = require("../models/chat");
+const Message = require("../models/message");
 
 const extractToken = middleware.extractToken;
 
@@ -227,6 +230,7 @@ usersRouter.delete("/", async (req, res) => {
     const userListings = user.listings;
     const userCart = user.cart;
     const userStripeId = user.stripeId;
+    const chats = user.chats;
     console.log(userStripeId);
     console.log(userCart);
     console.log(user);
@@ -242,6 +246,14 @@ usersRouter.delete("/", async (req, res) => {
     if (userCart) {
       for (const id of userCart) {
         await List.findByIdAndUpdate(id, item, { new: true });
+      }
+    }
+    if (chats) {
+      for (const id of chats) {
+        for (const id of chats.messages) {
+          await Message.findByIdAndRemove(id);
+        }
+        await Chat.findByIdAndRemove(id);
       }
     }
     const deletedStripeAccount = await stripe.accounts.del(userStripeId);

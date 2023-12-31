@@ -24,7 +24,7 @@ const userSchema = mongoose.Schema({
   },
   style: {
     type: String,
-    enum: ["buyer", "seller", "both"],
+    enum: ["buyer", "seller", "both", "admin"],
   },
   address: {
     type: String,

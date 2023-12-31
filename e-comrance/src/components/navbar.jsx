@@ -18,22 +18,23 @@ import { CiLogin } from "react-icons/ci";
 import { UserOutlined, LogoutOutlined } from "@ant-design/icons";
 import { useDispatch, useSelector } from "react-redux";
 import { filterChange } from "../../reducer/filterReducer";
-import { clearUser, setUser } from "../../reducer/userReducer";
+import { clearUser } from "../../reducer/userReducer";
 import { clearCart } from "../../reducer/cartReducer";
 import { clearFavorite } from "../../reducer/favoriteReducer";
 import { clearListing } from "../../reducer/listingReducer";
 import { getUserData } from "../services/Services";
 import { addNotification } from "../../reducer/notificationReducer";
+import { RiAdminLine } from "react-icons/ri";
 
 const Navbar = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [isLogged, setIsLogged] = useState(false);
   const [showInput, setShowInput] = useState(false);
-  const [showAdd, setShowAdd] = useState(true);
+  const [showAdd, setShowAdd] = useState(false);
   const [showCart, setShowCart] = useState(false);
-  const user = useSelector((state) => state.user);
-
+  const [isAdmin, setIsAdmin] = useState(false);
+  const [user, setUser] = useState([]);
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -41,14 +42,19 @@ const Navbar = () => {
 
         if (loggerUser) {
           const response = await getUserData(loggerUser);
-          dispatch(setUser(response));
-          console.log("User", user.length);
-          console.log(user.length);
+          console.log("Response Nav", response);
+          setUser(response);
+          console.log("User", user);
           const userStatus = user.style;
-          if (userStatus === "seller" || userStatus === "both") {
+          console.log("User status", userStatus);
+          if (userStatus === "admin") {
+            console.log("Admin");
             setShowAdd(true);
-          }
-          if (userStatus !== "seller") {
+            setShowCart(true);
+            setIsAdmin(true);
+          } else if (userStatus === "seller" || userStatus === "both") {
+            setShowAdd(true);
+          } else if (userStatus !== "seller") {
             setShowCart(true);
           }
           if (user) {
@@ -114,6 +120,10 @@ const Navbar = () => {
     navigate("/chats");
   };
 
+  const handleAdmin = () => {
+    navigate("/admin");
+  };
+
   const items = [
     {
       label: "User info",
@@ -139,9 +149,17 @@ const Navbar = () => {
       icon: <FaPeopleGroup />,
       onClick: handleChats,
     },
+    isAdmin
+      ? {
+          label: "Admin",
+          key: "5",
+          icon: <RiAdminLine />,
+          onClick: handleAdmin,
+        }
+      : null,
     {
       label: "Log out",
-      key: "5",
+      key: "6",
       icon: <LogoutOutlined />,
       danger: true,
       onClick: handleLogout,

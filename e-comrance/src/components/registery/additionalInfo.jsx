@@ -24,6 +24,10 @@ const AdditionalInfo = ({
       label: "Both",
       value: "both",
     },
+    {
+      label: "Admin",
+      value: "admin",
+    },
   ];
 
   const handleDateChange = (e) => {
