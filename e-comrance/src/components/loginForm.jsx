@@ -22,7 +22,7 @@ const LoginForm = ({
       }}
     >
       <div>
-        <form onSubmit={handleLogin} style={{ marginTop: 100 }}>
+        <form id="form" onSubmit={handleLogin} style={{ marginTop: 100 }}>
           <h1 style={{ color: "#fcfbfc" }}>Login</h1>
           <Input
             id="input"

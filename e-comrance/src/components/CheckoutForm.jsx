@@ -4,7 +4,7 @@ import {
   useStripe,
   useElements,
 } from "@stripe/react-stripe-js";
-import { addNotification } from "../../reducer/notificationReducer";
+import { addNotification } from "../../reducer/notificationReducer.js";
 import { useDispatch, useSelector } from "react-redux";
 import "../styles/stripe.css";
 import React from "react";

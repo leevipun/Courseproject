@@ -66,6 +66,18 @@ const PersonalInfo = ({ props }) => {
           required
         />
       </Form.Item>
+      {props.isReqistery && (
+        <Form.Item label="Password" required>
+          <Input.Password
+            type="password"
+            placeholder="Password"
+            value={props.password}
+            autoComplete="new-password"
+            required
+            onChange={(e) => props.setPassword(e.target.value)}
+          />
+        </Form.Item>
+      )}
     </Form>
   );
 };

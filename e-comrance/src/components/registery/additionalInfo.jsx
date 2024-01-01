@@ -13,7 +13,6 @@ const customizeRequiredMark = (label, { required }) => (
 );
 
 const AdditionalInfo = ({ props }) => {
-  console.log("Additional info props", props);
   const options = [
     {
       label: "Buyer",
@@ -41,6 +40,8 @@ const AdditionalInfo = ({ props }) => {
   };
 
   const formattedDate = () => {
+    if (props.Dob === undefined) return;
+
     const splitted = props.Dob.split("-");
     return `${splitted[0]}-${splitted[1]}-${splitted[2]}`;
   };

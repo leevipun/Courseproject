@@ -6,7 +6,7 @@ import {
   deleteFriend,
   startMessages,
 } from "../services/Services.js";
-import { initializeFollowers } from "../../reducer/followersReducer";
+import { initializeFollowers } from "../../reducer/followersReducer.js";
 import { useDispatch } from "react-redux";
 import { addNotification } from "../../reducer/notificationReducer.js";
 import { setMessages } from "../../reducer/messageReducer.js";

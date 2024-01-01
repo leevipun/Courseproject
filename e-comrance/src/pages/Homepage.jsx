@@ -123,8 +123,10 @@ const Homepage = () => {
             <LuSettings2 />
           </Button>
         </div>
-        <FilterCard showFilter={showFilter} />
-        <ListingCard listings={listing} user={user} />
+        <div style={{ display: "flex" }}>
+          <ListingCard listings={listing} user={user} />
+          <FilterCard showFilter={showFilter} />
+        </div>
         <div>
           <SpeedInsights />
           <Spinner loading={loading} spinTip={spinTip} />

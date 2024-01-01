@@ -16,8 +16,6 @@ const customizeRequiredMark = (label, { required }) => (
 const AddressInfo = ({ props }) => {
   const [form] = Form.useForm();
 
-  console.log("Address info props", props);
-
   const [requiredMark, setRequiredMarkType] = useState("optional");
 
   const onRequiredTypeChange = ({ requiredMarkValue }) => {

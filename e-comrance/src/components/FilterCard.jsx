@@ -6,11 +6,13 @@ import {
   setMaxPrice,
   setMinPrice,
 } from "../../reducer/filterReducer";
-import { Button, Input, Select } from "antd";
+import { Button, Input, Select, Form } from "antd";
 import categoriesWithOptions from "../../Data/categoryData";
 import CountriesData from "../../Data/countryData";
 
 const FilterCard = ({ showFilter }) => {
+  const [form] = Form.useForm();
+
   const dispatch = useDispatch();
   const filter = useSelector((state) => state.filter);
 
@@ -22,52 +24,64 @@ const FilterCard = ({ showFilter }) => {
     dispatch(setMaxPrice(""));
   };
   return (
-    <div>
+    <div
+      style={{
+        display: "flex",
+        alignContent: "center",
+        justifyContent: "center",
+        marginRight: 30,
+      }}
+    >
       {showFilter && (
-        <div style={{ margin: 30 }}>
-          <div style={{ margin: 10 }}>
-            <label htmlFor="category">Filter by category: </label>
-            <Select
-              id="category"
-              options={categoriesWithOptions}
-              style={{ width: 200 }}
-              value={filter.category}
-              onChange={(value) => dispatch(setCategory(value))}
-            ></Select>
-          </div>
-          <div style={{ margin: 10 }}>
-            <label htmlFor="country">Filter by country: </label>
-            <Select
-              id="country"
-              options={CountriesData}
-              style={{ width: 200 }}
-              value={filter.country}
-              onChange={(value) => dispatch(setCountry(value))}
-            ></Select>
-          </div>
-          <div style={{ margin: 10, width: 300 }}>
-            <label htmlFor="minPrice">Min price: </label>
-            <Input
-              id="minPrice"
-              placeholder="Min price"
-              value={filter.minPrice}
-              onChange={(e) => dispatch(setMinPrice(e.target.value))}
-            />
-          </div>
-          <div style={{ margin: 10, width: 300 }}>
-            <label htmlFor="maxPrice">Max price: </label>
-            <Input
-              id="maxPrice"
-              onChange={(e) => dispatch(setMaxPrice(e.target.value))}
-              value={filter.maxPrice}
-              placeholder="Max price"
-            />
-          </div>
-          <div style={{ margin: 10 }}>
-            <Button type="primary" onClick={() => handleClearFilter()}>
-              Clear filter
-            </Button>
-          </div>
+        <div>
+          <Form
+            id="form"
+            style={{
+              display: "flex",
+              alignContent: "center",
+              justifyContent: "center",
+            }}
+            form={form}
+            initialValues={{
+              category: filter.category,
+              country: filter.country,
+              minPrice: filter.minPrice,
+              maxPrice: filter.maxPrice,
+            }}
+          >
+            {showFilter && (
+              <div style={{ margin: 30 }}>
+                <Form.Item name="category" label="Filter by category:">
+                  <Select
+                    options={categoriesWithOptions}
+                    style={{ width: 200 }}
+                  />
+                </Form.Item>
+                <Form.Item name="country" label="Filter by country:">
+                  <Select options={CountriesData} style={{ width: 200 }} />
+                </Form.Item>
+                <Form.Item
+                  name="minPrice"
+                  label="Min price:"
+                  style={{ margin: 10, width: 300 }}
+                >
+                  <Input placeholder="Min price" />
+                </Form.Item>
+                <Form.Item
+                  name="maxPrice"
+                  label="Max price:"
+                  style={{ margin: 10, width: 300 }}
+                >
+                  <Input placeholder="Max price" />
+                </Form.Item>
+                <Form.Item style={{ margin: 10 }}>
+                  <Button type="primary" onClick={handleClearFilter}>
+                    Clear filter
+                  </Button>
+                </Form.Item>
+              </div>
+            )}
+          </Form>
         </div>
       )}
     </div>
