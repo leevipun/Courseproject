@@ -111,4 +111,44 @@ cartRouter.delete("/:id", extractUser, async (req, res, next) => {
   }
 });
 
+cartRouter.get("/admin/:id", async (req, res, next) => {
+  try {
+    const id = req.params.id;
+    const userCart = await User.findById(id).select("cart").exec();
+    if (userCart) {
+      const listings = await Promise.all(
+        userCart.cart.map(async (id) => {
+          return await List.findById(id);
+        })
+      );
+      console.log(listings);
+      res.json(listings);
+    } else {
+      res.status(404).send("User not found");
+    }
+  } catch (err) {
+    console.log(err);
+    next(err);
+  }
+});
+
+cartRouter.delete("/admin/:id", async (req, res, next) => {
+  try {
+    const id = req.params.id;
+    const user = await User.findOne({ cart: id }).exec();
+    await User.findByIdAndUpdate(user._id, {
+      $pull: { cart: id },
+    });
+    const item = {
+      status: "Aviable",
+    };
+    await List.findByIdAndUpdate(id, item, {
+      new: true,
+    });
+    res.status(204).json({ message: "Item removed from cart" });
+  } catch (error) {
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+});
+
 module.exports = cartRouter;

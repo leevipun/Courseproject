@@ -650,4 +650,31 @@ export const deleteChat = async (id) => {
   }
 };
 
+export const getAdminCartItems = async (id) => {
+  try {
+    const config = {
+      headers: { Authorization: token },
+    };
+    const response = await axios.get(`${baseURL}/api/cart/admin/${id}`, config);
+    return response.data;
+  } catch (error) {
+    throw { error: error.response.data.error };
+  }
+};
+
+export const adminDeleteCartItem = async (id) => {
+  try {
+    const config = {
+      headers: { Authorization: token },
+    };
+    const response = await axios.delete(
+      `${baseURL}/api/cart/admin/${id}`,
+      config
+    );
+    return response.data;
+  } catch (error) {
+    throw { error: error.response.data.error };
+  }
+};
+
 export default { setToken, getAllListings, getAllCartItems, getImages };

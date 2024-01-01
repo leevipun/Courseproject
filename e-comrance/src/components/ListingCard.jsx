@@ -111,11 +111,15 @@ const ListingCard = ({ listings, user, isAdmin }) => {
           <div>
             <div style={{ margin: 5 }}>Name: {listing.name}</div>
             <div style={{ margin: 5 }}>Category: {listing.category}</div>
+
             <div style={{ margin: 5 }}>Country: {listing.country}</div>
             <div style={{ margin: 5 }}>
               Price: {listing.price} {listing.currency}
             </div>
             <div style={{ margin: 5 }}>Description: {listing.description}</div>
+            {isAdmin ? (
+              <div style={{ margin: 5 }}>Status: {listing.status}</div>
+            ) : null}
             <div id="itemstyle">
               <Button
                 type="primary"

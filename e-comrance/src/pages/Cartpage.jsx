@@ -1,8 +1,11 @@
 import Navbar from "./../components/navbar.jsx";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useState } from "react";
-import Services, { deleteCartItem } from "../services/Services";
-import { initializecart } from "../../reducer/cartReducer";
+import Services, {
+  adminDeleteCartItem,
+  deleteCartItem,
+} from "../services/Services";
+import { initializeAdminCart, initializecart } from "../../reducer/cartReducer";
 import "../styles/CartStyles.css";
 import { Button } from "antd";
 import { useNavigate } from "react-router-dom";
@@ -15,35 +18,41 @@ const Cartpage = () => {
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(false);
   const [spinTip, setSpinTip] = useState("");
+  const isAdmin = window.location.pathname.split("/")[2] === "admin";
   const user = useSelector((state) => state.user);
   const cartItems = useSelector((state) => {
     return state.cart;
   });
 
-  console.log("cart", cartItems);
+  const userId = window.location.pathname.split("/")[3];
 
   const [totalPrice, setTotalPrice] = useState(0);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        setSpinTip("Loading cart items");
-        setLoading(true);
-        const listings = await Services.getAllCartItems();
-        console.log("Listings", listings);
-        const validListings = listings.filter(
-          (item) => item !== undefined && item !== null && item !== ""
-        );
-        if (validListings.length === 0) {
-          console.log("validate");
-          dispatch(initializecart([]));
-          setLoading(false);
-          return;
+        if (window.location.pathname.split("/")[2] === "admin") {
+          const id = window.location.pathname.split("/")[3];
+          dispatch(initializeAdminCart(id));
         } else {
-          console.log("else");
-          dispatch(initializecart(validListings));
-          console.log("Valid Listings", validListings);
-          setLoading(false);
+          setSpinTip("Loading cart items");
+          setLoading(true);
+          const listings = await Services.getAllCartItems();
+          console.log("Listings", listings);
+          const validListings = listings.filter(
+            (item) => item !== undefined && item !== null && item !== ""
+          );
+          if (validListings.length === 0) {
+            console.log("validate");
+            dispatch(initializecart([]));
+            setLoading(false);
+            return;
+          } else {
+            console.log("else");
+            dispatch(initializecart(validListings));
+            console.log("Valid Listings", validListings);
+            setLoading(false);
+          }
         }
       } catch (error) {
         if (error.status === 401) {
@@ -65,12 +74,19 @@ const Cartpage = () => {
 
   const handleItemDelete = async (id) => {
     try {
-      setSpinTip("Deleting item");
-      setLoading(true);
-      console.log(id);
-      const response = await deleteCartItem(id);
-      dispatch(initializecart(response));
-      setLoading(false);
+      if (isAdmin) {
+        await adminDeleteCartItem(id);
+        dispatch(initializeAdminCart(userId));
+        console.log();
+        return;
+      } else {
+        setSpinTip("Deleting item");
+        setLoading(true);
+        console.log(id);
+        await deleteCartItem(id);
+        dispatch(initializecart());
+        setLoading(false);
+      }
     } catch (error) {
       console.log(error);
       setLoading(false);
@@ -101,6 +117,23 @@ const Cartpage = () => {
       <div>
         <Navbar />
       </div>
+      {isAdmin ? (
+        <Button
+          style={{ margin: 5 }}
+          type="primary"
+          onClick={() => navigate("/admin")}
+        >
+          Back to Admin
+        </Button>
+      ) : (
+        <Button
+          style={{ margin: 5 }}
+          type="primary"
+          onClick={() => navigate("/")}
+        >
+          Back
+        </Button>
+      )}
       <div id="listingstyle">
         {cartItems.map((listing) => (
           <div key={listing.id} id="listing">
@@ -140,13 +173,15 @@ const Cartpage = () => {
         </h2>
       </div>
       <div>
-        <Button
-          type="primary"
-          style={{ marginLeft: 10 }}
-          onClick={handleCheckout}
-        >
-          Check out
-        </Button>
+        {!isAdmin ? (
+          <Button
+            type="primary"
+            style={{ marginLeft: 10 }}
+            onClick={handleCheckout}
+          >
+            Check out
+          </Button>
+        ) : null}
       </div>
       <Spinner loading={loading} spinTip={spinTip} />
     </div>

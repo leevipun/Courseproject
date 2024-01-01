@@ -51,11 +51,18 @@ const Navbar = () => {
           const response = await getUserData();
           console.log("Response Nav", response);
           setIsLogged(true);
-          dispatch(initializeUser());
-          dispatch(initializecart());
-          dispatch(initializefavorite());
-          console.log("User", user);
-          checkStatus(response.style);
+          if (response.style === "admin") {
+            dispatch(initializeUser());
+            dispatch(initializefavorite());
+
+            setIsAdmin(true);
+          } else {
+            dispatch(initializeUser());
+            dispatch(initializecart());
+            dispatch(initializefavorite());
+            console.log("User", user);
+            checkStatus(response.style);
+          }
         }
       } catch (error) {
         if (error.status === 401) {
@@ -111,8 +118,8 @@ const Navbar = () => {
       console.log("on user edelleen stats");
       setIsLogged(true);
       if (status === "admin") {
-        setShowAdd(true);
-        setShowCart(true);
+        setShowAdd(false);
+        setShowCart(false);
         setIsAdmin(true);
       } else if (status === "seller" || status === "both") {
         setShowAdd(true);
