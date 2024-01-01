@@ -22,6 +22,20 @@ chatsRouter.get("/", extractToken, async (req, res) => {
   }
 });
 
+chatsRouter.get("/admin", extractToken, async (req, res) => {
+  try {
+    const deCodedToken = jwt.verify(req.token, process.env.SECRET);
+    if (!deCodedToken) {
+      return res.status(401).json({ error: "token missing or invalid" });
+    }
+    const chats = await Chat.find({});
+    console.log("chats", chats);
+    res.json(chats);
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
+});
+
 chatsRouter.post("/", extractToken, async (req, res) => {
   try {
     const body = req.body;

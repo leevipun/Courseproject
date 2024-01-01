@@ -349,6 +349,40 @@ usersRouter.delete("/admin/:id", async (req, res) => {
   }
 });
 
+usersRouter.put("/:id", async (req, res) => {
+  const body = req.body;
+  try {
+    const user = await User.findById(req.params.id);
+    const item = {
+      email: body.email,
+      firstName: body.firstName,
+      lastName: body.lastName,
+      password: body.password,
+      style: body.style,
+      country: body.country,
+      city: body.city,
+      address: body.address,
+      postalCode: body.postalCode,
+      phone: body.phone,
+      Dob: body.birthDay,
+      iban: body.iban,
+    };
+    console.log(item);
+    const updatedUser = await User.findByIdAndUpdate(user._id, item, {
+      new: true,
+    });
+    console.log(updatedUser);
+    await user.save();
+    res.send("User updated successfully");
+  } catch (error) {
+    console.log("Tänne :(");
+    console.error(error);
+    return res
+      .status(400)
+      .send({ error: "Error occurred while updating user" });
+  }
+});
+
 usersRouter.get("/listings", extractToken, async (req, res) => {
   const deCodedToken = jwt.verify(req.token, process.env.SECRET);
   if (!deCodedToken) {

@@ -12,16 +12,8 @@ const customizeRequiredMark = (label, { required }) => (
   </>
 );
 
-const AdditionalInfo = ({
-  iban,
-  setIban,
-  phoneNumber,
-  setPhoneNumber,
-  style,
-  setStyle,
-  setBirthDay,
-  birthDay,
-}) => {
+const AdditionalInfo = ({ props }) => {
+  console.log("Additional info props", props);
   const options = [
     {
       label: "Buyer",
@@ -43,9 +35,14 @@ const AdditionalInfo = ({
 
   const handleDateChange = (e) => {
     // Format the date to yyyy-mm-dd
-    setBirthDay(e.target.value);
+    props.setDob(e.target.value);
     console.log(e.target.value);
     // Update the state with the formatted date
+  };
+
+  const formattedDate = () => {
+    const splitted = props.Dob.split("-");
+    return `${splitted[0]}-${splitted[1]}-${splitted[2]}`;
   };
 
   const [form] = Form.useForm();
@@ -56,7 +53,6 @@ const AdditionalInfo = ({
     setRequiredMarkType(requiredMarkValue);
   };
 
-  console.log(birthDay);
   return (
     <Form
       style={{ padding: "30px" }}
@@ -80,8 +76,8 @@ const AdditionalInfo = ({
           type="text"
           autoComplete="tel"
           placeholder="phonenumber"
-          value={phoneNumber}
-          onChange={(e) => setPhoneNumber(e.target.value)}
+          value={props.phone}
+          onChange={(e) => props.setPhone(e.target.value)}
           required
         />
       </Form.Item>
@@ -91,8 +87,8 @@ const AdditionalInfo = ({
           type="text"
           placeholder="IBAN"
           autoComplete="iban"
-          value={iban}
-          onChange={(e) => setIban(e.target.value)}
+          value={props.iban}
+          onChange={(e) => props.setIban(e.target.value)}
           required
         />
       </Form.Item>
@@ -100,7 +96,7 @@ const AdditionalInfo = ({
         <Input
           type="date"
           id="personalInfoInput"
-          value={birthDay}
+          value={formattedDate()}
           onChange={handleDateChange}
           required
         />
@@ -109,8 +105,8 @@ const AdditionalInfo = ({
         <Radio.Group
           id="input"
           options={options}
-          onChange={(e) => setStyle(e.target.value)}
-          value={style}
+          onChange={(e) => props.setStyle(e.target.value)}
+          value={props.style}
           optionType="button"
           required
         />

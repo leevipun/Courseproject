@@ -32,6 +32,9 @@ const App = () => {
       <Router>
         <Routes>
           <Route path="/" exact Component={Homepage} />
+          <Route path="/admin/chats/:id" Component={Chatpage} />
+          <Route path="/admin/chats" Component={Chatpage} />
+          <Route path="/users/admin/:id" Component={Cartpage} />
           <Route path="/admin" Component={Adminpage} />
           <Route path="/about" Component={Aboutpage} />
           <Route path="/cart" Component={Cartpage} />
@@ -44,7 +47,7 @@ const App = () => {
           <Route path="/contacts" Component={Contactpage} />
           <Route path="/chats" Component={Chatpage} />
           <Route path="/add" Component={AddingPage} />
-          <Route path="authors" Component={AuthorPage} />
+          <Route path="/authors" Component={AuthorPage} />
           <Route path="/ownlisting" Component={Ownlisting} />
           <Route path="/users/:id" Component={AuthorInspect} />
           <Route path="/payment-successful" Component={PaymentSucess} />

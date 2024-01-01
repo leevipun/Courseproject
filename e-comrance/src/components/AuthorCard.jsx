@@ -66,6 +66,10 @@ const AuthorCard = ({
     }
   };
 
+  const handleReDirectToCart = (id) => {
+    navigate(`/users/admin/${id}`);
+  };
+
   return (
     <div className="authors">
       {users.map((author) => (
@@ -102,7 +106,7 @@ const AuthorCard = ({
                 <button onClick={() => deleteUser(author.id)}>
                   Delete User
                 </button>
-                <button onClick={() => handleReDirect(author.id, "cart")}>
+                <button onClick={() => handleReDirectToCart(author.id, "cart")}>
                   Check Cart
                 </button>
                 <button onClick={() => handleReDirect(author.id, "user")}>

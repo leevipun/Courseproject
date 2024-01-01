@@ -1,9 +1,9 @@
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import {
+  adminUpdateUserInfo,
   getAuthor,
   getListing,
-  getUserData,
   sendFriendRequest,
   startMessages,
 } from "../services/Services.js";
@@ -19,49 +19,134 @@ import Navbar from "../components/navbar.jsx";
 import ListingCard from "../components/ListingCard.jsx";
 import "../styles/AuthorInspect.css";
 import { setMessages } from "../../reducer/messageReducer.js";
+import { initializeUser } from "../../reducer/userReducer.js";
+import AdditionalInfo from "../components/registery/additionalInfo.jsx";
+import AddressInfo from "../components/registery/addressInfo.jsx";
+import PersonalInfo from "../components/registery/personalInfo.jsx";
+import UserNavbar from "../components/userNavbar.jsx";
 
 const AuthorInspect = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
   const [spinTip, setSpinTip] = useState("");
-  let user = getUserData();
+  const [isAdmin, setIsAdmin] = useState(false);
+  const [edit, setEdit] = useState(false);
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
+  const [Dob, setDob] = useState("");
+  const [email, setEmail] = useState("");
+  const [phone, setPhone] = useState("");
+  const [address, setAddress] = useState("");
+  const [city, setCity] = useState("");
+  const [country, setCountry] = useState("");
+  const [postalCode, setPostalCode] = useState("");
+  const [style, setStyle] = useState("");
+  const [iban, setIban] = useState("");
+  const [personalInfo, setPersonalInfo] = useState(true);
+  const [addressInfo, setAddressInfo] = useState(false);
+  const [additionalInfo, setAdditionalInfo] = useState(false);
+
+  const user = useSelector((state) => {
+    return state.user;
+  });
+
   const [buttonText, setButtonText] = useState("Send friend request");
   const [disabled, setDisabled] = useState(false);
   const author = useSelector((state) => state.author);
   const listings = useSelector((state) => state.authorListings);
+
   const id = window.location.pathname.split("/")[2];
+
   useEffect(() => {
     const fetchData = async () => {
       setSpinTip("Loading author...");
       try {
         setLoading(true);
         dispatch(clearAuthor());
+
         const response = await getAuthor(id);
+
+        setFirstName(response.firstname);
+        setLastName(response.lastname);
+        const splitted = response.Dob.split("/");
+        setDob(`${splitted[2]}-${splitted[1]}-${splitted[0]}`);
+        setCountry(response.country);
+        setEmail(response.email);
+        setPhone(response.phone);
+        setAddress(response.address);
+        setCity(response.city);
+        setCountry(response.country);
+        setPostalCode(response.postalCode);
+        setStyle(response.style);
+        setIban(response.iban);
+
+        dispatch(initializeUser());
         dispatch(setAuthor(response));
-        console.log("response", response);
+
         fetchListingsAndDispatch(response);
-        console.log("response", response);
         checkFriendStatus();
+        checkIfAdmin();
       } catch (error) {
-        dispatch(addNotification(error));
+        dispatch(addNotification(error.error));
       } finally {
         setLoading(false);
       }
     };
+
     fetchData();
   }, []);
 
-  console.log(user);
+  const personalProps = {
+    firstName,
+    setFirstName,
+    lastName,
+    setLastName,
+    email,
+    setEmail,
+  };
+
+  const addressProps = {
+    address,
+    setAddress,
+    city,
+    setCity,
+    country,
+    setCountry,
+    postalCode,
+    setPostalCode,
+  };
+
+  const additionalProps = {
+    phone,
+    setPhone,
+    iban,
+    setIban,
+    Dob,
+    setDob,
+    style,
+    setStyle,
+  };
 
   const checkFriendStatus = () => {
     let friends = user.friends;
-    console.log("friends", friends);
-    if (friends) {
+    if (friends.includes(author.id)) {
+      console.log("friends");
       setButtonText("Friends");
       setDisabled(true);
     } else {
+      console.log("not friends");
       setButtonText("Send friend request :D ");
+    }
+  };
+
+  const checkIfAdmin = () => {
+    if (user.style === "admin") {
+      setIsAdmin(true);
+      console.log("admin");
+    } else {
+      setIsAdmin(false);
+      console.log("not admin");
     }
   };
 
@@ -109,6 +194,58 @@ const AuthorInspect = () => {
     }
   };
 
+  const handleShowPersonalInfo = () => {
+    setPersonalInfo(true);
+    setAddressInfo(false);
+    setAdditionalInfo(false);
+  };
+
+  const handleShowAddressInfo = () => {
+    setPersonalInfo(false);
+    setAddressInfo(true);
+    setAdditionalInfo(false);
+  };
+
+  const handleShowAdditionalInfo = () => {
+    setPersonalInfo(false);
+    setAddressInfo(false);
+    setAdditionalInfo(true);
+  };
+
+  const handleEdit = () => {
+    setEdit((prev) => !prev);
+  };
+
+  const handleUpdate = async () => {
+    try {
+      const id = window.location.pathname.split("/")[2];
+      setSpinTip("Updating user info...");
+      const newObject = {
+        email: email,
+        firstName: firstName,
+        lastName: lastName,
+        style: style,
+        country: country,
+        city: city,
+        address: address,
+        postalCode: postalCode,
+        phone: phone,
+        Dob: Dob,
+        iban: iban,
+      };
+      const response = await adminUpdateUserInfo(newObject, id);
+      dispatch(addNotification(response));
+      console.log(response);
+    } catch (error) {
+      console.error(error.error);
+      dispatch(addNotification(error.error));
+    }
+  };
+
+  const HandleCancel = () => {
+    setEdit(false);
+  };
+
   if (loading) return <Spinner loading={loading} tip={spinTip} />;
 
   return (
@@ -132,19 +269,66 @@ const AuthorInspect = () => {
           Send message
         </Button>
 
-        <div className="user-details">
-          <p>{`Name: ${author.firstname} ${author.lastname}`}</p>
-          <p>Email: {author.email}</p>
-          <p>Phone: {author.phone}</p>
+        {isAdmin ? (
+          <>
+            <Button onClick={handleEdit} type="primary">
+              Edit
+            </Button>
+            {edit ? (
+              <>
+                <UserNavbar
+                  handleShowAdditionalInfo={handleShowAdditionalInfo}
+                  handleShowAddressInfo={handleShowAddressInfo}
+                  handleShowPersonalInfo={handleShowPersonalInfo}
+                />
 
-          <div className="address-details">
-            <h3>Address</h3>
-            <p>{author.address}</p>
-            <p>{author.city}</p>
-            <p>{author.country}</p>
+                {additionalInfo && <AdditionalInfo props={additionalProps} />}
+                {addressInfo && <AddressInfo props={addressProps} />}
+                {personalInfo && <PersonalInfo props={personalProps} />}
+                <Button
+                  type="primary"
+                  onClick={handleUpdate}
+                  style={{ margin: 10 }}
+                >
+                  Save changes
+                </Button>
+                <Button
+                  type="primary"
+                  onClick={HandleCancel}
+                  style={{ margin: 10 }}
+                >
+                  Cancel
+                </Button>
+              </>
+            ) : (
+              <div className="user-details">
+                <p>{`Name: ${author.firstname} ${author.lastname}`}</p>
+                <p>Email: {author.email}</p>
+                <p>Phone: {author.phone}</p>
+
+                <div className="address-details">
+                  <h3>Address</h3>
+                  <p>{author.address}</p>
+                  <p>{author.city}</p>
+                  <p>{author.country}</p>
+                </div>
+              </div>
+            )}
+          </>
+        ) : (
+          <div className="user-details">
+            <p>{`Name: ${author.firstname} ${author.lastname}`}</p>
+            <p>Email: {author.email}</p>
+            <p>Phone: {author.phone}</p>
+
+            <div className="address-details">
+              <h3>Address</h3>
+              <p>{author.address}</p>
+              <p>{author.city}</p>
+              <p>{author.country}</p>
+            </div>
           </div>
-        </div>
-
+        )}
         <Spinner loading={loading} tip={spinTip} />
       </div>
       <div style={{ marginTop: 10 }} className="listing-container">

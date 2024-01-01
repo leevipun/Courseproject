@@ -13,17 +13,10 @@ const customizeRequiredMark = (label, { required }) => (
   </>
 );
 
-const AddressInfo = ({
-  city,
-  setCity,
-  address,
-  setAddress,
-  postalCode,
-  setPostalCode,
-  selectedCountry,
-  setSelectedCountry,
-}) => {
+const AddressInfo = ({ props }) => {
   const [form] = Form.useForm();
+
+  console.log("Address info props", props);
 
   const [requiredMark, setRequiredMarkType] = useState("optional");
 
@@ -56,17 +49,17 @@ const AddressInfo = ({
           placeholder="Country"
           showSearch
           options={CountriesData}
-          onChange={(e) => setSelectedCountry(e)}
+          onChange={(e) => props.setSelectedCountry(e)}
           filterOption={filterOption}
-          value={selectedCountry}
+          value={props.selectedCountry}
         />
       </Form.Item>
       <Form.Item label="Address" required>
         <Input
           type="text"
           placeholder="Address"
-          value={address}
-          onChange={(e) => setAddress(e.target.value)}
+          value={props.address}
+          onChange={(e) => props.setAddress(e.target.value)}
           required
         />
       </Form.Item>
@@ -74,8 +67,8 @@ const AddressInfo = ({
         <Input
           type="text"
           placeholder="City"
-          value={city}
-          onChange={(e) => setCity(e.target.value)}
+          value={props.city}
+          onChange={(e) => props.setCity(e.target.value)}
           required
         />
       </Form.Item>
@@ -83,8 +76,8 @@ const AddressInfo = ({
         <Input
           type="text"
           placeholder="Postal code"
-          value={postalCode}
-          onChange={(e) => setPostalCode(e.target.value)}
+          value={props.postalCode}
+          onChange={(e) => props.setPostalCode(e.target.value)}
           required
         />
       </Form.Item>

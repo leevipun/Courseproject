@@ -5,7 +5,7 @@ const baseURL =
 
 let token = null;
 
-const setToken = (newToken) => {
+export const setToken = (newToken) => {
   token = `Bearer ${newToken}`;
   console.log(token);
 };
@@ -128,9 +128,11 @@ export const deleteCartItem = async (id) => {
 
 export const getUserData = async () => {
   try {
+    console.log("ollaan täällä");
     let config = {
       headers: { Authorization: token },
     };
+    console.log(config);
     while (!token) {
       await new Promise((resolve) => setTimeout(resolve, 100));
     }
@@ -206,6 +208,26 @@ export const updateUserInfo = async (newObject) => {
   try {
     const response = await axios.put(
       `${baseURL}/api/users/`,
+      newObject,
+      config
+    );
+    return response.data;
+  } catch (error) {
+    console.log("Error", error);
+    console.log("Data", error.response.data.error);
+    throw { error: error.response.data.error };
+  }
+};
+
+export const adminUpdateUserInfo = async (newObject, id) => {
+  const config = {
+    headers: { Authorization: token },
+  };
+  console.log(token);
+  console.log(newObject);
+  try {
+    const response = await axios.put(
+      `${baseURL}/api/users/${id}`,
       newObject,
       config
     );
@@ -568,6 +590,18 @@ export const getAllChats = async () => {
     };
     const response = await axios.get(`${baseURL}/api/chats`, config);
     return response.data;
+  } catch (error) {
+    throw { error: error.response.data.error };
+  }
+};
+
+export const getAdminChats = () => {
+  try {
+    const config = {
+      headers: { Authorization: token },
+    };
+    const response = axios.get(`${baseURL}/api/chats/admin`, config);
+    return response;
   } catch (error) {
     throw { error: error.response.data.error };
   }

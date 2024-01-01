@@ -8,13 +8,15 @@ import { Radio } from "antd";
 import AuthorCard from "../components/AuthorCard.jsx";
 import { initializeAllusers } from "../../reducer/allUsersReducer.js";
 import Spinner from "../components/LoadSpinner.jsx";
+import { initializeAdminChats } from "../../reducer/ChatsReducer.js";
+import { useNavigate } from "react-router-dom";
 
 const Adminpage = () => {
   const [showListing, setShowListing] = useState(true);
   const [showAuthors, setShowAuthors] = useState(false);
-  const [showCarts, setShowCarts] = useState(false);
   const [showChats, setShowChats] = useState(false);
   const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
   const isAdmin = true;
   const canDelete = true;
   const listings = useSelector((state) => {
@@ -49,7 +51,6 @@ const Adminpage = () => {
       setTimeout(() => {
         setShowListing(true);
         setShowAuthors(false);
-        setShowCarts(false);
         setShowChats(false);
         console.log("Listings", listings);
         setLoading(false);
@@ -60,22 +61,19 @@ const Adminpage = () => {
       setTimeout(() => {
         setShowListing(false);
         setShowAuthors(true);
-        setShowCarts(false);
         setShowChats(false);
         console.log("Authors", authors);
         setLoading(false);
       }, 1000);
-    } else if (e.target.value === "c") {
-      console.log("Carts");
-      setShowListing(false);
-      setShowAuthors(false);
-      setShowCarts(true);
-      setShowChats(false);
     } else if (e.target.value === "d") {
+      setLoading(true);
+      dispatch(initializeAdminChats());
+      setTimeout(() => {
+        navigate("/admin/chats");
+      }, 1000);
       console.log("Chats");
       setShowListing(false);
       setShowAuthors(false);
-      setShowCarts(false);
       setShowChats(true);
     }
   };
@@ -88,7 +86,6 @@ const Adminpage = () => {
         <Radio.Group onChange={onChange} defaultValue="a" buttonStyle="solid">
           <Radio.Button value="a">Listings</Radio.Button>
           <Radio.Button value="b">Users</Radio.Button>
-          <Radio.Button value="c">Carts</Radio.Button>
           <Radio.Button value="d">Chats</Radio.Button>
         </Radio.Group>
       </div>
@@ -109,8 +106,11 @@ const Adminpage = () => {
           />
         </div>
       )}
-      {showCarts && <div>Carts</div>}
-      {showChats && <div>Chats</div>}
+      {showChats && (
+        <div>
+          <div></div>
+        </div>
+      )}
       <Spinner loading={loading} />
     </div>
   );

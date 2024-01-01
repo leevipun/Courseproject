@@ -18,11 +18,11 @@ import { CiLogin } from "react-icons/ci";
 import { UserOutlined, LogoutOutlined } from "@ant-design/icons";
 import { useDispatch, useSelector } from "react-redux";
 import { filterChange } from "../../reducer/filterReducer";
-import { clearUser } from "../../reducer/userReducer";
+import { clearUser, initializeUser } from "../../reducer/userReducer";
 import { clearCart } from "../../reducer/cartReducer";
 import { clearFavorite } from "../../reducer/favoriteReducer";
 import { clearListing } from "../../reducer/listingReducer";
-import { getUserData } from "../services/Services";
+import { getUserData, setToken } from "../services/Services";
 import { addNotification } from "../../reducer/notificationReducer";
 import { RiAdminLine } from "react-icons/ri";
 
@@ -34,23 +34,27 @@ const Navbar = () => {
   const [showAdd, setShowAdd] = useState(false);
   const [showCart, setShowCart] = useState(false);
   const [isAdmin, setIsAdmin] = useState(false);
-  const [user, setUser] = useState([]);
+  const user = useSelector((state) => state.user);
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const loggerUser = window.sessionStorage.getItem("loggedNoteappUser");
-
+        const loggerUser = JSON.parse(
+          window.sessionStorage.getItem("loggedNoteappUser")
+        );
+        console.log("on user", loggerUser);
+        setToken(loggerUser);
         if (loggerUser) {
-          const response = await getUserData(loggerUser);
+          console.log("on user edelleen");
+          const response = await getUserData();
           console.log("Response Nav", response);
-          setUser(response);
+          setIsLogged(true);
+          dispatch(initializeUser());
           console.log("User", user);
-          const userStatus = status;
-          console.log("User status", userStatus);
           checkStatus(response.style);
         }
       } catch (error) {
         if (error.status === 401) {
+          window.sessionStorage.clear();
           navigate("/login");
           dispatch(addNotification("Please login, your session has expired"));
         }
@@ -96,8 +100,10 @@ const Navbar = () => {
     const loggerUser = window.sessionStorage.getItem("loggedNoteappUser");
     if (loggerUser) {
       setIsLogged(true);
+      console.log("on user edelleen stats");
     }
     if (status) {
+      console.log("on user edelleen stats");
       setIsLogged(true);
       if (status === "admin") {
         setShowAdd(true);

@@ -25,16 +25,15 @@ const Userpage = () => {
 
   const [email, setEmail] = useState("");
   const [firstName, setFirstName] = useState("");
-  const [lastName, setLastname] = useState("");
+  const [lastName, setLastName] = useState("");
   const [address, setAddress] = useState("");
   const [phone, setPhone] = useState("");
   const [passwordVis, setPasswordVis] = useState(false);
-  const [password, setPassword] = useState("");
   const [style, setStyle] = useState("");
   const [city, setCity] = useState("");
   const [postalCode, setPostalCode] = useState("");
   const [country, setCountry] = useState("");
-  const [birthDay, setBirthDay] = useState("");
+  const [Dob, setDob] = useState("");
   const [iban, setIban] = useState("");
   const [spinTip, setSpinTip] = useState("");
 
@@ -49,7 +48,7 @@ const Userpage = () => {
         console.log("response", response);
         setEmail(response.email);
         setFirstName(response.firstname);
-        setLastname(response.lastname);
+        setLastName(response.lastname);
         setAddress(response.address || "");
         setPhone(response.phone || "");
         setStyle(response.style);
@@ -60,7 +59,7 @@ const Userpage = () => {
         const splitted = response.Dob.split("/");
         const date = `${splitted[2]}-${splitted[0]}-${splitted[1]}`;
         console.log("date", date);
-        setBirthDay(date || "");
+        setDob(date || "");
         setIban(response.iban || "");
         setLoading(false);
       } catch (error) {
@@ -73,6 +72,37 @@ const Userpage = () => {
     fetchUser();
   }, []);
 
+  const personalProps = {
+    firstName,
+    setFirstName,
+    lastName,
+    setLastName,
+    email,
+    setEmail,
+  };
+
+  const addressProps = {
+    address,
+    setAddress,
+    city,
+    setCity,
+    country,
+    setCountry,
+    postalCode,
+    setPostalCode,
+  };
+
+  const additionalProps = {
+    phone,
+    setPhone,
+    iban,
+    setIban,
+    Dob,
+    setDob,
+    style,
+    setStyle,
+  };
+
   const handlePasswordVis = () => {
     setPasswordVis((prev) => !prev);
   };
@@ -84,14 +114,13 @@ const Userpage = () => {
         email: email,
         firstName: firstName,
         lastName: lastName,
-        password: password,
         style: style,
         country: country,
         city: city,
         address: address,
         postalCode: postalCode,
         phone: phone,
-        Dob: birthDay,
+        Dob: Dob,
         iban: iban,
       };
       const response = await updateUserInfo(newObject);
@@ -144,44 +173,17 @@ const Userpage = () => {
         <div id="info-conteiner">
           {personalInfo && (
             <div>
-              <PersonalInfo
-                lastName={lastName}
-                setLastname={setLastname}
-                firstName={firstName}
-                setFirstName={setFirstName}
-                email={email}
-                setEmail={setEmail}
-                password={password}
-                setPassword={setPassword}
-              />
+              <PersonalInfo props={personalProps} />
             </div>
           )}
           {addressInfo && (
             <div>
-              <AddressInfo
-                city={city}
-                setCity={setCity}
-                address={address}
-                setAddress={setAddress}
-                postalCode={postalCode}
-                setPostalCode={setPostalCode}
-                selectedCountry={country}
-                setSelectedCountry={setCountry}
-              />
+              <AddressInfo props={addressProps} />
             </div>
           )}
           {additionalInfo && (
             <div>
-              <AdditionalInfo
-                phoneNumber={phone}
-                setPhoneNumber={setPhone}
-                style={style}
-                setStyle={setStyle}
-                birthDay={birthDay}
-                setBirthDay={setBirthDay}
-                iban={iban}
-                setIban={setIban}
-              />
+              <AdditionalInfo props={additionalProps} />
             </div>
           )}
 

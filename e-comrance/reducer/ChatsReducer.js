@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { getAllChats } from "../src/services/Services.js";
+import { getAdminChats, getAllChats } from "../src/services/Services.js";
 
 const ChatsSlice = createSlice({
   name: "Chats",
@@ -8,7 +8,7 @@ const ChatsSlice = createSlice({
     appendChats(state, action) {
       state.push(action.payload);
     },
-    setChatss(state, action) {
+    setChats(state, action) {
       return action.payload;
     },
     clearChats() {
@@ -17,12 +17,20 @@ const ChatsSlice = createSlice({
   },
 });
 
-export const { appendChats, setChatss, clearChats } = ChatsSlice.actions;
+export const { appendChats, setChats, clearChats } = ChatsSlice.actions;
 
 export const initializeChats = () => {
   return async (dispatch) => {
     const response = await getAllChats();
-    dispatch(setChatss(response.Chatss));
+    dispatch(setChats(response.Chatss));
+  };
+};
+
+export const initializeAdminChats = () => {
+  return async (dispatch) => {
+    const response = await getAdminChats();
+    console.log(response.data);
+    dispatch(setChats(response.data));
   };
 };
 

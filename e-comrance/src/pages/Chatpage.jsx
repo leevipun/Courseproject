@@ -1,11 +1,7 @@
 import React, { useState } from "react";
 import { Input, Button } from "antd";
 import Spinner from "../components/LoadSpinner.jsx";
-import {
-  getAllChats,
-  getAllMessages,
-  sendMessage,
-} from "../services/Services.js";
+import { getAllMessages, sendMessage } from "../services/Services.js";
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { addNotification } from "../../reducer/notificationReducer.js";
@@ -17,7 +13,10 @@ import {
   clearMessage,
   setMessages,
 } from "../../reducer/messageReducer.js";
-import { initializeChats } from "../../reducer/ChatsReducer.js";
+import {
+  initializeAdminChats,
+  initializeChats,
+} from "../../reducer/ChatsReducer.js";
 import Navbar from "../components/navbar.jsx";
 
 const Chatpage = () => {
@@ -26,9 +25,10 @@ const Chatpage = () => {
   const [message, setMessage] = useState("");
   let user = useSelector((state) => state.user);
   let messages = useSelector((state) => state.messages);
-  const [chats, setChats] = useState([]);
+  const chats = useSelector((state) => state.chats);
   const [loading, setLoading] = useState(false);
   const [spinTip, setSpinTip] = useState("");
+  const [isAdmin, setIsAdmin] = useState(false);
 
   let id = window.location.pathname.split("/")[2];
 
@@ -49,18 +49,29 @@ const Chatpage = () => {
     const fetchData = async () => {
       setSpinTip("Loading user listings...");
       try {
-        setLoading(true);
-        const id = window.location.pathname.split("/")[2];
-        console.log("id", id);
-        dispatch(clearMessage());
-        if (id) {
-          const response1 = await getAllMessages(id);
-          dispatch(setMessages(response1.messages));
-          console.log("response1", response1);
+        if (checkIfAdmin()) {
+          setIsAdmin(true);
+          dispatch(initializeAdminChats());
+          const id = window.location.pathname.split("/")[3];
+          if (id) {
+            const response1 = await getAllMessages(id);
+            dispatch(setMessages(response1.messages));
+            console.log("response1", response1);
+          }
+        } else {
+          console.log("not admin");
+          setLoading(true);
+          const id = window.location.pathname.split("/")[2];
+          console.log("id", id);
+          dispatch(clearMessage());
+          if (id) {
+            const response1 = await getAllMessages(id);
+            dispatch(setMessages(response1.messages));
+            console.log("response1", response1);
+          }
+          dispatch(initializeChats());
+          setLoading(false);
         }
-        dispatch(initializeChats());
-        getChats();
-        setLoading(false);
       } catch (error) {
         if (error.status === 401) {
           navigate("/login");
@@ -77,6 +88,14 @@ const Chatpage = () => {
     };
     fetchData();
   }, []);
+
+  const checkIfAdmin = () => {
+    if (window.location.pathname.split("/")[1] === "admin") {
+      return true;
+    } else {
+      return false;
+    }
+  };
 
   const handleMessageSending = async () => {
     const newObject = {
@@ -106,9 +125,29 @@ const Chatpage = () => {
   };
 
   const getChats = async () => {
-    const response = await getAllChats();
-    console.log("response", response);
-    setChats(response);
+    dispatch(initializeChats());
+  };
+
+  const getAdminChats = async () => {
+    try {
+      dispatch(initializeAdminChats());
+    } catch (error) {
+      console.log("error", error);
+      if (error.data.error === "jwt expired") {
+        dispatch(
+          addNotification(
+            "Your session has expired please login again",
+            "error"
+          )
+        );
+        navigate("/login");
+      }
+      console.error("Error getting admin chats:", error);
+    }
+  };
+
+  const handleAdminRedirect = async (id) => {
+    navigate(`/admin/chats/${id}`);
   };
 
   return (
@@ -119,9 +158,15 @@ const Chatpage = () => {
         <div id="chat-bar">
           <div id="chat">
             <h1>Chats</h1>
-            <Button type="primary" onClick={getChats}>
-              Get Chats
-            </Button>
+            {isAdmin ? (
+              <Button type="primary" onClick={() => getAdminChats()}>
+                Refresh A
+              </Button>
+            ) : (
+              <Button type="primary" onClick={() => getChats()}>
+                Refresh N
+              </Button>
+            )}
           </div>
           <div>
             <div>
@@ -130,7 +175,11 @@ const Chatpage = () => {
                   key={chat.id}
                   className="message-container"
                   style={{ cursor: "pointer" }}
-                  onClick={() => handleRedirect(chat.id)}
+                  onClick={
+                    isAdmin
+                      ? () => handleAdminRedirect(chat.id)
+                      : () => handleRedirect(chat.id)
+                  }
                 >
                   <p className="chat-content">{`${chat.userNames[0]} + ${chat.userNames[1]}`}</p>
                   <p className="chat-date">{chat.lastMessage}</p>

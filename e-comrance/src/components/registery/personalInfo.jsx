@@ -12,14 +12,7 @@ const customizeRequiredMark = (label, { required }) => (
   </>
 );
 
-const PersonalInfo = ({
-  firstName,
-  setFirstName,
-  lastName,
-  setLastname,
-  email,
-  setEmail,
-}) => {
+const PersonalInfo = ({ props }) => {
   const [form] = Form.useForm();
 
   const [requiredMark, setRequiredMarkType] = useState("optional");
@@ -46,8 +39,8 @@ const PersonalInfo = ({
           id="personalInfoInput"
           type="text"
           placeholder="First name"
-          value={firstName}
-          onChange={(e) => setFirstName(e.target.value)}
+          value={props.firstName}
+          onChange={(e) => props.setFirstName(e.target.value)}
           required
         />
       </Form.Item>
@@ -56,8 +49,8 @@ const PersonalInfo = ({
           id="personalInfoInput"
           type="text"
           placeholder="Last name"
-          value={lastName}
-          onChange={(e) => setLastname(e.target.value)}
+          value={props.lastName}
+          onChange={(e) => props.setLastname(e.target.value)}
           required
         />
       </Form.Item>
@@ -67,8 +60,8 @@ const PersonalInfo = ({
           type="text"
           placeholder="Email"
           autoComplete="email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
+          value={props.email}
+          onChange={(e) => props.setEmail(e.target.value)}
           required
         />
       </Form.Item>

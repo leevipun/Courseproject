@@ -1,4 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
+import { getUserData } from "../src/services/Services";
 
 const initialState = [];
 
@@ -19,5 +20,13 @@ const userSlice = createSlice({
 });
 
 export const { appendUser, clearUser, setUser } = userSlice.actions;
+
+export const initializeUser = () => {
+  return async (dispatch) => {
+    const response = await getUserData();
+    console.log(response, "User");
+    dispatch(setUser(response));
+  };
+};
 
 export default userSlice.reducer;
