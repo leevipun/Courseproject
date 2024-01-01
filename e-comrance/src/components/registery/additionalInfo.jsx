@@ -55,6 +55,7 @@ const AdditionalInfo = ({ props }) => {
 
   return (
     <Form
+      id="form"
       style={{ padding: "30px" }}
       form={form}
       layout="vertical"

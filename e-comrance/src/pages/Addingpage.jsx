@@ -21,13 +21,29 @@ const AddingPage = () => {
   const [description, setDescription] = useState("");
 
   const AddinpageProps = {
-    name: name,
-    country: selectedCountry,
-    price: price,
-    currency: currencyCode,
-    category: category,
-    description: description,
-    pics: selectedFile,
+    name,
+    category,
+    price,
+    description,
+    selectedCountry,
+    selectedFile,
+    user,
+    currencyCode,
+    setName,
+    setCategory,
+    setPrice,
+    setDescription,
+    setSelectedFile,
+    setSelectedCountry,
+  };
+
+  const prevProps = {
+    name,
+    category,
+    price,
+    description,
+    selectedCountry,
+    selectedFile,
   };
 
   document.title = "Add listing";
@@ -43,23 +59,8 @@ const AddingPage = () => {
         <h1 id="ah1">Add a new item</h1>
       </div>
       <div style={{ display: "flex" }}>
-        <PreviewCard
-          selectedCountry={selectedCountry}
-          price={price}
-          selectedFile={selectedFile}
-          name={name}
-          description={description}
-        />
-        <AddingPageForm
-          setLoading={setLoading}
-          props={AddinpageProps}
-          setName={setName}
-          setCategory={setCategory}
-          setPrice={setPrice}
-          setDescription={setDescription}
-          setSelectedFile={setSelectedFile}
-          setCountry={setSelectedCountry}
-        />
+        <PreviewCard props={prevProps} />
+        <AddingPageForm setLoading={setLoading} props={AddinpageProps} />
         <Spinner loading={loading} spinTip="Adding listing" />
       </div>
       <SpeedInsights />

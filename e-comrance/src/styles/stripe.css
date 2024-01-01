@@ -9,9 +9,21 @@
   width: 100vw;
 }
 
-form {
+#form {
   width: 30vw;
   min-width: 500px;
+  align-self: center;
+  box-shadow: 0px 0px 0px 0.5px rgba(50, 50, 93, 0.1),
+    0px 2px 5px 0px rgba(50, 50, 93, 0.1), 0px 1px 1.5px 0px rgba(0, 0, 0, 0.07);
+  border-radius: 7px;
+  padding: 40px;
+  background-color: rgba(153, 204, 255, 0.5);
+  backdrop-filter: blur(10px);
+}
+
+#Ownlistingform {
+  min-width: 300px;
+  max-width: 400px;
   align-self: center;
   box-shadow: 0px 0px 0px 0.5px rgba(50, 50, 93, 0.1),
     0px 2px 5px 0px rgba(50, 50, 93, 0.1), 0px 1px 1.5px 0px rgba(0, 0, 0, 0.07);

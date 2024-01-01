@@ -118,7 +118,9 @@ chatsRouter.post("/post/:id", async (req, res) => {
 
 chatsRouter.get("/:id", async (req, res) => {
   try {
+    console.log("id", req.params.id);
     const chat = await Chat.findById(req.params.id);
+    console.log("chat", chat);
     if (chat) {
       const messages = await Message.find({ chat: chat._id });
       res.json({ messages: messages });
@@ -127,6 +129,33 @@ chatsRouter.get("/:id", async (req, res) => {
     }
   } catch (error) {
     console.log(error);
+    res.status(400).json({ error: error.message });
+  }
+});
+
+chatsRouter.delete("/:id", async (req, res) => {
+  try {
+    const chat = await Chat.findById(req.params.id);
+    if (chat) {
+      const chatUsers = chat.users;
+      const user1 = await User.findByIdAndUpdate(chatUsers[0], {
+        $pull: { chats: req.params.id },
+      });
+      const user2 = await User.findByIdAndUpdate(chatUsers[1], {
+        $pull: { chats: req.params.id },
+      });
+      const messages = chat.messages;
+      if (messages) {
+        for (const id of messages) {
+          await Message.findByIdAndRemove(id);
+        }
+      }
+      await Chat.findByIdAndRemove(req.params.id);
+      res.status(204).end();
+    } else {
+      response.status(404).end();
+    }
+  } catch (error) {
     res.status(400).json({ error: error.message });
   }
 });

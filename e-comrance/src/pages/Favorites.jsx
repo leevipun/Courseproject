@@ -42,9 +42,7 @@ const Favoritepage = () => {
         dispatch(addNotification(response));
       } else {
         dispatch(appendfavorite(response));
-        dispatch(
-          addNotification(`${response.name} was added to your favorites`)
-        );
+        dispatch(addNotification(`was added to your favorites`));
       }
     }
   };
@@ -131,6 +129,7 @@ const Favoritepage = () => {
               </div>
             </div>
             <Button
+              type="ghost"
               style={{
                 margin: 10,
                 color:

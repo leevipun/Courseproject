@@ -16,6 +16,7 @@ const { emailRouter } = require("./controllers/email.js");
 var bodyParser = require("body-parser");
 const friendsRouter = require("./controllers/friends.js");
 const chatsRouter = require("./controllers/chats.js");
+const messagesRouter = require("./controllers/messages.js");
 
 mongoose.set("strictQuery", false);
 
@@ -47,6 +48,7 @@ app.use("/api/listings", listingRouter);
 app.use("/api/email", emailRouter);
 app.use("/api/friends", friendsRouter);
 app.use("/api/chats", chatsRouter);
+app.use("/api/messages", messagesRouter);
 
 app.use("/api/cart", cartRouter);
 app.use("/api/favorite", favoriteRouter);

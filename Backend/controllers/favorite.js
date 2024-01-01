@@ -33,26 +33,29 @@ favoriteRouter.get("/", extractUser, extractToken, async (req, res, next) => {
 });
 
 favoriteRouter.post("/", extractToken, extractUser, async (req, res, next) => {
-  const body = req.body;
+  try {
+    const body = req.body;
 
-  const deCodedToken = jwt.verify(req.token, process.env.SECRET);
-  if (!deCodedToken.id) {
-    return res.status(401).json({ error: "Invalid token" });
-  }
-  const user = req.user;
-  if (body.id) {
-    const favoritelistings = await user.favorite;
-    console.log("favorites", favoritelistings);
-    const listing = await List.findById(body.id);
-    if (favoritelistings.includes(body.id)) {
-      res.json("You have already marked it as favorite");
-    } else {
-      user.favorite = user.favorite.concat(listing._id);
-      await user.save();
-      res.json(listing);
+    const deCodedToken = jwt.verify(req.token, process.env.SECRET);
+    if (!deCodedToken.id) {
+      return res.status(401).json({ error: "Invalid token" });
     }
-  } else {
-    res.status(404).send("Item not found");
+
+    const user = req.user;
+    if (body.id) {
+      const listing = await List.findById(body.id);
+      if (listing) {
+        user.favorite.push(listing._id);
+        await user.save();
+        res.json(listing);
+      } else {
+        res.status(404).send("Item not found");
+      }
+    } else {
+      res.status(400).send("Invalid request");
+    }
+  } catch (error) {
+    next(error);
   }
 });
 

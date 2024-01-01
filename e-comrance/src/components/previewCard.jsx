@@ -1,18 +1,12 @@
 import React from "react";
 
-const PreviewCard = ({
-  selectedCountry,
-  selectedFile,
-  price,
-  name,
-  description,
-}) => {
+const PreviewCard = ({ props }) => {
   return (
     <div id="divContainer">
       <div id="Prev">
         <div>
           <img
-            src={selectedFile || "https://via.placeholder.com/500"}
+            src={props.selectedFile || "https://via.placeholder.com/500"}
             alt="previewPic"
             style={{
               maxWidth: "100%",
@@ -22,10 +16,11 @@ const PreviewCard = ({
             }}
           />
           <div>
-            <div style={{ margin: 5 }}>Name: {name}</div>
-            <div style={{ margin: 5 }}>Country: {selectedCountry}</div>
-            <div style={{ margin: 5 }}>Price: {price} EUR</div>
-            <div style={{ margin: 5 }}>Description: {description}</div>
+            <div style={{ margin: 5 }}>Name: {props.name}</div>
+            <div style={{ margin: 5 }}>Country: {props.selectedCountry}</div>
+            <div style={{ margin: 5 }}>Category: {props.category}</div>
+            <div style={{ margin: 5 }}>Price: {props.price} EUR</div>
+            <div style={{ margin: 5 }}>Description: {props.description}</div>
           </div>
         </div>
       </div>

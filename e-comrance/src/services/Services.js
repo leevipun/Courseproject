@@ -607,4 +607,47 @@ export const getAdminChats = () => {
   }
 };
 
+export const editMessage = async (newObject, id) => {
+  try {
+    const config = {
+      headers: { Authorization: token },
+    };
+    const response = await axios.put(
+      `${baseURL}/api/messages/${id}`,
+      newObject,
+      config
+    );
+    return response.data;
+  } catch (error) {
+    throw { error: error.response.data.error };
+  }
+};
+
+export const deleteMessage = async (id) => {
+  try {
+    const config = {
+      headers: { Authorization: token },
+    };
+    const response = await axios.delete(
+      `${baseURL}/api/messages/${id}`,
+      config
+    );
+    return response.data;
+  } catch (error) {
+    throw { error: error.response.data.error };
+  }
+};
+
+export const deleteChat = async (id) => {
+  try {
+    const config = {
+      headers: { Authorization: token },
+    };
+    const response = await axios.delete(`${baseURL}/api/chats/${id}`, config);
+    return response.data;
+  } catch (error) {
+    throw { error: error.response.data.error };
+  }
+};
+
 export default { setToken, getAllListings, getAllCartItems, getImages };

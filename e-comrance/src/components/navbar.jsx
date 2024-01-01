@@ -19,8 +19,11 @@ import { UserOutlined, LogoutOutlined } from "@ant-design/icons";
 import { useDispatch, useSelector } from "react-redux";
 import { filterChange } from "../../reducer/filterReducer";
 import { clearUser, initializeUser } from "../../reducer/userReducer";
-import { clearCart } from "../../reducer/cartReducer";
-import { clearFavorite } from "../../reducer/favoriteReducer";
+import { clearCart, initializecart } from "../../reducer/cartReducer";
+import {
+  clearFavorite,
+  initializefavorite,
+} from "../../reducer/favoriteReducer";
 import { clearListing } from "../../reducer/listingReducer";
 import { getUserData, setToken } from "../services/Services";
 import { addNotification } from "../../reducer/notificationReducer";
@@ -49,6 +52,8 @@ const Navbar = () => {
           console.log("Response Nav", response);
           setIsLogged(true);
           dispatch(initializeUser());
+          dispatch(initializecart());
+          dispatch(initializefavorite());
           console.log("User", user);
           checkStatus(response.style);
         }

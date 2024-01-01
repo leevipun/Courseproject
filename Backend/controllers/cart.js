@@ -11,68 +11,48 @@ const extractToken = middleware.extractToken;
 cartRouter.post("/", extractUser, extractToken, async (req, res, next) => {
   try {
     const body = req.body;
-    console.log("body", body);
-    console.log("Request user", req.user);
     const deCodedToken = jwt.verify(req.token, process.env.SECRET);
     if (!deCodedToken.id) {
       return res.status(401).json({ error: "Invalid token" });
     }
     const user = req.user;
-    //Check if we have a valid id
-    if (body.id) {
-      const cartlistings = await user.cart;
-      const listing = await List.findById(body.id);
-      // Check if the listing exists
-      if (!listing) {
-        console.log("Ei löytynyt listaus");
-        return res.status(400).json({ error: "Item not found" });
-      }
-      // Check if the listing is yours
-      if (listing.author === user.email) {
-        console.log("Oma listaus");
-        return res.status(400).json({ error: "You can't buy your own item" });
-      }
-      // Check if the listing is already in the cart
-      if (cartlistings.includes(body.email)) {
-        console.log("Löytyi jo listauksesta");
-        return res.status(400).json({ error: "Item already in cart" });
-      }
-      // Check if the listing is already sold
-      if (listing.status === "In cart") {
+    const listing = await List.findById(body.id);
+    if (!listing) {
+      return res.status(400).json({ error: "Item not found" });
+    }
+    if (listing.author === user.email) {
+      return res.status(400).json({ error: "You can't buy your own item" });
+    }
+    if (user.cart.includes(body.email)) {
+      return res.status(400).json({ error: "Item already in cart" });
+    }
+    if (listing.status === "In cart") {
+      return res.status(400).json({ error: "Item already in someone's cart" });
+    }
+    if (user.cart.length > 0) {
+      const authorsInCart = await List.find({ _id: { $in: user.cart } })
+        .distinct("author")
+        .exec();
+      if (authorsInCart.length > 0 && !authorsInCart.includes(listing.author)) {
         return res
           .status(400)
-          .json({ error: "Item already in someone's cart" });
-      } else {
-        // If not, add it to the cart
-        console.log("Läytyi listaus");
-        // Check if the author of the new listing is different from the author of items already in the cart
-        if (cartlistings.length > 0) {
-          const authorsInCart = await List.find({ _id: { $in: cartlistings } })
-            .distinct("author")
-            .exec();
-          if (
-            authorsInCart.length > 0 &&
-            !authorsInCart.includes(listing.author)
-          ) {
-            console.log("Items from different authors in cart");
-            return res
-              .status(400)
-              .json({ error: "Can only have items from one author" });
-          }
-        }
-        //update the listing status
-        const item = {
-          status: "In cart",
-          buyer: user.email,
-        };
-        const updatedList = await List.findByIdAndUpdate(body.id, item, {
-          new: true,
-        });
-        user.cart = user.cart.concat(listing._id);
-        await user.save();
-        res.json(listing);
+          .json({ error: "Can only have items from one author" });
       }
     }
+    const item = {
+      status: "In cart",
+      buyer: user.email,
+    };
+    const updatedList = await List.findByIdAndUpdate(body.id, item, {
+      new: true,
+    });
+    user.cart.push(listing._id);
+    await user.save();
+    const listings = await List.find({});
+    const remainingListings = listings.filter(
+      (listing) => listing.id !== body.id
+    );
+    res.json(remainingListings);
   } catch (error) {
     console.error("Error:", error);
     res.status(500).json({ error: "Internal Server Error" });

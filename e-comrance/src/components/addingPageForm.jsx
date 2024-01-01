@@ -1,14 +1,14 @@
 import React, { useState } from "react";
 import { Form, Input, Button, Tag, Select } from "antd";
-import { Adding } from "../services/Services";
+import { Adding } from "../services/Services.js";
 import { useDispatch } from "react-redux";
 import { addNotification } from "../../reducer/notificationReducer.js";
 import { appendlisting } from "../../reducer/listingReducer.js";
 import { v4 as uuidv4 } from "uuid";
 const { TextArea } = Input;
 import { useNavigate } from "react-router-dom";
-import CountriesData from "./../../Data/countryData";
-import categoriesWithOptions from "./../../Data/categoryData";
+import CountriesData from "../../Data/countryData.js";
+import categoriesWithOptions from "../../Data/categoryData.js";
 
 const customizeRequiredMark = (label, { required }) => (
   <>
@@ -21,16 +21,7 @@ const customizeRequiredMark = (label, { required }) => (
   </>
 );
 
-const AddingPageForm = ({
-  setLoading,
-  props,
-  setCategory,
-  setDescription,
-  setName,
-  setSelectedFile,
-  setCountry,
-  setPrice,
-}) => {
+const AddingPageForm = ({ setLoading, props }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -42,12 +33,12 @@ const AddingPageForm = ({
       setLoading(true);
       const newObject = {
         name: props.name,
-        country: props.country,
+        country: props.selectedCountry,
         price: props.price,
         currency: currencyCode,
         category: props.category,
         description: props.description,
-        pics: props.pics,
+        pics: props.selectedFile,
         id: id,
       };
       const response = await Adding(newObject);
@@ -88,7 +79,7 @@ const AddingPageForm = ({
     reader.onload = () => {
       const base64 = reader.result;
       console.log(base64);
-      setSelectedFile(base64);
+      props.setSelectedFile(base64);
     };
   };
 
@@ -110,7 +101,7 @@ const AddingPageForm = ({
           type="text"
           placeholder="Product name"
           value={props.name}
-          onChange={(e) => setName(e.target.value)}
+          onChange={(e) => props.setName(e.target.value)}
           required
         />
       </Form.Item>
@@ -122,7 +113,7 @@ const AddingPageForm = ({
           options={CountriesData}
           filterOption={filterOption}
           value={props.country}
-          onChange={(e) => setCountry(e)}
+          onChange={(e) => props.setSelectedCountry(e)}
         />
       </Form.Item>
       <Form.Item label="Product Price" required>
@@ -130,7 +121,7 @@ const AddingPageForm = ({
           type="text"
           placeholder="Product Price"
           value={props.price}
-          onChange={(e) => setPrice(e.target.value)}
+          onChange={(e) => props.setPrice(e.target.value)}
           required
         />
       </Form.Item>
@@ -139,7 +130,7 @@ const AddingPageForm = ({
           type="text"
           placeholder="Product Description"
           value={props.description}
-          onChange={(e) => setDescription(e.target.value)}
+          onChange={(e) => props.setDescription(e.target.value)}
           required
         />
       </Form.Item>
@@ -149,7 +140,7 @@ const AddingPageForm = ({
           placeholder="Product Category"
           options={categoriesWithOptions}
           value={props.category}
-          onChange={(e) => setCategory(e)}
+          onChange={(e) => props.setCategory(e)}
           required
         />
       </Form.Item>

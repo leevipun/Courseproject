@@ -20,9 +20,10 @@ const messageSlice = createSlice({
 export const { appendMessage, setMessages, clearMessage } =
   messageSlice.actions;
 
-export const initializeMessage = () => {
+export const initializeMessage = (id) => {
+  console.log("id", id);
   return async (dispatch) => {
-    const response = await getAllMessages();
+    const response = await getAllMessages(id);
     dispatch(setMessages(response.messages));
   };
 };

@@ -1,23 +1,27 @@
-import React from "react";
+import React, { useState } from "react";
 import { Button } from "antd";
 import { FaHeart } from "react-icons/fa";
 import { addToCart, deleteUserListing } from "../services/Services.js";
-import { appendcart } from "../../reducer/cartReducer.js";
+import { initializecart } from "../../reducer/cartReducer.js";
 import { addNotification } from "../../reducer/notificationReducer.js";
 import { useDispatch, useSelector } from "react-redux";
-import { setauthorListings } from "../../reducer/authorListingsReducer.js";
 import { initializeListing } from "../../reducer/listingReducer.js";
 import { addToFavorites, deleteFavorite } from "../services/Services.js";
 import {
   initializefavorite,
   appendfavorite,
 } from "../../reducer/favoriteReducer.js";
+import Spinner from "./LoadSpinner.jsx";
 
 const ListingCard = ({ listings, user, isAdmin }) => {
   const dispatch = useDispatch();
+  const [loading, setLoading] = useState(false);
+  const [spinTip, setSpinTip] = useState("");
 
   const handleAddToCart = async (id) => {
     try {
+      setLoading(true);
+      setSpinTip("Adding to cart...");
       if (user.length === 0) {
         dispatch(
           addNotification("Please login first your session has expired")
@@ -25,24 +29,19 @@ const ListingCard = ({ listings, user, isAdmin }) => {
         return;
       }
       const response = await addToCart(id);
-      console.log("Response", response);
       if (response === "Already in cart") {
         dispatch(addNotification(response));
-        console.log("Hah");
       } else if (response === "Some one has already taken that") {
         dispatch(addNotification(response));
       } else {
-        console.log(response);
-        dispatch(appendcart(response));
-        dispatch(addNotification(`${response.name} was added to your cart`));
-        const remainingListings = user.filter((name) => {
-          name !== response.name;
-        });
-        dispatch(setauthorListings(remainingListings));
-        dispatch(initializeListing(remainingListings));
+        dispatch(addNotification(`added to your cart`));
+        dispatch(initializecart());
+        dispatch(initializeListing());
       }
     } catch (error) {
       dispatch(addNotification(error));
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -68,21 +67,15 @@ const ListingCard = ({ listings, user, isAdmin }) => {
       dispatch(initializefavorite(response));
     } else {
       const response = await addToFavorites(id);
-      if (response === "You have already marked it as favorite") {
-        dispatch(addNotification(response));
-      } else {
-        dispatch(appendfavorite(response));
-        dispatch(
-          addNotification(`${response.name} was added to your favorites`)
-        );
-      }
+      dispatch(appendfavorite(response));
+      dispatch(addNotification(`added to your favorites`));
     }
   };
 
   const handleDeleteListing = async (id) => {
     try {
-      const response = await deleteUserListing(id);
-      console.log("Response", response);
+      deleteUserListing(id);
+
       dispatch(initializeListing());
       dispatch(addNotification(`listing was deleted succesfully`));
     } catch (error) {
@@ -117,6 +110,7 @@ const ListingCard = ({ listings, user, isAdmin }) => {
           </div>
           <div>
             <div style={{ margin: 5 }}>Name: {listing.name}</div>
+            <div style={{ margin: 5 }}>Category: {listing.category}</div>
             <div style={{ margin: 5 }}>Country: {listing.country}</div>
             <div style={{ margin: 5 }}>
               Price: {listing.price} {listing.currency}
@@ -162,6 +156,7 @@ const ListingCard = ({ listings, user, isAdmin }) => {
           </div>
         </div>
       ))}
+      <Spinner loading={loading} tip={spinTip} />
     </div>
   );
 };
