@@ -23,8 +23,6 @@ const Footer = () => {
       className="App"
       style={{ minHeight: "33vh", display: "flex", flexDirection: "column" }}
     >
-      <main style={{ flex: 1 }}>{/* Your main content goes here */}</main>
-
       <footer style={footerStyle}>
         <div style={contentStyle}>
           <p style={{ margin: 5 }}>Created by: Nordic Exchange</p>

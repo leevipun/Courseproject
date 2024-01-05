@@ -12,13 +12,7 @@ import { addNotification } from "../../reducer/notificationReducer.js";
 import { setMessages } from "../../reducer/messageReducer.js";
 import { setAllUsers } from "../../reducer/allUsersReducer.js";
 
-const AuthorCard = ({
-  users,
-  canDelete,
-  canStartConv,
-  canDeleteUser,
-  ownUserId,
-}) => {
+const AuthorCard = ({ users, canDelete, canStartConv, ownUserId, isAdmin }) => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
@@ -75,7 +69,7 @@ const AuthorCard = ({
       {users.map((author) => (
         <div
           className="user-display"
-          onClick={() => !canDeleteUser && handleReDirect(author.id)}
+          onClick={() => !isAdmin && handleReDirect(author.id)}
         >
           <img
             className="avatar"
@@ -100,13 +94,16 @@ const AuthorCard = ({
               <button onClick={() => handleDelete(author.id)}>Delete</button>
             </div>
           )}
-          {canDeleteUser && ownUserId !== author.id && (
+          {isAdmin && ownUserId !== author.id && (
             <div>
               <div className="actions">
                 <button onClick={() => deleteUser(author.id)}>
                   Delete User
                 </button>
-                <button onClick={() => handleReDirectToCart(author.id, "cart")}>
+                <button
+                  style={{ marginTop: 5, marginBottom: 5 }}
+                  onClick={() => handleReDirectToCart(author.id, "cart")}
+                >
                   Check Cart
                 </button>
                 <button onClick={() => handleReDirect(author.id, "user")}>

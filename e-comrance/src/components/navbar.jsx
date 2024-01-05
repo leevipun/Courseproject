@@ -37,6 +37,7 @@ const Navbar = () => {
   const [showAdd, setShowAdd] = useState(false);
   const [showCart, setShowCart] = useState(false);
   const [isAdmin, setIsAdmin] = useState(false);
+  const [showFavorites, setShowFavorites] = useState(false);
   const user = useSelector((state) => state.user);
   useEffect(() => {
     const fetchData = async () => {
@@ -54,7 +55,6 @@ const Navbar = () => {
           if (response.style === "admin") {
             dispatch(initializeUser());
             dispatch(initializefavorite());
-
             setIsAdmin(true);
           } else {
             dispatch(initializeUser());
@@ -125,6 +125,7 @@ const Navbar = () => {
         setShowAdd(true);
       } else if (status !== "seller") {
         setShowCart(true);
+        setShowFavorites(true);
       }
     }
   };
@@ -156,32 +157,38 @@ const Navbar = () => {
       icon: <UserOutlined />,
       onClick: handleUserInfo,
     },
-    {
-      label: "Own listings",
-      key: "2",
-      icon: <FaList />,
-      onClick: handleOwnlisting,
-    },
-    {
-      label: "Friends",
-      key: "3",
-      icon: <FaUserFriends />,
-      onClick: handleFriends,
-    },
-    {
-      label: "Chats",
-      key: "4",
-      icon: <FaPeopleGroup />,
-      onClick: handleChats,
-    },
-    isAdmin
-      ? {
-          label: "Admin",
-          key: "5",
-          icon: <RiAdminLine />,
-          onClick: handleAdmin,
-        }
-      : null,
+    ...(isAdmin
+      ? []
+      : [
+          {
+            label: "Own listings",
+            key: "2",
+            icon: <FaList />,
+            onClick: handleOwnlisting,
+          },
+          {
+            label: "Friends",
+            key: "3",
+            icon: <FaUserFriends />,
+            onClick: handleFriends,
+          },
+          {
+            label: "Chats",
+            key: "4",
+            icon: <FaPeopleGroup />,
+            onClick: handleChats,
+          },
+        ]),
+    ...(isAdmin
+      ? [
+          {
+            label: "Admin",
+            key: "5",
+            icon: <RiAdminLine />,
+            onClick: handleAdmin,
+          },
+        ]
+      : []),
     {
       label: "Log out",
       key: "6",
@@ -249,12 +256,14 @@ const Navbar = () => {
               </Link>
             </li>
           )}
+          {showFavorites && (
+            <li id="navitem">
+              <Link to="/favorites">
+                <FaHeart /> {numberOfItemsInFavorite}
+              </Link>
+            </li>
+          )}
 
-          <li id="navitem">
-            <Link to="/favorites">
-              <FaHeart /> {numberOfItemsInFavorite}
-            </Link>
-          </li>
           {isLogged && (
             <li id="navitem">
               <Dropdown menu={{ items }} trigger={["click"]}>

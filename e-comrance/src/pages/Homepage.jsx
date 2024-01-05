@@ -19,11 +19,14 @@ const Homepage = () => {
   const navigate = useNavigate();
   const [showFilter, setShowFilter] = useState(false);
   const [loading, setLoading] = useState(false);
+
   const spinTip = "Loading listings...";
 
   const user = useSelector((state) => {
     return state.user;
   });
+
+  const isAdmin = user.style === "admin";
 
   document.title = "Nordic Exchange";
 
@@ -124,7 +127,7 @@ const Homepage = () => {
           </Button>
         </div>
         <div style={{ display: "flex" }}>
-          <ListingCard listings={listing} user={user} />
+          <ListingCard listings={listing} user={user} isAdmin={isAdmin} />
           <FilterCard showFilter={showFilter} />
         </div>
         <div>

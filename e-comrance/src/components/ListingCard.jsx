@@ -121,13 +121,6 @@ const ListingCard = ({ listings, user, isAdmin }) => {
               <div style={{ margin: 5 }}>Status: {listing.status}</div>
             ) : null}
             <div id="itemstyle">
-              <Button
-                type="primary"
-                style={{ margin: 10 }}
-                onClick={() => handleAddToCart(listing.id)}
-              >
-                Add to cart
-              </Button>
               {isAdmin ? (
                 <Button
                   type="primary"
@@ -136,26 +129,38 @@ const ListingCard = ({ listings, user, isAdmin }) => {
                 >
                   Delete
                 </Button>
-              ) : null}
-              <Button
-                type="ghost"
-                style={{
-                  margin: 10,
-                  color:
-                    user && user.favorites && user.favorite.includes(listing.id)
-                      ? "red"
-                      : "black",
-                }}
-                onClick={() => handleAddToFavorites(listing.id)}
-              >
-                <FaHeart
-                  style={{
-                    color: userFavoriteId.includes(listing.id)
-                      ? "red"
-                      : "black",
-                  }}
-                />
-              </Button>
+              ) : (
+                <>
+                  <Button
+                    type="primary"
+                    style={{ margin: 10 }}
+                    onClick={() => handleAddToCart(listing.id)}
+                  >
+                    Add to cart
+                  </Button>
+                  <Button
+                    type="ghost"
+                    style={{
+                      margin: 10,
+                      color:
+                        user &&
+                        user.favorites &&
+                        user.favorite.includes(listing.id)
+                          ? "red"
+                          : "black",
+                    }}
+                    onClick={() => handleAddToFavorites(listing.id)}
+                  >
+                    <FaHeart
+                      style={{
+                        color: userFavoriteId.includes(listing.id)
+                          ? "red"
+                          : "black",
+                      }}
+                    />
+                  </Button>
+                </>
+              )}
             </div>
           </div>
         </div>

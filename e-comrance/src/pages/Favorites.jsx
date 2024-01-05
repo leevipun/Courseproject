@@ -119,7 +119,7 @@ const Favoritepage = () => {
               <div style={{ margin: 5 }}>Name: {favorite.name}</div>
               <div style={{ margin: 5 }}>Country: {favorite.country}</div>
               <div style={{ margin: 5 }}>
-                Price:{favorite.price} {favorite.currency}{" "}
+                Price:{favorite.price} {favorite.currency}
               </div>
               <div style={{ margin: 5 }}>
                 Last price: {favorite.lastPrice} {favorite.currency}
@@ -144,7 +144,7 @@ const Favoritepage = () => {
                   color: userFavoriteId.includes(favorite.id) ? "red" : "black",
                 }}
               />
-            </Button>{" "}
+            </Button>
           </div>
         ))}
       </div>

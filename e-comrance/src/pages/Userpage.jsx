@@ -11,7 +11,7 @@ import PersonalInfo from "../components/registery/personalInfo.jsx";
 import Spinner from "../components/LoadSpinner.jsx";
 import React from "react";
 import { SpeedInsights } from "@vercel/speed-insights/react";
-import { setUser } from "../../reducer/userReducer.js";
+import { initializeUser, setUser } from "../../reducer/userReducer.js";
 import UserNavbar from "../components/userNavbar.jsx";
 import PasswordChange from "../components/PasswordChangeCard.jsx";
 
@@ -125,6 +125,7 @@ const Userpage = () => {
       };
       const response = await updateUserInfo(newObject);
       dispatch(addNotification(response));
+      dispatch(initializeUser());
       console.log(response);
     } catch (error) {
       console.error(error.error);

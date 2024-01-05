@@ -1,5 +1,5 @@
 import { useState } from "react";
-import Navbar from "./../components/navbar.jsx";
+import Navbar from "../components/navbar.jsx";
 import "../styles/AddingStyles.css";
 import Spinner from "../components/LoadSpinner.jsx";
 import React from "react";

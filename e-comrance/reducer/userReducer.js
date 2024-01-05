@@ -23,9 +23,13 @@ export const { appendUser, clearUser, setUser } = userSlice.actions;
 
 export const initializeUser = () => {
   return async (dispatch) => {
-    const response = await getUserData();
-    console.log(response, "User");
-    dispatch(setUser(response));
+    try {
+      const response = await getUserData();
+      console.log(response, "User");
+      dispatch(setUser(response));
+    } catch (error) {
+      console.log(error);
+    }
   };
 };
 

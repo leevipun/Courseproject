@@ -14,6 +14,12 @@ const AuthorPage = () => {
   const [loading, setLoading] = useState(true);
   const [spinTip, setSpinTip] = useState("");
   const dispatch = useDispatch();
+
+  document.title = "Authors";
+  const user = useSelector((state) => state.user);
+
+  const isAdmin = user.style === "admin";
+
   const authors = useSelector((state) => {
     console.log(state.allUsers.length);
     if (!state.author) {
@@ -98,7 +104,11 @@ const AuthorPage = () => {
         >
           Authors
         </h1>
-        <AuthorCard users={authors} />
+        <AuthorCard
+          users={authors}
+          isAdmin={isAdmin}
+          ownUserId={user.id}
+        />
         <Spinner loading={loading} tip={spinTip} />
       </div>
     );

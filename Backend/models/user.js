@@ -29,16 +29,7 @@ const userSchema = mongoose.Schema({
   address: {
     type: String,
   },
-  phone: {
-    type: String,
-  },
   listings: [
-    {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "List",
-    },
-  ],
-  history: [
     {
       type: mongoose.Schema.Types.ObjectId,
       ref: "List",

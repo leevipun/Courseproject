@@ -50,6 +50,9 @@ const AuthorInspect = () => {
   const user = useSelector((state) => {
     return state.user;
   });
+  const isLoggedIn = user.length !== 0;
+
+  console.log("user", user);
 
   const [buttonText, setButtonText] = useState("Send friend request");
   const [disabled, setDisabled] = useState(false);
@@ -88,7 +91,10 @@ const AuthorInspect = () => {
         checkFriendStatus();
         checkIfAdmin();
       } catch (error) {
-        dispatch(addNotification(error.error));
+        if (error.status === 401) {
+          navigate("/login");
+          dispatch(addNotification("Please login to continue"));
+        }
       } finally {
         setLoading(false);
       }
@@ -178,6 +184,10 @@ const AuthorInspect = () => {
       }
       dispatch(addNotification("Friend request sent"));
     } catch (error) {
+      if (error.status === 401) {
+        navigate("/login");
+        dispatch(addNotification("Please login to continue"));
+      }
       dispatch(addNotification(error.error));
     } finally {
       setLoading(false);
@@ -257,17 +267,23 @@ const AuthorInspect = () => {
           Back
         </Button>
         <h1>{`${author.firstname} ${author.lastname}`}</h1>
-
-        <Button
-          type="primary"
-          onClick={() => handleSendFriendReq(author.id)}
-          disabled={disabled}
-        >
-          {buttonText}
-        </Button>
-        <Button type="primary" onClick={() => handleStartMessage(author.id)}>
-          Send message
-        </Button>
+        {isLoggedIn ? (
+          <>
+            <Button
+              type="primary"
+              onClick={() => handleSendFriendReq(author.id)}
+              disabled={disabled}
+            >
+              {buttonText}
+            </Button>
+            <Button
+              type="primary"
+              onClick={() => handleStartMessage(author.id)}
+            >
+              Send message
+            </Button>
+          </>
+        ) : null}
 
         {isAdmin ? (
           <>
