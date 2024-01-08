@@ -125,6 +125,7 @@ const Userpage = () => {
       };
       const response = await updateUserInfo(newObject);
       dispatch(addNotification(response));
+      window. location. reload();   
       dispatch(initializeUser());
       console.log(response);
     } catch (error) {
