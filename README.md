@@ -29,7 +29,7 @@ npm run start or npm run dev
 HOW TO USE
 Login
 
-![Login](https://github.com/leevipun/Courseproject/assets/117685613/6ba17852-648e-4530-8d77-ddfc73900cfa)
+![Login](https://github.com/leevipun/Courseproject/assets/117685613/31d07717-90c4-475a-a529-74ec0f5b51c0)
 
 Input your credentials and enjoy
 
@@ -62,6 +62,14 @@ Adding a new
 Add to cart and pay
 
 ![Näyttökuva 2024-01-15 162444](https://github.com/leevipun/Courseproject/assets/117685613/f61abaa3-a151-4b0f-8aa4-d2e193743c7b)
+
+    You can also get it to your favorites by pressing the heart
+
+        Favortites you can find from
+
+            ![fav](https://github.com/leevipun/Courseproject/assets/117685613/667478bc-e002-435b-9dde-f55fb160669f)
+
+                You can delete favorites by pressing the heart once agen
 
 ![cart](https://github.com/leevipun/Courseproject/assets/117685613/7d17439c-53dc-4756-b302-238b07433280)
 
