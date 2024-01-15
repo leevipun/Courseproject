@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import Services, { getAdminCartItems } from "../src/services/Services.js";
+import Services, { getAdminCartItems } from "../src/services/emailServices.js";
 
 const initialState = [];
 

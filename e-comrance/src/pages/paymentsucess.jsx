@@ -7,12 +7,12 @@ import {
   getUserData,
   sellerReceipt,
   sendReceipt,
-} from "../services/Services";
+} from "../services/emailServices";
 import { clearCart } from "../../reducer/cartReducer";
 import { appendUser, clearUser } from "../../reducer/userReducer";
 import { useEffect } from "react";
 import React, { useState } from "react";
-import Services from "../services/Services.js";
+import Services from "../services/emailServices.js";
 import { initializecart } from "../../reducer/cartReducer.js";
 import { SpeedInsights } from "@vercel/speed-insights/react";
 import Spinner from "../components/LoadSpinner.jsx";
@@ -49,7 +49,7 @@ const PaymentSucess = () => {
   const handleBackToHome = async () => {
     setSpinTip("Sending receipt...");
     setLoading(true);
-    const email = user.email;
+    const email = user[0].email;
     const sellerEmail = cartItems[0].author;
     console.log(email, sellerEmail);
 

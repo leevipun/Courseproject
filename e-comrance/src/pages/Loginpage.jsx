@@ -1,10 +1,10 @@
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
-import { Login } from "../services/Services";
+import { Login } from "../services/emailServices";
 import "../styles/loginStyles.css";
 import { useDispatch } from "react-redux";
 import { setUser } from "../../reducer/userReducer";
-import Services from "../services/Services";
+import Services from "../services/emailServices";
 import { addNotification } from "../../reducer/notificationReducer";
 import LoginForm from "../components/loginForm.jsx";
 import React from "react";
