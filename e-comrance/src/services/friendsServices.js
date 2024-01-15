@@ -1,7 +1,7 @@
 import axios from 'axios';
 import {token} from './adminServices';
 
-const baseURL = 'https://courseproject-backend-6lyy.onrender.com';
+const baseURL = 'http://localhost:3003';
 
 export const sendFriendRequest = async (id) => {
   try {

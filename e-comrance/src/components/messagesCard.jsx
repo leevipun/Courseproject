@@ -123,7 +123,7 @@ const MessagesCard = () => {
             <div style={{marginBottom: 10}}>
               <h1>Messages</h1>
               <Button type='primary' onClick={() => getMessages()}>
-                Refresh
+                Refresh Messages
               </Button>
             </div>
             <div className='container'>
@@ -187,21 +187,24 @@ const MessagesCard = () => {
                           <p className='message-sender'>{message.sender}</p>
                           <p className='message-date'>{message.date}</p>
                         </>
-                        <Button
-                          type='primary'
-                          onClick={() =>
-                            handleEdit(message.id, message.content)
-                          }
-                        >
-                          Edit
-                        </Button>
+
                         {message.senderId === user.id && (
-                          <Button
-                            type='primary'
-                            onClick={() => handleMessageDelete(message.id)}
-                          >
-                            Delete
-                          </Button>
+                          <>
+                            <Button
+                              type='primary'
+                              onClick={() =>
+                                handleEdit(message.id, message.content)
+                              }
+                            >
+                              Edit
+                            </Button>
+                            <Button
+                              type='primary'
+                              onClick={() => handleMessageDelete(message.id)}
+                            >
+                              Delete
+                            </Button>
+                          </>
                         )}
                       </div>
                     )}

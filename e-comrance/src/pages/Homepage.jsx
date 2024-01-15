@@ -1,18 +1,18 @@
-import Navbar from "./../components/navbar.jsx";
-import { useDispatch, useSelector } from "react-redux";
-import { useEffect, useState } from "react";
-import { Button } from "antd";
-import { addNotification } from "../../reducer/notificationReducer";
-import { LuSettings2 } from "react-icons/lu";
-import "../styles/HomeStyles.css";
-import { initializeListing } from "../../reducer/listingReducer";
-import Spinner from "../components/LoadSpinner.jsx";
-import React from "react";
-import { SpeedInsights } from "@vercel/speed-insights/react";
-import Footer from "../components/Footer.jsx";
-import ListingCard from "../components/ListingCard.jsx";
-import FilterCard from "../components/FilterCard.jsx";
-import { useNavigate } from "react-router-dom";
+import Navbar from './../components/navbar.jsx';
+import {useDispatch, useSelector} from 'react-redux';
+import {useEffect, useState} from 'react';
+import {Button} from 'antd';
+import {addNotification} from '../../reducer/notificationReducer';
+import {LuSettings2} from 'react-icons/lu';
+import '../styles/HomeStyles.css';
+import {initializeListing} from '../../reducer/listingReducer';
+import Spinner from '../components/LoadSpinner.jsx';
+import React from 'react';
+import {SpeedInsights} from '@vercel/speed-insights/react';
+import Footer from '../components/Footer.jsx';
+import ListingCard from '../components/ListingCard.jsx';
+import FilterCard from '../components/FilterCard.jsx';
+import {useNavigate} from 'react-router-dom';
 
 const Homepage = () => {
   const dispatch = useDispatch();
@@ -20,15 +20,15 @@ const Homepage = () => {
   const [showFilter, setShowFilter] = useState(false);
   const [loading, setLoading] = useState(false);
 
-  const spinTip = "Loading listings...";
+  const spinTip = 'Loading listings...';
 
   const user = useSelector((state) => {
     return state.user;
   });
 
-  const isAdmin = user.style === "admin";
+  const isAdmin = user.style === 'admin';
 
-  document.title = "Nordic Exchange";
+  document.title = 'Nordic Exchange';
 
   useEffect(() => {
     const fetchData = async () => {
@@ -38,15 +38,15 @@ const Homepage = () => {
         setLoading(false);
       } catch (error) {
         if (error.status === 401) {
-          navigate("/login");
+          navigate('/login');
           dispatch(
             addNotification(
-              "Please login first your session has expired",
-              "error"
+              'Please login first your session has expired',
+              'error'
             )
           );
         }
-        console.error("Error fetching listings:", error);
+        console.error('Error fetching listings:', error);
         dispatch(addNotification(error));
         setLoading(false);
       }
@@ -62,13 +62,13 @@ const Homepage = () => {
   const listing = useSelector((state) => {
     const filteredListings = state.listing.filter((item) => {
       return (
-        item.status !== "In cart" &&
-        item.status !== "Sold" &&
-        (state.filter.minPrice === "" || item.price >= state.filter.minPrice) &&
-        (state.filter.maxPrice === "" || item.price <= state.filter.maxPrice) &&
-        (state.filter.country === "None" ||
+        item.status !== 'In cart' &&
+        item.status !== 'Sold' &&
+        (state.filter.minPrice === '' || item.price >= state.filter.minPrice) &&
+        (state.filter.maxPrice === '' || item.price <= state.filter.maxPrice) &&
+        (state.filter.country === 'None' ||
           item.country === state.filter.country) &&
-        (state.filter.category === "None" ||
+        (state.filter.category === 'None' ||
           item.category === state.filter.category) &&
         item.name.toLowerCase().includes(state.filter.filter.toLowerCase())
       );
@@ -79,16 +79,16 @@ const Homepage = () => {
 
   if (listing.length === 0) {
     return (
-      <div className="App">
+      <div className='App'>
         <div>
           <Navbar />
         </div>
-        <div id="itemstyle">
-          <p id="welcome"></p>
+        <div id='itemstyle'>
+          <p id='welcome'></p>
           <Button
-            type="primary"
-            style={{ marginRight: 10 }}
-            id="Filtericon"
+            type='primary'
+            style={{marginRight: 10}}
+            id='Filtericon'
             onClick={handleFiltershow}
           >
             <LuSettings2 />
@@ -99,10 +99,10 @@ const Homepage = () => {
         </div>
         <div
           style={{
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-            height: "80vh",
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+            height: '80vh',
           }}
         >
           <h1>No listings</h1>
@@ -111,22 +111,22 @@ const Homepage = () => {
     );
   } else {
     return (
-      <div id="homepage">
+      <div id='homepage'>
         <div>
           <Navbar />
         </div>
-        <div id="itemstyle">
-          <div id="welcome"></div>
+        <div id='itemstyle'>
+          <div id='welcome'></div>
           <Button
-            type="primary"
-            style={{ marginRight: 10 }}
-            id="Filtericon"
+            type='primary'
+            style={{marginRight: 10}}
+            id='Filtericon'
             onClick={handleFiltershow}
           >
             <LuSettings2 />
           </Button>
         </div>
-        <div style={{ display: "flex" }}>
+        <div style={{display: 'flex'}}>
           <ListingCard listings={listing} user={user} isAdmin={isAdmin} />
           <FilterCard showFilter={showFilter} />
         </div>

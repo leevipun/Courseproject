@@ -25,8 +25,8 @@ export const {appendFollowers, clearFollowers, setFollowers} =
 export const initializeFollowers = () => {
   return async (dispatch) => {
     const response = await getAllFollowers();
-    console.log('response.data', response.data);
-    dispatch(setFollowers(response.data));
+    console.log('response.data', response);
+    dispatch(setFollowers(response));
   };
 };
 

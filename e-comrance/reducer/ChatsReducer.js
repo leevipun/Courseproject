@@ -22,7 +22,8 @@ export const {appendChats, setChats, clearChats} = ChatsSlice.actions;
 export const initializeChats = () => {
   return async (dispatch) => {
     const response = await getAllChats();
-    dispatch(setChats(response.Chatss));
+    console.log(response);
+    dispatch(setChats(response));
   };
 };
 

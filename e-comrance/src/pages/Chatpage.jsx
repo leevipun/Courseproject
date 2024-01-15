@@ -170,11 +170,11 @@ const Chatpage = () => {
             <h1>Chats</h1>
             {isAdmin ? (
               <Button type='primary' onClick={() => getAdminChats()}>
-                Refresh A
+                Refresh Chats
               </Button>
             ) : (
               <Button type='primary' onClick={() => getChats()}>
-                Refresh N
+                Refresh Chats
               </Button>
             )}
           </div>

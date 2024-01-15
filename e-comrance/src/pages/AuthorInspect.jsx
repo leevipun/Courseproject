@@ -142,7 +142,7 @@ const AuthorInspect = () => {
       setDisabled(true);
     } else {
       console.log('not friends');
-      setButtonText('Send friend request :D ');
+      setButtonText('Send friend request');
     }
   };
 
@@ -174,6 +174,7 @@ const AuthorInspect = () => {
     try {
       const friendReqs = await getAllRequests();
       console.log(friendReqs);
+      console.log();
 
       const isPending = friendReqs.some(
         (req) => req.receiver === author.id || req.sender === author.id

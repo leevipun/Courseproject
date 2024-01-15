@@ -48,6 +48,7 @@ const Friendspage = () => {
       try {
         dispatch(initializeFollowers());
         const response3 = await getAllRequests();
+        console.log(followers);
         console.log(response3, 'response3');
         filterRequests(response3);
       } catch (error) {

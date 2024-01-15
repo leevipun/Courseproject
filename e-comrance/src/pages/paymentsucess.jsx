@@ -39,7 +39,7 @@ const PaymentSucess = () => {
   const handleBackToHome = async () => {
     setSpinTip('Sending receipt...');
     setLoading(true);
-    const email = user[0].email;
+    const email = user.email || user[0].email;
     const sellerEmail = cartItems[0].author;
     console.log(email, sellerEmail);
 
