@@ -139,27 +139,29 @@ const ListingCard = ({listings, user, isAdmin}) => {
                   >
                     Add to cart
                   </Button>
-                  <Button
-                    type='ghost'
-                    style={{
-                      margin: 10,
-                      color:
-                        user &&
-                        user.favorites &&
-                        user.favorite.includes(listing.id)
-                          ? 'red'
-                          : 'black',
-                    }}
-                    onClick={() => handleAddToFavorites(listing.id)}
-                  >
-                    <FaHeart
+                  {user.style !== 'seller' ? (
+                    <Button
+                      type='ghost'
                       style={{
-                        color: userFavoriteId.includes(listing.id)
-                          ? 'red'
-                          : 'black',
+                        margin: 10,
+                        color:
+                          user &&
+                          user.favorites &&
+                          user.favorite.includes(listing.id)
+                            ? 'red'
+                            : 'black',
                       }}
-                    />
-                  </Button>
+                      onClick={() => handleAddToFavorites(listing.id)}
+                    >
+                      <FaHeart
+                        style={{
+                          color: userFavoriteId.includes(listing.id)
+                            ? 'red'
+                            : 'black',
+                        }}
+                      />
+                    </Button>
+                  ) : null}
                 </>
               )}
             </div>

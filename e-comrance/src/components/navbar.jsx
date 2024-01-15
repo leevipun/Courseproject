@@ -25,6 +25,7 @@ import {clearListing} from '../../reducer/listingReducer';
 import {getUserData} from '../services/userServices';
 import {addNotification} from '../../reducer/notificationReducer';
 import {RiAdminLine} from 'react-icons/ri';
+import {setToken} from '../services/adminServices';
 
 const Navbar = () => {
   const navigate = useNavigate();
@@ -44,6 +45,7 @@ const Navbar = () => {
         );
         console.log('on user', loggerUser);
         if (loggerUser) {
+          setToken(loggerUser);
           console.log('on user edelleen');
           const response = await getUserData();
           console.log('Response Nav', response);
@@ -117,7 +119,7 @@ const Navbar = () => {
         setShowAdd(false);
         setShowCart(false);
         setIsAdmin(true);
-      } else if (status === 'seller' || status === 'both') {
+      } else if (status === 'seller') {
         setShowAdd(true);
       } else if (status !== 'seller') {
         setShowCart(true);

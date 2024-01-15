@@ -19,7 +19,10 @@ import PersonalInfo from '../components/registery/personalInfo.jsx';
 import UserNavbar from '../components/userNavbar.jsx';
 import {adminUpdateUserInfo, getAuthor} from '../services/userServices.js';
 import {getListing} from '../services/listingServices.js';
-import {sendFriendRequest} from '../services/friendsServices.js';
+import {
+  getAllRequests,
+  sendFriendRequest,
+} from '../services/friendsServices.js';
 import {startMessages} from '../services/chatServices.js';
 
 const AuthorInspect = () => {
@@ -167,6 +170,26 @@ const AuthorInspect = () => {
     dispatch(setauthorListings(listings));
   };
 
+  const checkIfPending = async () => {
+    try {
+      const friendReqs = await getAllRequests();
+      console.log(friendReqs);
+
+      const isPending = friendReqs.some(
+        (req) => req.receiver === author.id || req.sender === author.id
+      );
+
+      if (isPending) {
+        setButtonText('Pending');
+        setDisabled(true);
+      }
+    } catch (error) {
+      console.error('Error fetching friend requests', error);
+    }
+  };
+
+  checkIfPending();
+
   const handleSendFriendReq = async (id) => {
     setSpinTip('Sending friend request...');
     try {
@@ -273,12 +296,14 @@ const AuthorInspect = () => {
             >
               {buttonText}
             </Button>
-            <Button
-              type='primary'
-              onClick={() => handleStartMessage(author.id)}
-            >
-              Send message
-            </Button>
+            {user.friends.includes(author.id) && (
+              <Button
+                type='primary'
+                onClick={() => handleStartMessage(author.id)}
+              >
+                Send message
+              </Button>
+            )}
           </>
         ) : null}
 
