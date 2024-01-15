@@ -1,10 +1,10 @@
-import { createSlice } from "@reduxjs/toolkit";
-import { getUsers } from "../src/services/Services.js";
+import {createSlice} from '@reduxjs/toolkit';
+import {getUsers} from '../src/services/userServices';
 
 const initialState = [];
 
 const allUsersSlice = createSlice({
-  name: "allUsers",
+  name: 'allUsers',
   initialState,
   reducers: {
     appendAllUsers(state, action) {
@@ -19,13 +19,13 @@ const allUsersSlice = createSlice({
   },
 });
 
-export const { appendAllUsers, clearAllUsers, setAllUsers } =
+export const {appendAllUsers, clearAllUsers, setAllUsers} =
   allUsersSlice.actions;
 
 export const initializeAllusers = () => {
   return async (dispatch) => {
     const response = await getUsers();
-    console.log(response, "AllUsers");
+    console.log(response, 'AllUsers');
     dispatch(setAllUsers(response));
   };
 };

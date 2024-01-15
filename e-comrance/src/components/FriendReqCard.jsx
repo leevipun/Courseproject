@@ -1,12 +1,12 @@
-import React from "react";
-import "../styles/FriendRequestCard.css";
+import React from 'react';
+import '../styles/FriendRequestCard.css';
 import {
   acceptFriendRequest,
   deleteFriendRequest,
-} from "../services/Services.js";
-import { initializeFollowers } from "../../reducer/followersReducer.js";
+} from '../services/friendsServices';
+import {initializeFollowers} from '../../reducer/followersReducer.js';
 
-const FriendRequestCard = ({ user, friends, pending }) => {
+const FriendRequestCard = ({user, friends, pending}) => {
   const handleAccept = async (id) => {
     console.log(id);
     try {
@@ -17,7 +17,7 @@ const FriendRequestCard = ({ user, friends, pending }) => {
   };
 
   const handleDecline = async (id) => {
-    console.log("id", id);
+    console.log('id', id);
     try {
       await deleteFriendRequest(id);
       initializeFollowers();
@@ -34,17 +34,17 @@ const FriendRequestCard = ({ user, friends, pending }) => {
   return (
     <div>
       {friends.map((friend) => (
-        <div className="friend-request-card">
+        <div className='friend-request-card'>
           <img
-            src="https://www.w3schools.com/howto/img_avatar.png"
+            src='https://www.w3schools.com/howto/img_avatar.png'
             alt={`Profile of ${friend.senderName}`}
-            className="profile-image"
+            className='profile-image'
           />
-          <div className="user-info">
+          <div className='user-info'>
             <h3>{`${friend.receiverName}`}</h3>
           </div>
           {pending && (
-            <div className="actions">
+            <div className='actions'>
               {friend.sender === user.id ? (
                 <></>
               ) : (

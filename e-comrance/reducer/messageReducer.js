@@ -1,8 +1,8 @@
-import { createSlice } from "@reduxjs/toolkit";
-import { getAllMessages } from "../src/services/Services.js";
+import {createSlice} from '@reduxjs/toolkit';
+import {getAllMessages} from '../src/services/chatServices';
 
 const messageSlice = createSlice({
-  name: "Message",
+  name: 'Message',
   initialState: [],
   reducers: {
     appendMessage(state, action) {
@@ -17,11 +17,10 @@ const messageSlice = createSlice({
   },
 });
 
-export const { appendMessage, setMessages, clearMessage } =
-  messageSlice.actions;
+export const {appendMessage, setMessages, clearMessage} = messageSlice.actions;
 
 export const initializeMessage = (id) => {
-  console.log("id", id);
+  console.log('id', id);
   return async (dispatch) => {
     const response = await getAllMessages(id);
     dispatch(setMessages(response.messages));

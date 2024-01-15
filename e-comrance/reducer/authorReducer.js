@@ -1,10 +1,10 @@
-import { createSlice } from "@reduxjs/toolkit";
-import { getUsers } from "../src/services/Services.js";
+import {createSlice} from '@reduxjs/toolkit';
+import {getUsers} from '../src/services/userServices';
 
 const initialState = [];
 
 const authorSlice = createSlice({
-  name: "author",
+  name: 'author',
   initialState,
   reducers: {
     appendAuthor(state, action) {
@@ -19,7 +19,7 @@ const authorSlice = createSlice({
   },
 });
 
-export const { appendAuthor, clearAuthor, setAuthor } = authorSlice.actions;
+export const {appendAuthor, clearAuthor, setAuthor} = authorSlice.actions;
 
 export const initializeAuthors = () => {
   return async (dispatch) => {

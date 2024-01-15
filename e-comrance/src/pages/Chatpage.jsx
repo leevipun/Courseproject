@@ -1,20 +1,25 @@
-import React, { useState } from "react";
-import { Button } from "antd";
-import Spinner from "../components/LoadSpinner.jsx";
-import { deleteChat, getAllMessages } from "../services/Services.js";
-import { useEffect } from "react";
-import { useNavigate } from "react-router-dom";
-import { addNotification } from "../../reducer/notificationReducer.js";
-import { useDispatch } from "react-redux";
-import "../styles/ChatPageStyles.css";
-import { useSelector } from "react-redux";
-import { clearMessage, setMessages } from "../../reducer/messageReducer.js";
+import React, {useState} from 'react';
+import {Button} from 'antd';
+import Spinner from '../components/LoadSpinner.jsx';
+import {
+  deleteChat,
+  getAllChats,
+  getAllMessages,
+} from '../services/chatServices.js';
+import {useEffect} from 'react';
+import {useNavigate} from 'react-router-dom';
+import {addNotification} from '../../reducer/notificationReducer.js';
+import {useDispatch} from 'react-redux';
+import '../styles/ChatPageStyles.css';
+import {useSelector} from 'react-redux';
+import {clearMessage, setMessages} from '../../reducer/messageReducer.js';
 import {
   initializeAdminChats,
   initializeChats,
-} from "../../reducer/ChatsReducer.js";
-import Navbar from "../components/navbar.jsx";
-import MessagesCard from "../components/messagesCard.jsx";
+  setChats,
+} from '../../reducer/ChatsReducer.js';
+import Navbar from '../components/navbar.jsx';
+import MessagesCard from '../components/messagesCard.jsx';
 
 const Chatpage = () => {
   const dispatch = useDispatch();
@@ -22,68 +27,68 @@ const Chatpage = () => {
   let messages = useSelector((state) => state.messages);
   const chats = useSelector((state) => state.chats);
   const [loading, setLoading] = useState(false);
-  const [spinTip, setSpinTip] = useState("");
+  const [spinTip, setSpinTip] = useState('');
   const [isAdmin, setIsAdmin] = useState(false);
 
-  document.title = "Chat";
+  document.title = 'Chat';
 
   const handleRedirect = async (id) => {
-    if (window.location.pathname.split("/")[2] === id) {
-      dispatch(addNotification("You are already in this chat", "error"));
+    if (window.location.pathname.split('/')[2] === id) {
+      dispatch(addNotification('You are already in this chat', 'error'));
       return;
     }
     const newMessages = await getAllMessages(id);
     dispatch(setMessages(newMessages.messages));
-    console.log("messages", messages);
+    console.log('messages', messages);
     navigate(`/chats/${id}`);
   };
 
   useEffect(() => {
     const fetchData = async () => {
-      setSpinTip("Loading user listings...");
+      setSpinTip('Loading user listings...');
       try {
         if (checkIfAdmin()) {
           setIsAdmin(true);
           dispatch(initializeAdminChats());
-          const id = window.location.pathname.split("/")[3];
+          const id = window.location.pathname.split('/')[3];
           if (id) {
             const response1 = await getAllMessages(id);
             dispatch(setMessages(response1.messages));
-            console.log("response1", response1);
+            console.log('response1', response1);
           }
         } else {
-          console.log("not admin");
+          console.log('not admin');
           setLoading(true);
-          const id = window.location.pathname.split("/")[2];
-          console.log("id", id);
+          const id = window.location.pathname.split('/')[2];
+          console.log('id', id);
           dispatch(clearMessage());
           if (id) {
             const response1 = await getAllMessages(id);
             dispatch(setMessages(response1.messages));
-            console.log("response1", response1);
+            console.log('response1', response1);
           }
           dispatch(initializeChats());
           setLoading(false);
         }
       } catch (error) {
         if (error.status === 401) {
-          navigate("/login");
+          navigate('/login');
           dispatch(
             addNotification(
-              "Please login first your session has expired so we can keep your favorites stored",
-              "error"
+              'Please login first your session has expired so we can keep your favorites stored',
+              'error'
             )
           );
         }
         setLoading(false);
-        console.error("error", error);
+        console.error('error', error);
       }
     };
     fetchData();
   }, []);
 
   const checkIfAdmin = () => {
-    if (window.location.pathname.split("/")[1] === "admin") {
+    if (window.location.pathname.split('/')[1] === 'admin') {
       return true;
     } else {
       return false;
@@ -97,34 +102,36 @@ const Chatpage = () => {
   const getMessages = async () => {
     let id;
     if (isAdmin) {
-      id = window.location.pathname.split("/")[3];
+      id = window.location.pathname.split('/')[3];
     } else {
-      id = window.location.pathname.split("/")[2];
+      id = window.location.pathname.split('/')[2];
     }
     const response = await getAllMessages(id);
-    console.log("response", response);
+    console.log('response', response);
     dispatch(setMessages(response.messages));
   };
 
   const getChats = async () => {
-    dispatch(initializeChats());
+    const chats = await getAllChats();
+    dispatch(setChats(chats));
+    console.log('chats', chats);
   };
 
   const getAdminChats = async () => {
     try {
       dispatch(initializeAdminChats());
     } catch (error) {
-      console.log("error", error);
-      if (error.data.error === "jwt expired") {
+      console.log('error', error);
+      if (error.data.error === 'jwt expired') {
         dispatch(
           addNotification(
-            "Your session has expired please login again",
-            "error"
+            'Your session has expired please login again',
+            'error'
           )
         );
-        navigate("/login");
+        navigate('/login');
       }
-      console.error("Error getting admin chats:", error);
+      console.error('Error getting admin chats:', error);
     }
   };
 
@@ -139,34 +146,34 @@ const Chatpage = () => {
       await deleteChat(id);
       if (isAdmin) {
         dispatch(initializeAdminChats());
-        navigate("/admin/chats");
+        navigate('/admin/chats');
       } else {
         dispatch(initializeChats());
-        navigate("/chats");
+        navigate('/chats');
       }
-      dispatch(addNotification("Chat deleted"));
+      dispatch(addNotification('Chat deleted'));
     } catch (error) {
-      console.error("Error sending message:", error);
-      dispatch(addNotification("Error deleting chat", "error"));
+      console.error('Error sending message:', error);
+      dispatch(addNotification('Error deleting chat', 'error'));
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <div className="App">
+    <div className='App'>
       <Spinner loading={loading} tip={spinTip} />
       <Navbar />
-      <div style={{ display: "flex" }}>
-        <div id="chat-bar">
-          <div id="chat">
+      <div style={{display: 'flex'}}>
+        <div id='chat-bar'>
+          <div id='chat'>
             <h1>Chats</h1>
             {isAdmin ? (
-              <Button type="primary" onClick={() => getAdminChats()}>
+              <Button type='primary' onClick={() => getAdminChats()}>
                 Refresh A
               </Button>
             ) : (
-              <Button type="primary" onClick={() => getChats()}>
+              <Button type='primary' onClick={() => getChats()}>
                 Refresh N
               </Button>
             )}
@@ -176,16 +183,17 @@ const Chatpage = () => {
               {chats.map((chat) => (
                 <div
                   key={chat.id}
-                  className="message-container"
-                  style={{ cursor: "pointer" }}
+                  className='message-container'
+                  style={{cursor: 'pointer'}}
                   onClick={
                     isAdmin
                       ? () => handleAdminRedirect(chat.id)
                       : () => handleRedirect(chat.id)
                   }
                 >
-                  <p className="chat-content">{`${chat.userNames[0]} + ${chat.userNames[1]}`}</p>
-                  <p className="chat-date">{chat.lastMessage}</p>
+                  <p className='chat-content'>{`${chat.userNames[0]} + ${chat.userNames[1]}`}</p>
+                  <p className='chat-date'>{chat.lastMessage}</p>
+
                   <Button onClick={() => handleDelete(chat.id)}>Delete</Button>
                 </div>
               ))}

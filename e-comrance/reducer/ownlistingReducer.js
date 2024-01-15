@@ -1,8 +1,8 @@
-import { createSlice } from "@reduxjs/toolkit";
-import { getUsersListings } from "../src/services/Services.js";
+import {createSlice} from '@reduxjs/toolkit';
+import {getUsersListings} from '../src/services/userServices';
 
 const userListingSlice = createSlice({
-  name: "userListing",
+  name: 'userListing',
   initialState: [],
   reducers: {
     appendUserListing(state, action) {
@@ -17,7 +17,7 @@ const userListingSlice = createSlice({
   },
 });
 
-export const { appendUserListing, setUserListing, clearUserListing } =
+export const {appendUserListing, setUserListing, clearUserListing} =
   userListingSlice.actions;
 
 export const initializeUserListing = () => {

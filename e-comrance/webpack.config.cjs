@@ -1,41 +1,41 @@
-const path = require("path");
-const webpack = require("webpack");
-const HtmlWebpackPlugin = require("html-webpack-plugin");
+const path = require('path');
+const webpack = require('webpack');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 const config = (env, argv) => {
-  console.log("argv", argv.mode);
+  console.log('argv', argv.mode);
   const backend_url =
-    argv.mode === "production"
-      ? "https://courseproject-backend-6lyy.onrender.com"
-      : "http://localhost:3003";
+    argv.mode === 'production'
+      ? 'https://courseproject-backend-6lyy.onrender.com'
+      : 'https://courseproject-backend-6lyy.onrender.com';
 
   return {
-    entry: (__dirname, "./src/main.jsx"),
+    entry: (__dirname, './src/main.jsx'),
     output: {
-      path: path.resolve(__dirname, "dist"),
-      filename: "main.js",
+      path: path.resolve(__dirname, 'dist'),
+      filename: 'main.js',
     },
     devServer: {
-      static: path.resolve(__dirname, "dist"),
+      static: path.resolve(__dirname, 'dist'),
       compress: true,
       port: 3000,
     },
-    devtool: "source-map",
+    devtool: 'source-map',
     module: {
       rules: [
         {
           test: /\.jsx?$/,
           exclude: /node_modules/,
           use: {
-            loader: "babel-loader",
+            loader: 'babel-loader',
             options: {
-              presets: ["@babel/preset-react"],
+              presets: ['@babel/preset-react'],
             },
           },
         },
         {
           test: /\.css$/,
-          use: ["style-loader", "css-loader"],
+          use: ['style-loader', 'css-loader'],
         },
       ],
     },
@@ -44,9 +44,9 @@ const config = (env, argv) => {
         BACKEND_URL: JSON.stringify(backend_url),
       }),
       new HtmlWebpackPlugin({
-        title: "E-comrance",
-        filename: "index.html",
-        template: path.resolve(__dirname, "/index.html"),
+        title: 'E-comrance',
+        filename: 'index.html',
+        template: path.resolve(__dirname, '/index.html'),
       }),
     ],
   };

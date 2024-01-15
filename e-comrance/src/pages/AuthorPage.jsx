@@ -1,33 +1,33 @@
-import React, { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import Spinner from "../components/LoadSpinner.jsx";
-import { getUsers } from "../services/Services.js";
-import Navbar from "../components/navbar.jsx";
-import "../styles/AuthorStyles.css";
+import React, {useEffect, useState} from 'react';
+import {useDispatch, useSelector} from 'react-redux';
+import Spinner from '../components/LoadSpinner.jsx';
+import Navbar from '../components/navbar.jsx';
+import '../styles/AuthorStyles.css';
 import {
   initializeAllusers,
   setAllUsers,
-} from "../../reducer/allUsersReducer.js";
-import AuthorCard from "../components/AuthorCard.jsx";
+} from '../../reducer/allUsersReducer.js';
+import AuthorCard from '../components/AuthorCard.jsx';
+import {getUsers} from '../services/userServices.js';
 
 const AuthorPage = () => {
   const [loading, setLoading] = useState(true);
-  const [spinTip, setSpinTip] = useState("");
+  const [spinTip, setSpinTip] = useState('');
   const dispatch = useDispatch();
 
-  document.title = "Authors";
+  document.title = 'Authors';
   const user = useSelector((state) => state.user);
 
-  const isAdmin = user.style === "admin";
+  const isAdmin = user.style === 'admin';
 
   const authors = useSelector((state) => {
     console.log(state.allUsers.length);
     if (!state.author) {
-      console.log("alle kaksi");
+      console.log('alle kaksi');
       return [];
     }
     const filteredAuthors = state.allUsers.filter((author) => {
-      if (state.filter.filter === "") {
+      if (state.filter.filter === '') {
         return true; // Include all authors if the filter is empty
       } else {
         console.log(state.filter.filter);
@@ -47,17 +47,17 @@ const AuthorPage = () => {
   });
 
   useEffect(() => {
-    console.log("useEffect");
+    console.log('useEffect');
     const fetchData = async () => {
-      setSpinTip("Loading authors...");
+      setSpinTip('Loading authors...');
       setLoading(true);
       try {
-        console.log("Fetching authors");
+        console.log('Fetching authors');
         dispatch(initializeAllusers());
         const response = await getUsers();
         dispatch(setAllUsers(response));
       } catch (error) {
-        console.error("Error fetching authors:", error);
+        console.error('Error fetching authors:', error);
       } finally {
         setLoading(false);
       }
@@ -69,22 +69,22 @@ const AuthorPage = () => {
   console.log(authors.length);
   if (authors.length === 0) {
     return (
-      <div className="App">
+      <div className='App'>
         <Navbar />
         <h1
           style={{
-            display: "flex",
-            justifyContent: "center",
-            color: "#fcfbfc",
+            display: 'flex',
+            justifyContent: 'center',
+            color: '#fcfbfc',
           }}
         >
           Authors
         </h1>
         <h2
           style={{
-            display: "flex",
-            justifyContent: "center",
-            color: "#fcfbfc",
+            display: 'flex',
+            justifyContent: 'center',
+            color: '#fcfbfc',
           }}
         >
           No authors found
@@ -93,22 +93,18 @@ const AuthorPage = () => {
     );
   } else {
     return (
-      <div className="App">
+      <div className='App'>
         <Navbar />
         <h1
           style={{
-            display: "flex",
-            justifyContent: "center",
-            color: "#fcfbfc",
+            display: 'flex',
+            justifyContent: 'center',
+            color: '#fcfbfc',
           }}
         >
           Authors
         </h1>
-        <AuthorCard
-          users={authors}
-          isAdmin={isAdmin}
-          ownUserId={user.id}
-        />
+        <AuthorCard users={authors} isAdmin={isAdmin} ownUserId={user.id} />
         <Spinner loading={loading} tip={spinTip} />
       </div>
     );

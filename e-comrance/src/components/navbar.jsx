@@ -8,26 +8,23 @@ import {
   FaUser,
   FaList,
   FaUserFriends,
-} from "react-icons/fa";
-import { Link, useNavigate } from "react-router-dom";
-import { FaMagnifyingGlass, FaPeopleGroup } from "react-icons/fa6";
-import React, { useEffect, useState } from "react";
-import "../App.css";
-import { Dropdown, Space, Input } from "antd";
-import { CiLogin } from "react-icons/ci";
-import { UserOutlined, LogoutOutlined } from "@ant-design/icons";
-import { useDispatch, useSelector } from "react-redux";
-import { filterChange } from "../../reducer/filterReducer";
-import { clearUser, initializeUser } from "../../reducer/userReducer";
-import { clearCart, initializecart } from "../../reducer/cartReducer";
-import {
-  clearFavorite,
-  initializefavorite,
-} from "../../reducer/favoriteReducer";
-import { clearListing } from "../../reducer/listingReducer";
-import { getUserData, setToken } from "../services/Services";
-import { addNotification } from "../../reducer/notificationReducer";
-import { RiAdminLine } from "react-icons/ri";
+} from 'react-icons/fa';
+import {Link, useNavigate} from 'react-router-dom';
+import {FaMagnifyingGlass, FaPeopleGroup} from 'react-icons/fa6';
+import React, {useEffect, useState} from 'react';
+import '../App.css';
+import {Dropdown, Space, Input} from 'antd';
+import {CiLogin} from 'react-icons/ci';
+import {UserOutlined, LogoutOutlined} from '@ant-design/icons';
+import {useDispatch, useSelector} from 'react-redux';
+import {filterChange} from '../../reducer/filterReducer';
+import {clearUser, initializeUser} from '../../reducer/userReducer';
+import {clearCart, initializecart} from '../../reducer/cartReducer';
+import {clearFavorite, initializefavorite} from '../../reducer/favoriteReducer';
+import {clearListing} from '../../reducer/listingReducer';
+import {getUserData} from '../services/userServices';
+import {addNotification} from '../../reducer/notificationReducer';
+import {RiAdminLine} from 'react-icons/ri';
 
 const Navbar = () => {
   const navigate = useNavigate();
@@ -43,16 +40,15 @@ const Navbar = () => {
     const fetchData = async () => {
       try {
         const loggerUser = JSON.parse(
-          window.sessionStorage.getItem("loggedNoteappUser")
+          window.sessionStorage.getItem('loggedNoteappUser')
         );
-        console.log("on user", loggerUser);
-        setToken(loggerUser);
+        console.log('on user', loggerUser);
         if (loggerUser) {
-          console.log("on user edelleen");
+          console.log('on user edelleen');
           const response = await getUserData();
-          console.log("Response Nav", response);
+          console.log('Response Nav', response);
           setIsLogged(true);
-          if (response.style === "admin") {
+          if (response.style === 'admin') {
             dispatch(initializeUser());
             dispatch(initializefavorite());
             setIsAdmin(true);
@@ -60,15 +56,15 @@ const Navbar = () => {
             dispatch(initializeUser());
             dispatch(initializecart());
             dispatch(initializefavorite());
-            console.log("User", user);
+            console.log('User', user);
             checkStatus(response.style);
           }
         }
       } catch (error) {
         if (error.status === 401) {
           window.sessionStorage.clear();
-          navigate("/login");
-          dispatch(addNotification("Please login, your session has expired"));
+          navigate('/login');
+          dispatch(addNotification('Please login, your session has expired'));
         }
       }
     };
@@ -99,31 +95,31 @@ const Navbar = () => {
 
   const handleLogout = () => {
     window.sessionStorage.clear();
-    console.log("Hah sessionStorage meni siinä");
+    console.log('Hah sessionStorage meni siinä');
     dispatch(clearUser());
     dispatch(clearCart());
     dispatch(clearFavorite());
     dispatch(clearListing());
-    console.log("User cleared");
-    navigate("/login");
+    console.log('User cleared');
+    navigate('/login');
   };
 
   const checkStatus = (status) => {
-    const loggerUser = window.sessionStorage.getItem("loggedNoteappUser");
+    const loggerUser = window.sessionStorage.getItem('loggedNoteappUser');
     if (loggerUser) {
       setIsLogged(true);
-      console.log("on user edelleen stats");
+      console.log('on user edelleen stats');
     }
     if (status) {
-      console.log("on user edelleen stats");
+      console.log('on user edelleen stats');
       setIsLogged(true);
-      if (status === "admin") {
+      if (status === 'admin') {
         setShowAdd(false);
         setShowCart(false);
         setIsAdmin(true);
-      } else if (status === "seller" || status === "both") {
+      } else if (status === 'seller' || status === 'both') {
         setShowAdd(true);
-      } else if (status !== "seller") {
+      } else if (status !== 'seller') {
         setShowCart(true);
         setShowFavorites(true);
       }
@@ -131,29 +127,29 @@ const Navbar = () => {
   };
 
   const handleUserInfo = () => {
-    navigate("/user");
+    navigate('/user');
   };
 
   const handleOwnlisting = () => {
-    navigate("/ownlisting");
+    navigate('/ownlisting');
   };
 
   const handleFriends = () => {
-    navigate("/friends");
+    navigate('/friends');
   };
 
   const handleChats = () => {
-    navigate("/chats");
+    navigate('/chats');
   };
 
   const handleAdmin = () => {
-    navigate("/admin");
+    navigate('/admin');
   };
 
   const items = [
     {
-      label: "User info",
-      key: "1",
+      label: 'User info',
+      key: '1',
       icon: <UserOutlined />,
       onClick: handleUserInfo,
     },
@@ -161,20 +157,20 @@ const Navbar = () => {
       ? []
       : [
           {
-            label: "Own listings",
-            key: "2",
+            label: 'Own listings',
+            key: '2',
             icon: <FaList />,
             onClick: handleOwnlisting,
           },
           {
-            label: "Friends",
-            key: "3",
+            label: 'Friends',
+            key: '3',
             icon: <FaUserFriends />,
             onClick: handleFriends,
           },
           {
-            label: "Chats",
-            key: "4",
+            label: 'Chats',
+            key: '4',
             icon: <FaPeopleGroup />,
             onClick: handleChats,
           },
@@ -182,16 +178,16 @@ const Navbar = () => {
     ...(isAdmin
       ? [
           {
-            label: "Admin",
-            key: "5",
+            label: 'Admin',
+            key: '5',
             icon: <RiAdminLine />,
             onClick: handleAdmin,
           },
         ]
       : []),
     {
-      label: "Log out",
-      key: "6",
+      label: 'Log out',
+      key: '6',
       icon: <LogoutOutlined />,
       danger: true,
       onClick: handleLogout,
@@ -206,78 +202,78 @@ const Navbar = () => {
       }}
     >
       <nav>
-        <ul id="navbar">
-          <li id="navitem">
-            <Link to="/">Nordic Exchange</Link>
+        <ul id='navbar'>
+          <li id='navitem'>
+            <Link to='/'>Nordic Exchange</Link>
           </li>
-          <li id="navitem">
-            <Link to="/">
+          <li id='navitem'>
+            <Link to='/'>
               Home <FaHome />
             </Link>
           </li>
-          <li id="navitem">
-            <Link to="/authors">
+          <li id='navitem'>
+            <Link to='/authors'>
               Authors <FaUser />
             </Link>
           </li>
-          <li id="navitem">
-            <Link to="/about">
+          <li id='navitem'>
+            <Link to='/about'>
               About-us <FaQuestionCircle />
             </Link>
           </li>
-          <li id="navitem">
-            <Link to="/contacts">
+          <li id='navitem'>
+            <Link to='/contacts'>
               Contacts <FaAddressCard />
             </Link>
           </li>
           {showInput && (
             <Input
-              placeholder="input search text"
+              placeholder='input search text'
               onChange={handleChange}
-              style={{ width: 250 }}
-              id="NavsearchInput"
+              style={{width: 250}}
+              id='NavsearchInput'
               enterButton
             />
           )}
-          <li id="search" onClick={() => handleClick()}>
+          <li id='search' onClick={() => handleClick()}>
             <FaMagnifyingGlass />
           </li>
           {showAdd && (
-            <li id="navitem">
-              <Link to="/add">
+            <li id='navitem'>
+              <Link to='/add'>
                 <FaPlus />
               </Link>
             </li>
           )}
           {showCart && (
-            <li id="navitem">
-              <Link to="/cart">
+            <li id='navitem'>
+              <Link to='/cart'>
                 <FaShoppingBasket /> {numberOfItemsInCart}
               </Link>
             </li>
           )}
           {showFavorites && (
-            <li id="navitem">
-              <Link to="/favorites">
+            <li id='navitem'>
+              <Link to='/favorites'>
                 <FaHeart /> {numberOfItemsInFavorite}
               </Link>
             </li>
           )}
 
           {isLogged && (
-            <li id="navitem">
-              <Dropdown menu={{ items }} trigger={["click"]}>
+            <li id='navitem'>
+              <Dropdown menu={{items}} trigger={['click']}>
                 <a onClick={(e) => e.preventDefault()}>
                   <Space>
-                    <FaUser id="user" />
+                    <FaUser id='user' />
                   </Space>
                 </a>
               </Dropdown>
             </li>
           )}
           {!isLogged && (
-            <li id="navitem">
-              <Link to="/login">
+            <li id='navitem'>
+              <Link to='/login'>
                 Login <CiLogin />
               </Link>
             </li>

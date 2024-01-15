@@ -1,8 +1,8 @@
-import { createSlice } from "@reduxjs/toolkit";
-import { getAdminChats, getAllChats } from "../src/services/Services.js";
+import {createSlice} from '@reduxjs/toolkit';
+import {getAllChats, getAdminChats} from '../src/services/chatServices';
 
 const ChatsSlice = createSlice({
-  name: "Chats",
+  name: 'Chats',
   initialState: [],
   reducers: {
     appendChats(state, action) {
@@ -17,7 +17,7 @@ const ChatsSlice = createSlice({
   },
 });
 
-export const { appendChats, setChats, clearChats } = ChatsSlice.actions;
+export const {appendChats, setChats, clearChats} = ChatsSlice.actions;
 
 export const initializeChats = () => {
   return async (dispatch) => {

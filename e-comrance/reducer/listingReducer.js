@@ -1,8 +1,8 @@
-import { createSlice } from "@reduxjs/toolkit";
-import Services from "../src/services/Services.js";
+import {createSlice} from '@reduxjs/toolkit';
+import {getAllListings} from '../src/services/listingServices';
 
 const listingSlice = createSlice({
-  name: "listing",
+  name: 'listing',
   initialState: [],
   reducers: {
     appendlisting(state, action) {
@@ -17,11 +17,11 @@ const listingSlice = createSlice({
   },
 });
 
-export const { appendlisting, setlisting, clearListing } = listingSlice.actions;
+export const {appendlisting, setlisting, clearListing} = listingSlice.actions;
 
 export const initializeListing = () => {
   return async (dispatch) => {
-    const listings = await Services.getAllListings();
+    const listings = await getAllListings();
     console.log(listings);
     dispatch(setlisting(listings));
   };

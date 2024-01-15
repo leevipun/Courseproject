@@ -1,10 +1,11 @@
-import { createSlice } from "@reduxjs/toolkit";
-import Services, { getAdminCartItems } from "../src/services/emailServices.js";
+import {createSlice} from '@reduxjs/toolkit';
+import {getAllCartItems} from '../src/services/cartServices';
+import {getAdminCartItems} from '../src/services/adminServices';
 
 const initialState = [];
 
 const cartSlice = createSlice({
-  name: "cart",
+  name: 'cart',
   initialState,
   reducers: {
     appendcart(state, action) {
@@ -19,11 +20,11 @@ const cartSlice = createSlice({
   },
 });
 
-export const { appendcart, setcart, clearCart } = cartSlice.actions;
+export const {appendcart, setcart, clearCart} = cartSlice.actions;
 
 export const initializecart = () => {
   return async (dispatch) => {
-    const items = await Services.getAllCartItems();
+    const items = await getAllCartItems();
     dispatch(setcart(items));
   };
 };

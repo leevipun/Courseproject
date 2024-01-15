@@ -1,24 +1,24 @@
-import { Input, Button, Form, Tag, Select } from "antd";
-import { useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
-import { useDispatch } from "react-redux";
-import "../styles/ChatPageStyles.css";
-import React, { useState } from "react";
-import Navbar from "../components/navbar.jsx";
+import {Input, Button, Form, Tag, Select} from 'antd';
+import {useSelector} from 'react-redux';
+import {useNavigate} from 'react-router-dom';
+import {useDispatch} from 'react-redux';
+import '../styles/ChatPageStyles.css';
+import React, {useState} from 'react';
+import Navbar from '../components/navbar.jsx';
+import {initializeUserListing} from '../../reducer/ownlistingReducer.js';
+import CountriesData from '../../Data/countryData.js';
 import {
-  updateUsersListing,
   deleteUserListing,
   updateListing,
-} from "../services/Services.js";
-import { initializeUserListing } from "../../reducer/ownlistingReducer.js";
-import CountriesData from "../../Data/countryData.js";
+  updateUsersListing,
+} from '../services/listingServices.js';
 
-const customizeRequiredMark = (label, { required }) => (
+const customizeRequiredMark = (label, {required}) => (
   <>
     {required ? (
-      <Tag color="error">Required</Tag>
+      <Tag color='error'>Required</Tag>
     ) : (
-      <Tag color="warning">optional</Tag>
+      <Tag color='warning'>optional</Tag>
     )}
     {label}
   </>
@@ -29,16 +29,16 @@ const OwnListingCard = () => {
   const navigate = useNavigate();
   const userListings = useSelector((state) => state.userListings);
 
-  const [name, setName] = useState("");
-  const [country, setCountry] = useState("");
-  const [price, setPrice] = useState("");
-  const [description, setDescription] = useState("");
+  const [name, setName] = useState('');
+  const [country, setCountry] = useState('');
+  const [price, setPrice] = useState('');
+  const [description, setDescription] = useState('');
   const [lastId, setLastId] = useState();
   const [edit, setEdit] = useState(false);
 
   const [form] = Form.useForm();
-  const [requiredMark, setRequiredMarkType] = useState("optional");
-  const onRequiredTypeChange = ({ requiredMarkValue }) => {
+  const [requiredMark, setRequiredMarkType] = useState('optional');
+  const onRequiredTypeChange = ({requiredMarkValue}) => {
     setRequiredMarkType(requiredMarkValue);
   };
 
@@ -50,19 +50,19 @@ const OwnListingCard = () => {
       description,
       lastId
     );
-    console.log("Save");
+    console.log('Save');
     console.log(lastId);
-    console.log("Vastaus", response);
+    console.log('Vastaus', response);
     dispatch(initializeUserListing());
     setEdit(false);
-    setLastId("");
+    setLastId('');
   };
 
   const handleDelete = async (id) => {
-    console.log("Delete");
+    console.log('Delete');
     console.log(id);
     const response = await deleteUserListing(id);
-    console.log("response", response);
+    console.log('response', response);
     dispatch(initializeUserListing(response));
   };
 
@@ -87,42 +87,42 @@ const OwnListingCard = () => {
       setLastId(id);
     } else if (lastId === id) {
       setEdit(false);
-      setLastId("");
+      setLastId('');
     }
   };
 
   if (userListings.length < 1) {
     return (
-      <div className="App">
+      <div className='App'>
         <Navbar />
         <div>
-          <div style={{ display: "flex", justifyContent: "center" }}>
+          <div style={{display: 'flex', justifyContent: 'center'}}>
             <h1>You have no listings</h1>
           </div>
         </div>
-        <div style={{ display: "flex", justifyContent: "center" }}>
-          <Button onClick={() => navigate("/add")}>Add listing</Button>
+        <div style={{display: 'flex', justifyContent: 'center'}}>
+          <Button onClick={() => navigate('/add')}>Add listing</Button>
         </div>
       </div>
     );
   } else {
     return (
-      <div className="App">
+      <div className='App'>
         <Navbar />
-        <div id="listingstyle">
+        <div id='listingstyle'>
           {userListings.map((listing) => (
-            <div key={listing.id} id="listing">
+            <div key={listing.id} id='listing'>
               <div>
                 <img
                   src={
                     listing.pics ||
-                    "https://hips.hearstapps.com/hmg-prod/images/dog-puppy-on-garden-royalty-free-image-1586966191.jpg?crop=0.752xw:1.00xh;0.175xw,0&resize=1200:*"
+                    'https://hips.hearstapps.com/hmg-prod/images/dog-puppy-on-garden-royalty-free-image-1586966191.jpg?crop=0.752xw:1.00xh;0.175xw,0&resize=1200:*'
                   }
                   alt={listing.name}
                   style={{
-                    maxWidth: "100%",
-                    maxHeight: "100%",
-                    objectFit: "cover",
+                    maxWidth: '100%',
+                    maxHeight: '100%',
+                    objectFit: 'cover',
                     borderRadius: 10,
                   }}
                 />
@@ -130,58 +130,58 @@ const OwnListingCard = () => {
               <div>
                 {edit ? (
                   lastId === listing.id ? (
-                    <div style={{ display: "flex", justifyContent: "center" }}>
+                    <div style={{display: 'flex', justifyContent: 'center'}}>
                       <Form
-                        id="Ownlistingform"
-                        style={{ padding: 30 }}
+                        id='Ownlistingform'
+                        style={{padding: 30}}
                         form={form}
-                        layout="vertical"
+                        layout='vertical'
                         initialValues={{
                           requiredMarkValue: requiredMark,
                         }}
                         onValuesChange={onRequiredTypeChange}
                         requiredMark={
-                          requiredMark === "customize"
+                          requiredMark === 'customize'
                             ? customizeRequiredMark
                             : requiredMark
                         }
                       >
-                        <Form.Item label="Name" required>
+                        <Form.Item label='Name' required>
                           <Input
-                            placeholder="Name"
+                            placeholder='Name'
                             value={name}
                             onChange={(e) => setName(e.target.value)}
                           />
                         </Form.Item>
-                        <Form.Item label="Country" required>
+                        <Form.Item label='Country' required>
                           <Select
                             options={CountriesData}
-                            placeholder="Country"
+                            placeholder='Country'
                             value={country}
                             onChange={(e) => setCountry(e)}
                           />
                         </Form.Item>
-                        <Form.Item label="Price" required>
+                        <Form.Item label='Price' required>
                           <Input
-                            placeholder="Price"
+                            placeholder='Price'
                             value={price}
                             onChange={(e) => setPrice(e.target.value)}
                           />
                         </Form.Item>
-                        <Form.Item label="Description" required>
+                        <Form.Item label='Description' required>
                           <Input
-                            placeholder="Description"
+                            placeholder='Description'
                             value={description}
                             onChange={(e) => setDescription(e.target.value)}
                           />
                         </Form.Item>
                         <Form.Item>
-                          <Button type="primary" onClick={() => handleSave()}>
+                          <Button type='primary' onClick={() => handleSave()}>
                             Save
                           </Button>
                           <Button
-                            style={{ marginLeft: 5 }}
-                            type="primary"
+                            style={{marginLeft: 5}}
+                            type='primary'
                             onClick={() => setEdit(false)}
                           >
                             Cancel
@@ -191,25 +191,23 @@ const OwnListingCard = () => {
                     </div>
                   ) : (
                     <>
-                      <div style={{ margin: 5 }}>Name: {listing.name}</div>
-                      <div style={{ margin: 5 }}>
-                        Country: {listing.country}
-                      </div>
-                      <div style={{ margin: 5 }}>
+                      <div style={{margin: 5}}>Name: {listing.name}</div>
+                      <div style={{margin: 5}}>Country: {listing.country}</div>
+                      <div style={{margin: 5}}>
                         Price: {listing.price} {listing.currency}
                       </div>
-                      <div style={{ margin: 5 }}>
+                      <div style={{margin: 5}}>
                         Description: {listing.description}
                       </div>
-                      <div id="itemstyle">
+                      <div id='itemstyle'>
                         <Button
-                          type="primary"
+                          type='primary'
                           onClick={() => handleEdit(listing.id)}
                         >
                           Edit
                         </Button>
                         <Button
-                          type="primary"
+                          type='primary'
                           onClick={() => handleDelete(listing.id)}
                         >
                           Delete
@@ -219,23 +217,23 @@ const OwnListingCard = () => {
                   )
                 ) : (
                   <>
-                    <div style={{ margin: 5 }}>Name: {listing.name}</div>
-                    <div style={{ margin: 5 }}>Country: {listing.country}</div>
-                    <div style={{ margin: 5 }}>
+                    <div style={{margin: 5}}>Name: {listing.name}</div>
+                    <div style={{margin: 5}}>Country: {listing.country}</div>
+                    <div style={{margin: 5}}>
                       Price: {listing.price} {listing.currency}
                     </div>
-                    <div style={{ margin: 5 }}>
+                    <div style={{margin: 5}}>
                       Description: {listing.description}
                     </div>
-                    <div id="itemstyle">
+                    <div id='itemstyle'>
                       <Button
-                        type="primary"
+                        type='primary'
                         onClick={() => handleEdit(listing.id)}
                       >
                         Edit
                       </Button>
                       <Button
-                        type="primary"
+                        type='primary'
                         onClick={() => handleDelete(listing.id)}
                       >
                         Delete

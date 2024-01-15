@@ -1,48 +1,45 @@
-import { useEffect } from "react";
-import { useDispatch } from "react-redux";
-import {
-  adminUpdateUserInfo,
-  getAuthor,
-  getListing,
-  sendFriendRequest,
-  startMessages,
-} from "../services/Services.js";
-import { addNotification } from "../../reducer/notificationReducer.js";
-import { Button } from "antd";
-import { useNavigate } from "react-router-dom";
-import { clearAuthor, setAuthor } from "../../reducer/authorReducer.js";
-import { useSelector } from "react-redux";
-import React, { useState } from "react";
-import Spinner from "../components/LoadSpinner.jsx";
-import { setauthorListings } from "../../reducer/authorListingsReducer.js";
-import Navbar from "../components/navbar.jsx";
-import ListingCard from "../components/ListingCard.jsx";
-import "../styles/AuthorInspect.css";
-import { setMessages } from "../../reducer/messageReducer.js";
-import { initializeUser } from "../../reducer/userReducer.js";
-import AdditionalInfo from "../components/registery/additionalInfo.jsx";
-import AddressInfo from "../components/registery/addressInfo.jsx";
-import PersonalInfo from "../components/registery/personalInfo.jsx";
-import UserNavbar from "../components/userNavbar.jsx";
+import {useEffect} from 'react';
+import {useDispatch} from 'react-redux';
+import {addNotification} from '../../reducer/notificationReducer.js';
+import {Button} from 'antd';
+import {useNavigate} from 'react-router-dom';
+import {clearAuthor, setAuthor} from '../../reducer/authorReducer.js';
+import {useSelector} from 'react-redux';
+import React, {useState} from 'react';
+import Spinner from '../components/LoadSpinner.jsx';
+import {setauthorListings} from '../../reducer/authorListingsReducer.js';
+import Navbar from '../components/navbar.jsx';
+import ListingCard from '../components/ListingCard.jsx';
+import '../styles/AuthorInspect.css';
+import {setMessages} from '../../reducer/messageReducer.js';
+import {initializeUser} from '../../reducer/userReducer.js';
+import AdditionalInfo from '../components/registery/additionalInfo.jsx';
+import AddressInfo from '../components/registery/addressInfo.jsx';
+import PersonalInfo from '../components/registery/personalInfo.jsx';
+import UserNavbar from '../components/userNavbar.jsx';
+import {adminUpdateUserInfo, getAuthor} from '../services/userServices.js';
+import {getListing} from '../services/listingServices.js';
+import {sendFriendRequest} from '../services/friendsServices.js';
+import {startMessages} from '../services/chatServices.js';
 
 const AuthorInspect = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
-  const [spinTip, setSpinTip] = useState("");
+  const [spinTip, setSpinTip] = useState('');
   const [isAdmin, setIsAdmin] = useState(false);
   const [edit, setEdit] = useState(false);
-  const [firstName, setFirstName] = useState("");
-  const [lastName, setLastName] = useState("");
-  const [Dob, setDob] = useState("");
-  const [email, setEmail] = useState("");
-  const [phone, setPhone] = useState("");
-  const [address, setAddress] = useState("");
-  const [city, setCity] = useState("");
-  const [country, setCountry] = useState("");
-  const [postalCode, setPostalCode] = useState("");
-  const [style, setStyle] = useState("");
-  const [iban, setIban] = useState("");
+  const [firstName, setFirstName] = useState('');
+  const [lastName, setLastName] = useState('');
+  const [Dob, setDob] = useState('');
+  const [email, setEmail] = useState('');
+  const [phone, setPhone] = useState('');
+  const [address, setAddress] = useState('');
+  const [city, setCity] = useState('');
+  const [country, setCountry] = useState('');
+  const [postalCode, setPostalCode] = useState('');
+  const [style, setStyle] = useState('');
+  const [iban, setIban] = useState('');
   const [personalInfo, setPersonalInfo] = useState(true);
   const [addressInfo, setAddressInfo] = useState(false);
   const [additionalInfo, setAdditionalInfo] = useState(false);
@@ -52,18 +49,18 @@ const AuthorInspect = () => {
   });
   const isLoggedIn = user.length !== 0;
 
-  console.log("user", user);
+  console.log('user', user);
 
-  const [buttonText, setButtonText] = useState("Send friend request");
+  const [buttonText, setButtonText] = useState('Send friend request');
   const [disabled, setDisabled] = useState(false);
   const author = useSelector((state) => state.author);
   const listings = useSelector((state) => state.authorListings);
 
-  const id = window.location.pathname.split("/")[2];
+  const id = window.location.pathname.split('/')[2];
 
   useEffect(() => {
     const fetchData = async () => {
-      setSpinTip("Loading author...");
+      setSpinTip('Loading author...');
       try {
         setLoading(true);
         dispatch(clearAuthor());
@@ -72,7 +69,7 @@ const AuthorInspect = () => {
 
         setFirstName(response.firstname);
         setLastName(response.lastname);
-        const splitted = response.Dob.split("/");
+        const splitted = response.Dob.split('/');
         setDob(`${splitted[2]}-${splitted[1]}-${splitted[0]}`);
         setCountry(response.country);
         setEmail(response.email);
@@ -92,8 +89,8 @@ const AuthorInspect = () => {
         checkIfAdmin();
       } catch (error) {
         if (error.status === 401) {
-          navigate("/login");
-          dispatch(addNotification("Please login to continue"));
+          navigate('/login');
+          dispatch(addNotification('Please login to continue'));
         }
       } finally {
         setLoading(false);
@@ -137,28 +134,28 @@ const AuthorInspect = () => {
   const checkFriendStatus = () => {
     let friends = user.friends;
     if (friends.includes(author.id)) {
-      console.log("friends");
-      setButtonText("Friends");
+      console.log('friends');
+      setButtonText('Friends');
       setDisabled(true);
     } else {
-      console.log("not friends");
-      setButtonText("Send friend request :D ");
+      console.log('not friends');
+      setButtonText('Send friend request :D ');
     }
   };
 
   const checkIfAdmin = () => {
-    if (user.style === "admin") {
+    if (user.style === 'admin') {
       setIsAdmin(true);
-      console.log("admin");
+      console.log('admin');
     } else {
       setIsAdmin(false);
-      console.log("not admin");
+      console.log('not admin');
     }
   };
 
-  console.log("listings", listings);
+  console.log('listings', listings);
   const handleBack = () => {
-    navigate("/authors");
+    navigate('/authors');
   };
 
   const fetchListingsAndDispatch = async (response) => {
@@ -171,22 +168,22 @@ const AuthorInspect = () => {
   };
 
   const handleSendFriendReq = async (id) => {
-    setSpinTip("Sending friend request...");
+    setSpinTip('Sending friend request...');
     try {
       setLoading(true);
       console.log(id);
       const response = await sendFriendRequest(id);
       console.log(response);
       console.log(response.status);
-      if (response.status === "Pending") {
-        setButtonText("Pending");
+      if (response.status === 'Pending') {
+        setButtonText('Pending');
         setDisabled(true);
       }
-      dispatch(addNotification("Friend request sent"));
+      dispatch(addNotification('Friend request sent'));
     } catch (error) {
       if (error.status === 401) {
-        navigate("/login");
-        dispatch(addNotification("Please login to continue"));
+        navigate('/login');
+        dispatch(addNotification('Please login to continue'));
       }
       dispatch(addNotification(error.error));
     } finally {
@@ -228,8 +225,8 @@ const AuthorInspect = () => {
 
   const handleUpdate = async () => {
     try {
-      const id = window.location.pathname.split("/")[2];
-      setSpinTip("Updating user info...");
+      const id = window.location.pathname.split('/')[2];
+      setSpinTip('Updating user info...');
       const newObject = {
         email: email,
         firstName: firstName,
@@ -259,25 +256,25 @@ const AuthorInspect = () => {
   if (loading) return <Spinner loading={loading} tip={spinTip} />;
 
   return (
-    <div className="App">
+    <div className='App'>
       <Navbar />
 
-      <div className="user-profile">
-        <Button className="back-button" onClick={() => handleBack()}>
+      <div className='user-profile'>
+        <Button className='back-button' onClick={() => handleBack()}>
           Back
         </Button>
         <h1>{`${author.firstname} ${author.lastname}`}</h1>
         {isLoggedIn ? (
           <>
             <Button
-              type="primary"
+              type='primary'
               onClick={() => handleSendFriendReq(author.id)}
               disabled={disabled}
             >
               {buttonText}
             </Button>
             <Button
-              type="primary"
+              type='primary'
               onClick={() => handleStartMessage(author.id)}
             >
               Send message
@@ -287,7 +284,7 @@ const AuthorInspect = () => {
 
         {isAdmin ? (
           <>
-            <Button onClick={handleEdit} type="primary">
+            <Button onClick={handleEdit} type='primary'>
               Edit
             </Button>
             {edit ? (
@@ -302,27 +299,27 @@ const AuthorInspect = () => {
                 {addressInfo && <AddressInfo props={addressProps} />}
                 {personalInfo && <PersonalInfo props={personalProps} />}
                 <Button
-                  type="primary"
+                  type='primary'
                   onClick={handleUpdate}
-                  style={{ margin: 10 }}
+                  style={{margin: 10}}
                 >
                   Save changes
                 </Button>
                 <Button
-                  type="primary"
+                  type='primary'
                   onClick={HandleCancel}
-                  style={{ margin: 10 }}
+                  style={{margin: 10}}
                 >
                   Cancel
                 </Button>
               </>
             ) : (
-              <div className="user-details">
+              <div className='user-details'>
                 <p>{`Name: ${author.firstname} ${author.lastname}`}</p>
                 <p>Email: {author.email}</p>
                 <p>Phone: {author.phone}</p>
 
-                <div className="address-details">
+                <div className='address-details'>
                   <h3>Address</h3>
                   <p>{author.address}</p>
                   <p>{author.city}</p>
@@ -332,12 +329,12 @@ const AuthorInspect = () => {
             )}
           </>
         ) : (
-          <div className="user-details">
+          <div className='user-details'>
             <p>{`Name: ${author.firstname} ${author.lastname}`}</p>
             <p>Email: {author.email}</p>
             <p>Phone: {author.phone}</p>
 
-            <div className="address-details">
+            <div className='address-details'>
               <h3>Address</h3>
               <p>{author.address}</p>
               <p>{author.city}</p>
@@ -347,7 +344,7 @@ const AuthorInspect = () => {
         )}
         <Spinner loading={loading} tip={spinTip} />
       </div>
-      <div style={{ marginTop: 10 }} className="listing-container">
+      <div style={{marginTop: 10}} className='listing-container'>
         <h3>Listings</h3>
         <p>{`Number of listings: ${listings.length}`}</p>
         <ListingCard listings={listings} user={user} />

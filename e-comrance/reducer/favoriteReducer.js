@@ -1,10 +1,10 @@
-import { createSlice } from "@reduxjs/toolkit";
-import { getAllFavoriteItems } from "../src/services/emailServices.js";
+import {createSlice} from '@reduxjs/toolkit';
+import {getAllFavoriteItems} from '../src/services/favoriteServices';
 
 const initialState = [];
 
 const favoriteSlice = createSlice({
-  name: "favorite",
+  name: 'favorite',
   initialState,
   reducers: {
     appendfavorite(state, action) {
@@ -19,7 +19,7 @@ const favoriteSlice = createSlice({
   },
 });
 
-export const { appendfavorite, setfavorite, clearFavorite } =
+export const {appendfavorite, setfavorite, clearFavorite} =
   favoriteSlice.actions;
 
 export const initializefavorite = () => {

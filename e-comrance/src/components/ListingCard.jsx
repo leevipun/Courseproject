@@ -1,37 +1,38 @@
-import React, { useState } from "react";
-import { Button } from "antd";
-import { FaHeart } from "react-icons/fa";
-import { addToCart, deleteUserListing } from "../services/Services.js";
-import { initializecart } from "../../reducer/cartReducer.js";
-import { addNotification } from "../../reducer/notificationReducer.js";
-import { useDispatch, useSelector } from "react-redux";
-import { initializeListing } from "../../reducer/listingReducer.js";
-import { addToFavorites, deleteFavorite } from "../services/Services.js";
+import React, {useState} from 'react';
+import {Button} from 'antd';
+import {FaHeart} from 'react-icons/fa';
+import {initializecart} from '../../reducer/cartReducer.js';
+import {addNotification} from '../../reducer/notificationReducer.js';
+import {useDispatch, useSelector} from 'react-redux';
+import {initializeListing} from '../../reducer/listingReducer.js';
+import {addToFavorites, deleteFavorite} from '../services/favoriteServices.js';
 import {
   initializefavorite,
   appendfavorite,
-} from "../../reducer/favoriteReducer.js";
-import Spinner from "./LoadSpinner.jsx";
+} from '../../reducer/favoriteReducer.js';
+import Spinner from './LoadSpinner.jsx';
+import {addToCart} from '../services/cartServices.js';
+import {deleteUserListing} from '../services/listingServices.js';
 
-const ListingCard = ({ listings, user, isAdmin }) => {
+const ListingCard = ({listings, user, isAdmin}) => {
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(false);
-  const [spinTip, setSpinTip] = useState("");
+  const [spinTip, setSpinTip] = useState('');
 
   const handleAddToCart = async (id) => {
     try {
       setLoading(true);
-      setSpinTip("Adding to cart...");
+      setSpinTip('Adding to cart...');
       if (user.length === 0) {
         dispatch(
-          addNotification("Please login first your session has expired")
+          addNotification('Please login first your session has expired')
         );
         return;
       }
       const response = await addToCart(id);
-      if (response === "Already in cart") {
+      if (response === 'Already in cart') {
         dispatch(addNotification(response));
-      } else if (response === "Some one has already taken that") {
+      } else if (response === 'Some one has already taken that') {
         dispatch(addNotification(response));
       } else {
         dispatch(addNotification(`added to your cart`));
@@ -57,7 +58,7 @@ const ListingCard = ({ listings, user, isAdmin }) => {
     if (user.length === 0) {
       dispatch(
         addNotification(
-          "Please login first your session has expired your session has expired"
+          'Please login first your session has expired your session has expired'
         )
       );
       return;
@@ -85,46 +86,46 @@ const ListingCard = ({ listings, user, isAdmin }) => {
 
   return (
     <div
-      id="listingstyle"
+      id='listingstyle'
       style={{
         fontFamily:
           'system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif',
       }}
     >
       {listings.map((listing) => (
-        <div key={listing.id} id="listing">
+        <div key={listing.id} id='listing'>
           <div>
             <img
               src={
                 listing.pics ||
-                "https://hips.hearstapps.com/hmg-prod/images/dog-puppy-on-garden-royalty-free-image-1586966191.jpg?crop=0.752xw:1.00xh;0.175xw,0&resize=1200:*"
+                'https://hips.hearstapps.com/hmg-prod/images/dog-puppy-on-garden-royalty-free-image-1586966191.jpg?crop=0.752xw:1.00xh;0.175xw,0&resize=1200:*'
               }
-              alt="Listing Image"
+              alt='Listing Image'
               style={{
                 maxWidth: 300,
                 maxHeight: 300,
-                objectFit: "cover",
+                objectFit: 'cover',
                 borderRadius: 10,
               }}
             />
           </div>
           <div>
-            <div style={{ margin: 5 }}>Name: {listing.name}</div>
-            <div style={{ margin: 5 }}>Category: {listing.category}</div>
+            <div style={{margin: 5}}>Name: {listing.name}</div>
+            <div style={{margin: 5}}>Category: {listing.category}</div>
 
-            <div style={{ margin: 5 }}>Country: {listing.country}</div>
-            <div style={{ margin: 5 }}>
+            <div style={{margin: 5}}>Country: {listing.country}</div>
+            <div style={{margin: 5}}>
               Price: {listing.price} {listing.currency}
             </div>
-            <div style={{ margin: 5 }}>Description: {listing.description}</div>
+            <div style={{margin: 5}}>Description: {listing.description}</div>
             {isAdmin ? (
-              <div style={{ margin: 5 }}>Status: {listing.status}</div>
+              <div style={{margin: 5}}>Status: {listing.status}</div>
             ) : null}
-            <div id="itemstyle">
+            <div id='itemstyle'>
               {isAdmin ? (
                 <Button
-                  type="primary"
-                  style={{ margin: 10 }}
+                  type='primary'
+                  style={{margin: 10}}
                   onClick={() => handleDeleteListing(listing.id)}
                 >
                   Delete
@@ -132,30 +133,30 @@ const ListingCard = ({ listings, user, isAdmin }) => {
               ) : (
                 <>
                   <Button
-                    type="primary"
-                    style={{ margin: 10 }}
+                    type='primary'
+                    style={{margin: 10}}
                     onClick={() => handleAddToCart(listing.id)}
                   >
                     Add to cart
                   </Button>
                   <Button
-                    type="ghost"
+                    type='ghost'
                     style={{
                       margin: 10,
                       color:
                         user &&
                         user.favorites &&
                         user.favorite.includes(listing.id)
-                          ? "red"
-                          : "black",
+                          ? 'red'
+                          : 'black',
                     }}
                     onClick={() => handleAddToFavorites(listing.id)}
                   >
                     <FaHeart
                       style={{
                         color: userFavoriteId.includes(listing.id)
-                          ? "red"
-                          : "black",
+                          ? 'red'
+                          : 'black',
                       }}
                     />
                   </Button>

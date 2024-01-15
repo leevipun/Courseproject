@@ -1,10 +1,10 @@
-import { createSlice } from "@reduxjs/toolkit";
-import { getUserData } from "../src/services/emailServices.js";
+import {createSlice} from '@reduxjs/toolkit';
+import {getUserData} from '../src/services/userServices';
 
 const initialState = [];
 
 const userSlice = createSlice({
-  name: "user",
+  name: 'user',
   initialState,
   reducers: {
     appendUser(state, action) {
@@ -19,13 +19,13 @@ const userSlice = createSlice({
   },
 });
 
-export const { appendUser, clearUser, setUser } = userSlice.actions;
+export const {appendUser, clearUser, setUser} = userSlice.actions;
 
 export const initializeUser = () => {
   return async (dispatch) => {
     try {
       const response = await getUserData();
-      console.log(response, "User");
+      console.log(response, 'User');
       dispatch(setUser(response));
     } catch (error) {
       console.log(error);

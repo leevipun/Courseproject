@@ -1,48 +1,48 @@
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { registery, updateStripeId } from "../services/Services";
-import { v4 as uuidv4 } from "uuid";
-import React from "react";
+import {useState} from 'react';
+import {useNavigate} from 'react-router-dom';
+import {v4 as uuidv4} from 'uuid';
+import React from 'react';
 
-import "../styles/registeryStyles.css";
-import PersonalInfo from "../components/registery/personalInfo.jsx";
-import AddressInfo from "../components/registery/addressInfo.jsx";
-import AdditionalInfo from "../components/registery/additionalInfo.jsx";
-import { useDispatch } from "react-redux";
-import { addNotification } from "../../reducer/notificationReducer";
-import { Button } from "antd";
-import Spinner from "../components/LoadSpinner.jsx";
-import { SpeedInsights } from "@vercel/speed-insights/react";
+import '../styles/registeryStyles.css';
+import PersonalInfo from '../components/registery/personalInfo.jsx';
+import AddressInfo from '../components/registery/addressInfo.jsx';
+import AdditionalInfo from '../components/registery/additionalInfo.jsx';
+import {useDispatch} from 'react-redux';
+import {addNotification} from '../../reducer/notificationReducer';
+import {Button} from 'antd';
+import Spinner from '../components/LoadSpinner.jsx';
+import {SpeedInsights} from '@vercel/speed-insights/react';
+import {registery, updateStripeId} from '../services/userServices.js';
 
 const Registerypage = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [firstName, setFirstName] = useState("");
-  const [lastName, setLastname] = useState("");
-  const [city, setCity] = useState("");
-  const [address, setAddress] = useState("");
-  const [postalCode, setPostalCode] = useState("");
-  const [phone, setPhone] = useState("");
-  const [style, setStyle] = useState("buyer");
-  const [selectedCountry, setSelectedCountry] = useState("FI");
-  const [iban, setIban] = useState("");
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [firstName, setFirstName] = useState('');
+  const [lastName, setLastname] = useState('');
+  const [city, setCity] = useState('');
+  const [address, setAddress] = useState('');
+  const [postalCode, setPostalCode] = useState('');
+  const [phone, setPhone] = useState('');
+  const [style, setStyle] = useState('buyer');
+  const [selectedCountry, setSelectedCountry] = useState('FI');
+  const [iban, setIban] = useState('');
   const [personalInfoForm, setPersonalInfoForm] = useState(true);
   const [addressInfoForm, setAddressInfoForm] = useState(false);
   const [additionalInfoFrom, setAdditionalInfoForm] = useState(false);
-  const [dob, setDob] = useState("");
+  const [dob, setDob] = useState('');
   const [loading, setLoading] = useState(false);
   const isReqistery = true;
 
-  const spinTip = "Creating account...";
+  const spinTip = 'Creating account...';
 
   const handleRegistery = async (e) => {
     e.preventDefault();
 
     try {
       const id = uuidv4();
-      const splitBirthday = dob.split("-");
+      const splitBirthday = dob.split('-');
       const formattedDate = `${splitBirthday[1]}/${splitBirthday[2]}/${splitBirthday[0]}`;
       const newObject = {
         email: email,
@@ -63,13 +63,13 @@ const Registerypage = () => {
       await registery(newObject);
       await updateStripeId(newObject);
       setLoading(false);
-      navigate("/login");
-      setEmail("");
-      setFirstName("");
-      setPassword("");
+      navigate('/login');
+      setEmail('');
+      setFirstName('');
+      setPassword('');
     } catch (error) {
       setLoading(false);
-      console.error("Registration failed:", error.error);
+      console.error('Registration failed:', error.error);
       dispatch(addNotification(error.error));
     }
   };
@@ -80,7 +80,7 @@ const Registerypage = () => {
   };
 
   const handleCancel = () => {
-    navigate("/login");
+    navigate('/login');
   };
 
   const handleAddressInfoForm = () => {
@@ -131,11 +131,11 @@ const Registerypage = () => {
 
   return (
     <div
-      className="App"
+      className='App'
       style={{
-        alignItems: "center",
-        justifyContent: "center",
-        display: "flex",
+        alignItems: 'center',
+        justifyContent: 'center',
+        display: 'flex',
       }}
     >
       <div>
@@ -144,11 +144,11 @@ const Registerypage = () => {
           {personalInfoForm && (
             <div>
               <PersonalInfo props={personalProps} />
-              <div id="NextBackButtonDiv">
-                <Button type="primary" onClick={handleCancel}>
+              <div id='NextBackButtonDiv'>
+                <Button type='primary' onClick={handleCancel}>
                   Cancel
                 </Button>
-                <Button type="primary" onClick={handlePersonalInfoForm}>
+                <Button type='primary' onClick={handlePersonalInfoForm}>
                   Next
                 </Button>
               </div>
@@ -157,11 +157,11 @@ const Registerypage = () => {
           {addressInfoForm && (
             <div>
               <AddressInfo props={addressProps} />
-              <div id="NextBackButtonDiv">
-                <Button type="primary" onClick={handlePersonalInfoForm}>
+              <div id='NextBackButtonDiv'>
+                <Button type='primary' onClick={handlePersonalInfoForm}>
                   Back
                 </Button>
-                <Button type="primary" onClick={handleAddressInfoForm}>
+                <Button type='primary' onClick={handleAddressInfoForm}>
                   Next
                 </Button>
               </div>
@@ -170,11 +170,11 @@ const Registerypage = () => {
           {additionalInfoFrom && (
             <div>
               <AdditionalInfo props={additionalProps} />
-              <div id="NextBackButtonDiv">
-                <Button type="primary" onClick={handleAddressInfoForm}>
+              <div id='NextBackButtonDiv'>
+                <Button type='primary' onClick={handleAddressInfoForm}>
                   Back
                 </Button>
-                <Button onClick={handleRegistery} type="primary">
+                <Button onClick={handleRegistery} type='primary'>
                   Submit
                 </Button>
               </div>

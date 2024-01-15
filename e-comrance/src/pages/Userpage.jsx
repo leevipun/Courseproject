@@ -1,19 +1,23 @@
-import { useState, useEffect } from "react";
-import Navbar from "./../components/navbar.jsx";
-import { useDispatch } from "react-redux";
-import { Button } from "antd";
-import { getUserData, updateUserInfo, userDelete } from "../services/Services";
-import { addNotification } from "../../reducer/notificationReducer.js";
-import { useNavigate } from "react-router-dom";
-import AdditionalInfo from "../components/registery/additionalInfo.jsx";
-import AddressInfo from "../components/registery/addressInfo.jsx";
-import PersonalInfo from "../components/registery/personalInfo.jsx";
-import Spinner from "../components/LoadSpinner.jsx";
-import React from "react";
-import { SpeedInsights } from "@vercel/speed-insights/react";
-import { initializeUser, setUser } from "../../reducer/userReducer.js";
-import UserNavbar from "../components/userNavbar.jsx";
-import PasswordChange from "../components/PasswordChangeCard.jsx";
+import {useState, useEffect} from 'react';
+import Navbar from './../components/navbar.jsx';
+import {useDispatch} from 'react-redux';
+import {Button} from 'antd';
+import {addNotification} from '../../reducer/notificationReducer.js';
+import {useNavigate} from 'react-router-dom';
+import AdditionalInfo from '../components/registery/additionalInfo.jsx';
+import AddressInfo from '../components/registery/addressInfo.jsx';
+import PersonalInfo from '../components/registery/personalInfo.jsx';
+import Spinner from '../components/LoadSpinner.jsx';
+import React from 'react';
+import {SpeedInsights} from '@vercel/speed-insights/react';
+import {initializeUser, setUser} from '../../reducer/userReducer.js';
+import UserNavbar from '../components/userNavbar.jsx';
+import PasswordChange from '../components/PasswordChangeCard.jsx';
+import {
+  getUserData,
+  updateUserInfo,
+  userDelete,
+} from '../services/userServices.js';
 
 const Userpage = () => {
   const dispatch = useDispatch();
@@ -23,49 +27,49 @@ const Userpage = () => {
   const [addressInfo, setAddressInfo] = useState(false);
   const [additionalInfo, setAdditionalInfo] = useState(false);
 
-  const [email, setEmail] = useState("");
-  const [firstName, setFirstName] = useState("");
-  const [lastName, setLastName] = useState("");
-  const [address, setAddress] = useState("");
-  const [phone, setPhone] = useState("");
+  const [email, setEmail] = useState('');
+  const [firstName, setFirstName] = useState('');
+  const [lastName, setLastName] = useState('');
+  const [address, setAddress] = useState('');
+  const [phone, setPhone] = useState('');
   const [passwordVis, setPasswordVis] = useState(false);
-  const [style, setStyle] = useState("");
-  const [city, setCity] = useState("");
-  const [postalCode, setPostalCode] = useState("");
-  const [country, setCountry] = useState("");
-  const [Dob, setDob] = useState("");
-  const [iban, setIban] = useState("");
-  const [spinTip, setSpinTip] = useState("");
+  const [style, setStyle] = useState('');
+  const [city, setCity] = useState('');
+  const [postalCode, setPostalCode] = useState('');
+  const [country, setCountry] = useState('');
+  const [Dob, setDob] = useState('');
+  const [iban, setIban] = useState('');
+  const [spinTip, setSpinTip] = useState('');
 
   useEffect(() => {
-    const user = JSON.parse(sessionStorage.getItem("loggedNoteappUser"));
-    setSpinTip("Loading user info...");
+    const user = JSON.parse(sessionStorage.getItem('loggedNoteappUser'));
+    setSpinTip('Loading user info...');
     const fetchUser = async () => {
       try {
         setLoading(true);
         const response = await getUserData(user);
         dispatch(setUser(response));
-        console.log("response", response);
+        console.log('response', response);
         setEmail(response.email);
         setFirstName(response.firstname);
         setLastName(response.lastname);
-        setAddress(response.address || "");
-        setPhone(response.phone || "");
+        setAddress(response.address || '');
+        setPhone(response.phone || '');
         setStyle(response.style);
-        setCity(response.city || "");
-        setPostalCode(response.postalCode || "");
-        setCountry(response.country || "");
-        setPhone(response.phone || "");
-        const splitted = response.Dob.split("/");
+        setCity(response.city || '');
+        setPostalCode(response.postalCode || '');
+        setCountry(response.country || '');
+        setPhone(response.phone || '');
+        const splitted = response.Dob.split('/');
         const date = `${splitted[2]}-${splitted[0]}-${splitted[1]}`;
-        console.log("date", date);
-        setDob(date || "");
-        setIban(response.iban || "");
+        console.log('date', date);
+        setDob(date || '');
+        setIban(response.iban || '');
         setLoading(false);
       } catch (error) {
         if (error.status === 401) {
-          navigate("/login");
-          dispatch(addNotification("Please login to continue."));
+          navigate('/login');
+          dispatch(addNotification('Please login to continue.'));
         }
       }
     };
@@ -109,7 +113,7 @@ const Userpage = () => {
 
   const handleUpdate = async () => {
     try {
-      setSpinTip("Updating user info...");
+      setSpinTip('Updating user info...');
       const newObject = {
         email: email,
         firstName: firstName,
@@ -125,7 +129,7 @@ const Userpage = () => {
       };
       const response = await updateUserInfo(newObject);
       dispatch(addNotification(response));
-      window. location. reload();   
+      window.location.reload();
       dispatch(initializeUser());
       console.log(response);
     } catch (error) {
@@ -135,11 +139,11 @@ const Userpage = () => {
   };
 
   const handleUserDelete = async () => {
-    if (window.confirm("Are you sure you want to delete your account?")) {
-      setSpinTip("Deleting account...");
+    if (window.confirm('Are you sure you want to delete your account?')) {
+      setSpinTip('Deleting account...');
       setLoading(true);
       const response = await userDelete();
-      navigate("/login");
+      navigate('/login');
       dispatch(addNotification(response));
       setLoading(false);
     }
@@ -163,7 +167,7 @@ const Userpage = () => {
     setAdditionalInfo(true);
   };
   return (
-    <div className="App">
+    <div className='App'>
       <div>
         <Navbar />
         <h1>Userpage</h1>
@@ -172,7 +176,7 @@ const Userpage = () => {
           handleShowAddressInfo={handleShowAddressInfo}
           handleShowPersonalInfo={handleShowPersonalInfo}
         />
-        <div id="info-conteiner">
+        <div id='info-conteiner'>
           {personalInfo && (
             <div>
               <PersonalInfo props={personalProps} />
@@ -190,25 +194,21 @@ const Userpage = () => {
           )}
 
           <div>
-            <Button
-              type="primary"
-              onClick={handleUpdate}
-              style={{ margin: 10 }}
-            >
+            <Button type='primary' onClick={handleUpdate} style={{margin: 10}}>
               Save changes
             </Button>
             <Button
-              type="primary"
+              type='primary'
               onClick={handlePasswordVis}
-              style={{ margin: 10 }}
+              style={{margin: 10}}
             >
               Change Password
             </Button>
-            <Button type="primary" danger onClick={handleUserDelete}>
+            <Button type='primary' danger onClick={handleUserDelete}>
               Delete Account
             </Button>
           </div>
-          <div style={{ margin: 10 }}>
+          <div style={{margin: 10}}>
             {passwordVis && (
               <PasswordChange setLoading={setLoading} setSpinTip={setSpinTip} />
             )}

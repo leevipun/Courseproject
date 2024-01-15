@@ -15,6 +15,7 @@ chatsRouter.get("/", extractToken, async (req, res) => {
     const chats = await Chat.find({
       users: { $all: [deCodedToken.id] },
     }).exec();
+    console.log("chats", chats);
 
     res.json(chats);
   } catch (error) {
@@ -38,6 +39,7 @@ chatsRouter.get("/admin", extractToken, async (req, res) => {
 
 chatsRouter.post("/", extractToken, async (req, res) => {
   try {
+    console.log(req.token);
     const body = req.body;
     console.log("body", body.id);
     console.log(req.token);

@@ -1,10 +1,10 @@
-import { createSlice } from "@reduxjs/toolkit";
-import { getAllFollowers } from "../src/services/Services.js";
+import {createSlice} from '@reduxjs/toolkit';
+import {getAllFollowers} from '../src/services/friendsServices.js';
 
 const initialState = [];
 
 const followersSlice = createSlice({
-  name: "Followers",
+  name: 'Followers',
   initialState,
   reducers: {
     appendFollowers(state, action) {
@@ -19,13 +19,13 @@ const followersSlice = createSlice({
   },
 });
 
-export const { appendFollowers, clearFollowers, setFollowers } =
+export const {appendFollowers, clearFollowers, setFollowers} =
   followersSlice.actions;
 
 export const initializeFollowers = () => {
   return async (dispatch) => {
     const response = await getAllFollowers();
-    console.log("response.data", response.data);
+    console.log('response.data', response.data);
     dispatch(setFollowers(response.data));
   };
 };

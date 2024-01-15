@@ -1,24 +1,25 @@
-import React, { useState } from "react";
-import { Button, Input } from "antd";
-import { useDispatch } from "react-redux";
+import React, {useState} from 'react';
+import {Button, Input} from 'antd';
+import {useDispatch} from 'react-redux';
 import {
   appendMessage,
   initializeMessage,
   setMessages,
-} from "../../reducer/messageReducer.js";
+} from '../../reducer/messageReducer.js';
+
+import {useSelector} from 'react-redux';
+import Spinner from './LoadSpinner.jsx';
 import {
   deleteMessage,
   editMessage,
-  getAllMessages,
   sendMessage,
-} from "../services/Services.js";
-import { useSelector } from "react-redux";
-import Spinner from "./LoadSpinner.jsx";
+  getAllMessages,
+} from '../services/chatServices.js';
 
 const MessagesCard = () => {
   const dispatch = useDispatch();
-  const [message, setMessage] = useState("");
-  const [editMessageContent, setEditMessageContet] = useState("");
+  const [message, setMessage] = useState('');
+  const [editMessageContent, setEditMessageContet] = useState('');
   const [editId, setEditId] = useState();
   const [edit, setEdit] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -31,7 +32,7 @@ const MessagesCard = () => {
       await deleteMessage(messageId);
       dispatch(initializeMessage(id));
     } catch (error) {
-      console.error("Error sending message:", error);
+      console.error('Error sending message:', error);
     } finally {
       setLoading(false);
     }
@@ -54,27 +55,27 @@ const MessagesCard = () => {
       await editMessage(newObject, editId);
       dispatch(initializeMessage(id));
       setEdit(false);
-      setEditId("");
-      setEditMessageContet("");
+      setEditId('');
+      setEditMessageContet('');
     } catch (error) {
-      console.error("Error sending message:", error);
+      console.error('Error sending message:', error);
     } finally {
       setLoading(false);
     }
   };
 
-  const pathSegments = window.location.pathname.split("/");
+  const pathSegments = window.location.pathname.split('/');
 
-  const id = pathSegments[2] === "chats" ? pathSegments[3] : pathSegments[2];
+  const id = pathSegments[2] === 'chats' ? pathSegments[3] : pathSegments[2];
 
   const getMessages = async () => {
     try {
       setLoading(true);
       const response = await getAllMessages(id);
-      console.log("response", response);
+      console.log('response', response);
       dispatch(setMessages(response.messages));
     } catch (error) {
-      console.error("Error retrieving messages:", error);
+      console.error('Error retrieving messages:', error);
     } finally {
       setLoading(false);
     }
@@ -90,19 +91,19 @@ const MessagesCard = () => {
           senderId: user.id,
           content: message,
         };
-        console.log("newObject", newObject);
+        console.log('newObject', newObject);
 
         const response = await sendMessage(newObject, id);
 
-        console.log("response", response);
+        console.log('response', response);
         // Use the callback function with the previous state to ensure correctness
         dispatch(appendMessage(response.message));
-        console.log("message sent");
+        console.log('message sent');
 
-        setMessage("");
+        setMessage('');
       }
     } catch (error) {
-      console.error("Error sending message:", error);
+      console.error('Error sending message:', error);
     } finally {
       setLoading(false);
     }
@@ -110,30 +111,30 @@ const MessagesCard = () => {
 
   const handleCancel = () => {
     setEdit(false);
-    setEditId("");
-    setEditMessageContet("");
+    setEditId('');
+    setEditMessageContet('');
   };
 
   return (
-    <div id="messages">
+    <div id='messages'>
       {id ? (
         <div>
           <div>
-            <div style={{ marginBottom: 10 }}>
+            <div style={{marginBottom: 10}}>
               <h1>Messages</h1>
-              <Button type="primary" onClick={() => getMessages()}>
+              <Button type='primary' onClick={() => getMessages()}>
                 Refresh
               </Button>
             </div>
-            <div className="container">
-              <div id="messages-section">
+            <div className='container'>
+              <div id='messages-section'>
                 {messages.map((message) => (
                   <div
                     key={message.id}
                     className={
                       message.senderId === user.id
-                        ? "message-container own-message-container"
-                        : "message-container"
+                        ? 'message-container own-message-container'
+                        : 'message-container'
                     }
                   >
                     {edit ? (
@@ -146,25 +147,25 @@ const MessagesCard = () => {
                             }
                           />
                           <Button
-                            style={{ marginRight: 5 }}
-                            type="primary"
+                            style={{marginRight: 5}}
+                            type='primary'
                             onClick={() => handleSave(message.id)}
                           >
                             Save
                           </Button>
-                          <Button type="primary" onClick={() => handleCancel()}>
+                          <Button type='primary' onClick={() => handleCancel()}>
                             Cancel
                           </Button>
                         </div>
                       ) : (
                         <div>
                           <>
-                            <p className="message-content">{message.content}</p>
-                            <p className="message-sender">{message.sender}</p>
-                            <p className="message-date">{message.date}</p>
+                            <p className='message-content'>{message.content}</p>
+                            <p className='message-sender'>{message.sender}</p>
+                            <p className='message-date'>{message.date}</p>
                           </>
                           <Button
-                            type="primary"
+                            type='primary'
                             onClick={() =>
                               handleEdit(message.id, message.content)
                             }
@@ -172,7 +173,7 @@ const MessagesCard = () => {
                             Edit
                           </Button>
                           <Button
-                            type="primary"
+                            type='primary'
                             onClick={() => handleMessageDelete(message.id)}
                           >
                             Delete
@@ -182,24 +183,26 @@ const MessagesCard = () => {
                     ) : (
                       <div>
                         <>
-                          <p className="message-content">{message.content}</p>
-                          <p className="message-sender">{message.sender}</p>
-                          <p className="message-date">{message.date}</p>
+                          <p className='message-content'>{message.content}</p>
+                          <p className='message-sender'>{message.sender}</p>
+                          <p className='message-date'>{message.date}</p>
                         </>
                         <Button
-                          type="primary"
+                          type='primary'
                           onClick={() =>
                             handleEdit(message.id, message.content)
                           }
                         >
                           Edit
                         </Button>
-                        <Button
-                          type="primary"
-                          onClick={() => handleMessageDelete(message.id)}
-                        >
-                          Delete
-                        </Button>
+                        {message.senderId === user.id && (
+                          <Button
+                            type='primary'
+                            onClick={() => handleMessageDelete(message.id)}
+                          >
+                            Delete
+                          </Button>
+                        )}
                       </div>
                     )}
                   </div>
@@ -208,17 +211,17 @@ const MessagesCard = () => {
               <Spinner loading={loading} />
             </div>
           </div>
-          <div id="inputDiv">
+          <div id='inputDiv'>
             <Input
               style={{
                 width: 800,
-                marginRight: "10px",
-                marginLeft: "10px",
+                marginRight: '10px',
+                marginLeft: '10px',
               }}
               value={message}
               onChange={(e) => setMessage(e.target.value)}
             />
-            <Button type="primary" onClick={() => handleMessageSending()}>
+            <Button type='primary' onClick={() => handleMessageSending()}>
               Submit
             </Button>
           </div>
@@ -226,10 +229,10 @@ const MessagesCard = () => {
       ) : (
         <div
           style={{
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-            alignContent: "center",
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+            alignContent: 'center',
           }}
         >
           <h1>No messages yet</h1>
