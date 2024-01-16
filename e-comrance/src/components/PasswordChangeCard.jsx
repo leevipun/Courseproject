@@ -2,7 +2,7 @@ import React from 'react';
 import {Form, Input, Button} from 'antd';
 import {useDispatch} from 'react-redux';
 import {addNotification} from '../../reducer/notificationReducer.js';
-import {changePassword} from '../services/userServices.js.js';
+import {changePassword} from '../services/userServices.js';
 
 const PasswordChange = ({setLoading, setSpinTip}) => {
   const dispatch = useDispatch();
