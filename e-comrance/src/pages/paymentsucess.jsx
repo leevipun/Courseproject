@@ -7,9 +7,9 @@ import React, {useState} from 'react';
 import {initializecart} from '../../reducer/cartReducer.js';
 import {SpeedInsights} from '@vercel/speed-insights/react';
 import Spinner from '../components/LoadSpinner.jsx';
-import {sellerReceipt, sendReceipt} from '../services/emailServices.js.js';
-import {deleteUserListing} from '../services/listingServices.js.js';
-import {deleteCartItem, getAllCartItems} from '../services/cartServices.js.js';
+import {sellerReceipt, sendReceipt} from '../services/emailServices.js';
+import {deleteUserListing} from '../services/listingServices.js';
+import {deleteCartItem, getAllCartItems} from '../services/cartServices.js';
 
 const PaymentSucess = () => {
   const dispatch = useDispatch();

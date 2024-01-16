@@ -10,7 +10,7 @@ import {initializecart} from '../../reducer/cartReducer.js';
 import {initializefavorite} from '../../reducer/favoriteReducer.js';
 import {SpeedInsights} from '@vercel/speed-insights/react';
 import Spinner from '../components/LoadSpinner.jsx';
-import {Login} from '../services/userServices.js.js';
+import {Login} from '../services/userServices.js';
 import {setToken} from '../services/adminServices.js';
 
 const Loginpage = () => {

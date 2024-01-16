@@ -1,5 +1,5 @@
 import axios from 'axios';
-import {token} from './adminServices';
+import {token} from './adminServices.js';
 
 const baseURL = 'https://courseproject-backend-6lyy.onrender.com';
 

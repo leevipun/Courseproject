@@ -52,7 +52,6 @@ const App = () => {
           <Route path="/users/:id" Component={AuthorInspect} />
           <Route path="/payment-successful" Component={PaymentSucess} />
           <Route path="/chats/:id" Component={Chatpage} />
-          <Route path="/buyhistory" Component={BuyHistoryPage} />
           <Route path="/*" Component={Notfound} />
         </Routes>
       </Router>

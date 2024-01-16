@@ -1,5 +1,5 @@
 import {createSlice} from '@reduxjs/toolkit';
-import {getAllFollowers} from '../src/services/friendsServices.js.js';
+import {getAllFollowers} from '../src/services/friendsServices.js';
 
 const initialState = [];
 

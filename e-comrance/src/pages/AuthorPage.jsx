@@ -8,7 +8,7 @@ import {
   setAllUsers,
 } from '../../reducer/allUsersReducer.js';
 import AuthorCard from '../components/AuthorCard.jsx';
-import {getUsers} from '../services/userServices.js.js';
+import {getUsers} from '../services/userServices.js';
 
 const AuthorPage = () => {
   const [loading, setLoading] = useState(true);

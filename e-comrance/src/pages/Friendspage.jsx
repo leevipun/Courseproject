@@ -10,7 +10,7 @@ import Spinner from '../components/LoadSpinner.jsx';
 import FriendRequestCard from '../components/FriendReqCard.jsx';
 import {Radio} from 'antd';
 import {useSelector} from 'react-redux';
-import {getAllRequests} from '../services/friendsServices.js.js';
+import {getAllRequests} from '../services/friendsServices.js';
 
 const Friendspage = () => {
   const navigate = useNavigate();

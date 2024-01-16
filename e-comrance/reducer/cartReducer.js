@@ -1,6 +1,6 @@
 import {createSlice} from '@reduxjs/toolkit';
 import {getAllCartItems} from '../src/services/cartServices.js';
-import {getAdminCartItems} from '../src/services/adminServices';
+import {getAdminCartItems} from '../src/services/adminServices.js';
 
 const initialState = [];
 

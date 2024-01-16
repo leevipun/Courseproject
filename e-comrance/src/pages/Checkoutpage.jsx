@@ -4,8 +4,8 @@ import {Elements} from '@stripe/react-stripe-js';
 import CheckoutForm from '../components/CheckoutForm.jsx';
 import React from 'react';
 import {SpeedInsights} from '@vercel/speed-insights/react';
-import {getAllCartItems} from '../services/cartServices.js.js';
-import {createPaymentIntent} from '../services/stripeServices.js.js';
+import {getAllCartItems} from '../services/cartServices.js';
+import {createPaymentIntent} from '../services/stripeServices.js';
 
 const stripePromise = loadStripe(
   'pk_test_51OKnCVIH6vH73ShNYWADAfCZDWGrshfLbylxZJNzr3qJcuGHKavRE0JITdLoMRL3VnEsuD8CG7TlFbqLRNROLKrh000HpEysVB'
