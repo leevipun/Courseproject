@@ -67,7 +67,7 @@ Add to cart and pay
 
         Favortites you can find from
 
-            ![fav](https://github.com/leevipun/Courseproject/assets/117685613/667478bc-e002-435b-9dde-f55fb160669f)
+  ![fav](https://github.com/leevipun/Courseproject/assets/117685613/667478bc-e002-435b-9dde-f55fb160669f)
 
                 You can delete favorites by pressing the heart once agen
 
