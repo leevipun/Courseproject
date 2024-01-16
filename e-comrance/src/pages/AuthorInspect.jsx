@@ -17,13 +17,13 @@ import AdditionalInfo from '../components/registery/additionalInfo.jsx';
 import AddressInfo from '../components/registery/addressInfo.jsx';
 import PersonalInfo from '../components/registery/personalInfo.jsx';
 import UserNavbar from '../components/userNavbar.jsx';
-import {adminUpdateUserInfo, getAuthor} from '../services/userServices.js';
-import {getListing} from '../services/listingServices.js';
+import {adminUpdateUserInfo, getAuthor} from '../services/userServices.js.js';
+import {getListing} from '../services/listingServices.js.js';
 import {
   getAllRequests,
   sendFriendRequest,
-} from '../services/friendsServices.js';
-import {startMessages} from '../services/chatServices.js';
+} from '../services/friendsServices.js.js';
+import {startMessages} from '../services/chatServices.js.js';
 
 const AuthorInspect = () => {
   const dispatch = useDispatch();

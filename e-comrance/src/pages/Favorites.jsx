@@ -15,7 +15,7 @@ import {
   addToFavorites,
   deleteFavorite,
   getAllFavoriteItems,
-} from '../services/favoriteServices.js';
+} from '../services/favoriteServices.js.js';
 
 const Favoritepage = () => {
   const dispatch = useDispatch();

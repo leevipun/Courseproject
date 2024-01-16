@@ -3,7 +3,7 @@ import React, {useState} from 'react';
 import {useDispatch} from 'react-redux';
 import {addNotification} from '../../reducer/notificationReducer.js';
 import {SpeedInsights} from '@vercel/speed-insights/react';
-import {sendContactEmail} from '../services/emailServices.js';
+import {sendContactEmail} from '../services/emailServices.js.js';
 
 const Contactpage = () => {
   const dispatch = useDispatch();

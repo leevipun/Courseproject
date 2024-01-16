@@ -12,7 +12,7 @@ import {addNotification} from '../../reducer/notificationReducer';
 import {Button} from 'antd';
 import Spinner from '../components/LoadSpinner.jsx';
 import {SpeedInsights} from '@vercel/speed-insights/react';
-import {registery, updateStripeId} from '../services/userServices.js';
+import {registery, updateStripeId} from '../services/userServices.js.js';
 
 const Registerypage = () => {
   const dispatch = useDispatch();

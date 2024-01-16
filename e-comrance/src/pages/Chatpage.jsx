@@ -5,7 +5,7 @@ import {
   deleteChat,
   getAllChats,
   getAllMessages,
-} from '../services/chatServices.js';
+} from '../services/chatServices.js.js';
 import {useEffect} from 'react';
 import {useNavigate} from 'react-router-dom';
 import {addNotification} from '../../reducer/notificationReducer.js';

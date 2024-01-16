@@ -14,7 +14,7 @@ import {
   editMessage,
   sendMessage,
   getAllMessages,
-} from '../services/chatServices.js';
+} from '../services/chatServices.js.js';
 
 const MessagesCard = () => {
   const dispatch = useDispatch();

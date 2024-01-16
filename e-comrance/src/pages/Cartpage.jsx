@@ -9,7 +9,7 @@ import {useNavigate} from 'react-router-dom';
 import Spinner from '../components/LoadSpinner.jsx';
 import {addNotification} from '../../reducer/notificationReducer';
 import React from 'react';
-import {deleteCartItem, getAllCartItems} from '../services/cartServices.js';
+import {deleteCartItem, getAllCartItems} from '../services/cartServices.js.js';
 import {adminDeleteCartItem} from '../services/adminServices.js';
 
 const Cartpage = () => {

@@ -1,5 +1,5 @@
 import {createSlice} from '@reduxjs/toolkit';
-import {getAllChats, getAdminChats} from '../src/services/chatServices';
+import {getAllChats, getAdminChats} from '../src/services/chatServices.js';
 
 const ChatsSlice = createSlice({
   name: 'Chats',

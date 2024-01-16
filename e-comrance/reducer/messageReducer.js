@@ -1,5 +1,5 @@
 import {createSlice} from '@reduxjs/toolkit';
-import {getAllMessages} from '../src/services/chatServices';
+import {getAllMessages} from '../src/services/chatServices.js';
 
 const messageSlice = createSlice({
   name: 'Message',

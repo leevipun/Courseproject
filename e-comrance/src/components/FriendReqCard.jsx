@@ -3,7 +3,7 @@ import '../styles/FriendRequestCard.css';
 import {
   acceptFriendRequest,
   deleteFriendRequest,
-} from '../services/friendsServices';
+} from '../services/friendsServices.js';
 import {initializeFollowers} from '../../reducer/followersReducer.js';
 
 const FriendRequestCard = ({user, friends, pending}) => {

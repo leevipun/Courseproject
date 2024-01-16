@@ -11,7 +11,7 @@ import {
   deleteUserListing,
   updateListing,
   updateUsersListing,
-} from '../services/listingServices.js';
+} from '../services/listingServices.js.js';
 
 const customizeRequiredMark = (label, {required}) => (
   <>

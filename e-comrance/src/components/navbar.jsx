@@ -22,7 +22,7 @@ import {clearUser, initializeUser} from '../../reducer/userReducer';
 import {clearCart, initializecart} from '../../reducer/cartReducer';
 import {clearFavorite, initializefavorite} from '../../reducer/favoriteReducer';
 import {clearListing} from '../../reducer/listingReducer';
-import {getUserData} from '../services/userServices';
+import {getUserData} from '../services/userServices.js';
 import {addNotification} from '../../reducer/notificationReducer';
 import {RiAdminLine} from 'react-icons/ri';
 import {setToken} from '../services/adminServices';

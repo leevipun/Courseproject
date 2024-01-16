@@ -1,5 +1,5 @@
 import {createSlice} from '@reduxjs/toolkit';
-import {getAllListings} from '../src/services/listingServices';
+import {getAllListings} from '../src/services/listingServices.js';
 
 const listingSlice = createSlice({
   name: 'listing',

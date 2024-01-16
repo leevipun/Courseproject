@@ -5,14 +5,14 @@ import {initializecart} from '../../reducer/cartReducer.js';
 import {addNotification} from '../../reducer/notificationReducer.js';
 import {useDispatch, useSelector} from 'react-redux';
 import {initializeListing} from '../../reducer/listingReducer.js';
-import {addToFavorites, deleteFavorite} from '../services/favoriteServices.js';
+import {addToFavorites, deleteFavorite} from '../services/favoriteServices.js.js';
 import {
   initializefavorite,
   appendfavorite,
 } from '../../reducer/favoriteReducer.js';
 import Spinner from './LoadSpinner.jsx';
-import {addToCart} from '../services/cartServices.js';
-import {deleteUserListing} from '../services/listingServices.js';
+import {addToCart} from '../services/cartServices.js.js';
+import {deleteUserListing} from '../services/listingServices.js.js';
 
 const ListingCard = ({listings, user, isAdmin}) => {
   const dispatch = useDispatch();
