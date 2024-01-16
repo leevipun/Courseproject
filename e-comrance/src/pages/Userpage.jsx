@@ -1,6 +1,6 @@
 import {useState, useEffect} from 'react';
 import Navbar from './../components/navbar.jsx';
-import {useDispatch} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import {Button} from 'antd';
 import {addNotification} from '../../reducer/notificationReducer.js';
 import {useNavigate} from 'react-router-dom';
@@ -40,6 +40,32 @@ const Userpage = () => {
   const [Dob, setDob] = useState('');
   const [iban, setIban] = useState('');
   const [spinTip, setSpinTip] = useState('');
+  const user = useSelector((state) => state.user)
+
+  const handleUpdate = async () => {
+    try {
+      setSpinTip('Updating user info...');
+      const newObject = {
+        email: email,
+        firstName: firstName,
+        lastName: lastName,
+        style: style,
+        country: country,
+        city: city,
+        address: address,
+        postalCode: postalCode,
+        phone: phone,
+        Dob: Dob,
+        iban: iban,
+      };
+      const response = await updateUserInfo(newObject);
+      dispatch(addNotification(response));
+      console.log(response);
+    } catch (error) {
+      console.error(error.error);
+      dispatch(addNotification(error.error));
+    }
+  };
 
   useEffect(() => {
     const user = JSON.parse(sessionStorage.getItem('loggedNoteappUser'));
@@ -111,32 +137,7 @@ const Userpage = () => {
     setPasswordVis((prev) => !prev);
   };
 
-  const handleUpdate = async () => {
-    try {
-      setSpinTip('Updating user info...');
-      const newObject = {
-        email: email,
-        firstName: firstName,
-        lastName: lastName,
-        style: style,
-        country: country,
-        city: city,
-        address: address,
-        postalCode: postalCode,
-        phone: phone,
-        Dob: Dob,
-        iban: iban,
-      };
-      const response = await updateUserInfo(newObject);
-      dispatch(addNotification(response));
-      window.location.reload();
-      dispatch(initializeUser());
-      console.log(response);
-    } catch (error) {
-      console.error(error.error);
-      dispatch(addNotification(error.error));
-    }
-  };
+
 
   const handleUserDelete = async () => {
     if (window.confirm('Are you sure you want to delete your account?')) {

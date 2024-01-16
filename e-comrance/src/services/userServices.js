@@ -66,21 +66,21 @@ export const getUserData = async () => {
 
 export const updateUserInfo = async (newObject) => {
   const config = {
-    headers: {Authorization: token},
+    headers: { Authorization: token },
   };
-  console.log(token);
-  console.log(newObject);
   try {
+    console.log(newObject)
     const response = await axios.put(
       `${baseURL}/api/users/`,
       newObject,
       config
     );
+    console.log(response)
     return response.data;
   } catch (error) {
     console.log('Error', error);
     console.log('Data', error.response.data.error);
-    throw {error: error.response.data.error};
+    throw { error: error.response.data.error };
   }
 };
 
