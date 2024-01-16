@@ -1,7 +1,7 @@
 import axios from 'axios';
 import {token} from './adminServices.js';
 
-const baseURL = 'https://courseproject-backend-6lyy.onrender.com';
+const baseURL = 'http://localhost:3003';
 
 export const Login = async (email, password) => {
   try {
@@ -64,7 +64,7 @@ export const getUserData = async () => {
   }
 };
 
-export const updateUserInfo = async (newObject) => {
+export const updateUserInfo = async ( newObject) => {
   const config = {
     headers: { Authorization: token },
   };

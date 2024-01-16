@@ -47,8 +47,8 @@ const Userpage = () => {
       setSpinTip('Updating user info...');
       const newObject = {
         email: email,
-        firstName: firstName,
-        lastName: lastName,
+        firstname: firstName,
+        lastname: lastName,
         style: style,
         country: country,
         city: city,

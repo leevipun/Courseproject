@@ -145,6 +145,15 @@ usersRouter.get("/", async (request, response) => {
   response.json(users);
 });
 
+usersRouter.get("/info", extractToken, async (req, res) => {
+  const deCodedToken = jwt.verify(req.token, process.env.SECRET);
+  if (!deCodedToken.id) {
+    return res.status(401).json({ error: "Invalid token" });
+  }
+  const user = await User.findOne({ email: deCodedToken.email });
+  res.json(user);
+});
+
 usersRouter.put("/", async (req, res) => {
   const body = req.body;
   try {
@@ -153,32 +162,36 @@ usersRouter.put("/", async (req, res) => {
       return res.status(401).json({ error: "Invalid token" });
     }
 
-    const updatedUser = await User.findOneAndUpdate(
-      { email: deCodedToken.email },
-      {
-        firstName: body.firstName,
-        lastName: body.lastName,
-        password: body.password,
-        style: body.style,
-        country: body.country,
-        city: body.city,
-        address: body.address,
-        postalCode: body.postalCode,
-        phone: body.phone,
-        Dob: body.birthDay,
-        iban: body.iban,
-      },
-      { new: true } // to return the updated document
-    );
+    const user = await User.findOne({ email: deCodedToken.email });
 
-    console.log(updatedUser);
+    if (!user) {
+      return res.status(401).json({ error: "User not found" });
+    }
+
+    const item = {
+      email: body.email,
+      firstname: body.firstname,
+      lastname: body.lastname,
+      style: body.style,
+      country: body.country,
+      city: body.city,
+      address: body.address,
+      postalCode: body.postalCode,
+      phone: body.phone,
+      Dob: body.Dob,
+      iban: body.iban,
+    };
+
+    console.log(user._id)
+    const updatedUser = await User.findOneAndUpdate({ _id: user._id }, item, { new: true, returnDocument: 'after' });
+
+    // No need to explicitly call save when using findOneAndUpdate with returnDocument: 'after'
+    console.log("Päivitetty", updatedUser); 
     res.send("User updated successfully");
   } catch (error) {
     console.log("Tänne :(");
     console.error(error);
-    return res
-      .status(400)
-      .send({ error: "Error occurred while updating user" });
+    return res.status(400).send({ error: "Error occurred while updating user" });
   }
 });
 

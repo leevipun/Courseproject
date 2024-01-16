@@ -1,7 +1,7 @@
 import axios from 'axios';
 import {token} from './adminServices.js';
 
-const baseURL = 'https://courseproject-backend-6lyy.onrender.com';
+const baseURL = 'http://localhost:3003';
 
 export const getAllFavoriteItems = async () => {
   try {
