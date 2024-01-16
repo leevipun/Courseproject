@@ -1,14 +1,14 @@
 import React from 'react';
 import {useNavigate} from 'react-router-dom';
 import '../styles/AuthorStyles.css';
-import {deleteFriend} from '../services/friendsServices.js.js';
+import {deleteFriend} from '../services/friendsServices.js';
 import {initializeFollowers} from '../../reducer/followersReducer.js';
 import {useDispatch} from 'react-redux';
 import {addNotification} from '../../reducer/notificationReducer.js';
 import {setMessages} from '../../reducer/messageReducer.js';
 import {setAllUsers} from '../../reducer/allUsersReducer.js';
-import {adminUserDelete} from '../services/userServices.js.js';
-import {startMessages} from '../services/chatServices.js.js';
+import {adminUserDelete} from '../services/userServices.js';
+import {startMessages} from '../services/chatServices.js';
 
 const AuthorCard = ({users, canDelete, canStartConv, ownUserId, isAdmin}) => {
   const navigate = useNavigate();

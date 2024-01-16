@@ -8,7 +8,7 @@ const {TextArea} = Input;
 import {useNavigate} from 'react-router-dom';
 import CountriesData from '../../Data/countryData.js';
 import categoriesWithOptions from '../../Data/categoryData.js';
-import {Adding} from '../services/listingServices.js.js';
+import {Adding} from '../services/listingServices.js';
 
 const customizeRequiredMark = (label, {required}) => (
   <>

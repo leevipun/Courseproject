@@ -20,7 +20,6 @@ import PaymentSucess from "./pages/paymentsucess.jsx";
 import { SpeedInsights } from "@vercel/speed-insights/react";
 import AuthorPage from "./pages/AuthorPage.jsx";
 import AuthorInspect from "./pages/AuthorInspect.jsx";
-import BuyHistoryPage from "./pages/Buyhistorypage.jsx";
 import Friendspage from "./pages/Friendspage.jsx";
 import Chatpage from "./pages/Chatpage.jsx";
 import Adminpage from "./pages/Adminpage.jsx";

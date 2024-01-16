@@ -17,7 +17,7 @@ import {
   getUserData,
   updateUserInfo,
   userDelete,
-} from '../services/userServices.js.js';
+} from '../services/userServices.js';
 
 const Userpage = () => {
   const dispatch = useDispatch();
