@@ -1,6 +1,6 @@
 import {useState, useEffect} from 'react';
 import Navbar from './../components/navbar.jsx';
-import {useDispatch, useSelector} from 'react-redux';
+import {useDispatch} from 'react-redux';
 import {Button} from 'antd';
 import {addNotification} from '../../reducer/notificationReducer.js';
 import {useNavigate} from 'react-router-dom';
@@ -10,7 +10,7 @@ import PersonalInfo from '../components/registery/personalInfo.jsx';
 import Spinner from '../components/LoadSpinner.jsx';
 import React from 'react';
 import {SpeedInsights} from '@vercel/speed-insights/react';
-import {initializeUser, setUser} from '../../reducer/userReducer.js';
+import {setUser} from '../../reducer/userReducer.js';
 import UserNavbar from '../components/userNavbar.jsx';
 import PasswordChange from '../components/PasswordChangeCard.jsx';
 import {
@@ -40,7 +40,6 @@ const Userpage = () => {
   const [Dob, setDob] = useState('');
   const [iban, setIban] = useState('');
   const [spinTip, setSpinTip] = useState('');
-  const user = useSelector((state) => state.user)
 
   const handleUpdate = async () => {
     try {
@@ -137,16 +136,19 @@ const Userpage = () => {
     setPasswordVis((prev) => !prev);
   };
 
-
-
   const handleUserDelete = async () => {
-    if (window.confirm('Are you sure you want to delete your account?')) {
-      setSpinTip('Deleting account...');
-      setLoading(true);
-      const response = await userDelete();
-      navigate('/login');
-      dispatch(addNotification(response));
-      setLoading(false);
+    try {
+      if (window.confirm('Are you sure you want to delete your account?')) {
+        setSpinTip('Deleting account...');
+        setLoading(true);
+        const response = await userDelete();
+        navigate('/login');
+        dispatch(addNotification(response));
+        setLoading(false);
+      }
+    } catch (error) {
+      console.error('Error deleting account:', error);
+      dispatch(addNotification(error.error));
     }
   };
 

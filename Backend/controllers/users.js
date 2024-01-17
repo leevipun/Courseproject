@@ -1,22 +1,22 @@
-const bcrypt = require("bcrypt");
-const User = require("../models/user");
-const usersRouter = require("express").Router();
-const jwt = require("jsonwebtoken");
-const middleware = require("../utils/middleware");
-const List = require("../models/list");
+const bcrypt = require('bcrypt');
+const User = require('../models/user');
+const usersRouter = require('express').Router();
+const jwt = require('jsonwebtoken');
+const middleware = require('../utils/middleware');
+const List = require('../models/list');
 const API_KEY = process.env.SECRET_STRIPE;
-const stripe = require("stripe")(API_KEY);
-require("express-async-errors");
-const nodemailer = require("nodemailer");
-const { transporter } = require("./email");
+const stripe = require('stripe')(API_KEY);
+require('express-async-errors');
+const nodemailer = require('nodemailer');
+const {transporter} = require('./email');
 const pass = process.env.EMAILPASS;
-const Chat = require("../models/chat");
-const Message = require("../models/message");
+const Chat = require('../models/chat');
+const Message = require('../models/message');
 
 const extractToken = middleware.extractToken;
 
-usersRouter.post("/", async (req, res) => {
-  const { newObject } = req.body;
+usersRouter.post('/', async (req, res) => {
+  const {newObject} = req.body;
 
   const saltRounds = 10;
   const passwordHash = await bcrypt.hash(newObject.password, saltRounds);
@@ -45,10 +45,10 @@ usersRouter.post("/", async (req, res) => {
   res.status(201).json(savedUser);
 
   const options = {
-    from: "nordicexchange@outlook.com",
+    from: 'nordicexchange@outlook.com',
     to: newObject.email,
-    subject: "Welcome to Nordic Exchange!",
-    text: "Thank you for registering to Nordic Exchange!\nAnd becoming a member of our community!\nWe hope you enjoy your stay!\nBest regards,\nNordic Exchange team",
+    subject: 'Welcome to Nordic Exchange!',
+    text: 'Thank you for registering to Nordic Exchange!\nAnd becoming a member of our community!\nWe hope you enjoy your stay!\nBest regards,\nNordic Exchange team',
   };
 
   transporter.sendMail(options, function (err, info) {
@@ -56,53 +56,53 @@ usersRouter.post("/", async (req, res) => {
       console.log(err);
       return;
     }
-    console.log("Sent: " + info.response, "to: " + info.accepted);
+    console.log('Sent: ' + info.response, 'to: ' + info.accepted);
   });
 });
 
-usersRouter.patch("/stripe", extractToken, async (req, res) => {
+usersRouter.patch('/stripe', extractToken, async (req, res) => {
   try {
     const iban = req.body.iban;
     const email = req.body.email;
 
     console.log(req.body);
 
-    const user = await User.findOne({ email: email });
+    const user = await User.findOne({email: email});
     console.log(user);
     console.log(user.email);
     console.log(user.country);
     console.log(user.Dob);
     console.log(user.phone);
 
-    const splitBirthDate = user.Dob.split("/");
+    const splitBirthDate = user.Dob.split('/');
     console.log(splitBirthDate);
     const day = splitBirthDate[1];
     const month = splitBirthDate[0];
     const year = splitBirthDate[2];
 
     const stripeAccount = await stripe.accounts.create({
-      type: "custom",
+      type: 'custom',
       email: user.email,
       country: user.country,
       capabilities: {
-        card_payments: { requested: true },
-        transfers: { requested: true },
+        card_payments: {requested: true},
+        transfers: {requested: true},
       },
       tos_acceptance: {
         date: Math.floor(Date.now() / 1000),
-        ip: "82.181.90.127",
+        ip: '82.181.90.127',
       },
-      business_type: "individual",
+      business_type: 'individual',
       business_profile: {
-        mcc: "5734",
-        product_description: "Test",
+        mcc: '5734',
+        product_description: 'Test',
       },
       external_account: {
-        object: "bank_account",
+        object: 'bank_account',
         country: user.country,
-        currency: "eur",
+        currency: 'eur',
         account_holder_name: user.name && user.lastName,
-        account_holder_type: "individual",
+        account_holder_type: 'individual',
         account_number: iban,
       },
       individual: {
@@ -126,46 +126,46 @@ usersRouter.patch("/stripe", extractToken, async (req, res) => {
 
     // Update the user with the stripeId
     await User.updateOne(
-      { email: user.email },
-      { $set: { stripeId: stripeAccount.id } }
+      {email: user.email},
+      {$set: {stripeId: stripeAccount.id}}
     );
 
     return res
       .status(200)
-      .json({ message: "Stripe account created successfully" });
+      .json({message: 'Stripe account created successfully'});
   } catch (error) {
     console.error(error);
-    await User.findOneAndDelete({ email: req.body.email });
-    return res.status(500).json({ error: "Internal server error" });
+    await User.findOneAndDelete({email: req.body.email});
+    return res.status(500).json({error: 'Internal server error'});
   }
 });
 
-usersRouter.get("/", async (request, response) => {
+usersRouter.get('/', async (request, response) => {
   const users = await User.find({});
   response.json(users);
 });
 
-usersRouter.get("/info", extractToken, async (req, res) => {
+usersRouter.get('/info', extractToken, async (req, res) => {
   const deCodedToken = jwt.verify(req.token, process.env.SECRET);
   if (!deCodedToken.id) {
-    return res.status(401).json({ error: "Invalid token" });
+    return res.status(401).json({error: 'Invalid token'});
   }
-  const user = await User.findOne({ email: deCodedToken.email });
+  const user = await User.findOne({email: deCodedToken.email});
   res.json(user);
 });
 
-usersRouter.put("/", async (req, res) => {
+usersRouter.put('/', async (req, res) => {
   const body = req.body;
   try {
     const deCodedToken = jwt.verify(req.token, process.env.SECRET);
     if (!deCodedToken) {
-      return res.status(401).json({ error: "Invalid token" });
+      return res.status(401).json({error: 'Invalid token'});
     }
 
-    const user = await User.findOne({ email: deCodedToken.email });
+    const user = await User.findOne({email: deCodedToken.email});
 
     if (!user) {
-      return res.status(401).json({ error: "User not found" });
+      return res.status(401).json({error: 'User not found'});
     }
 
     const item = {
@@ -182,37 +182,37 @@ usersRouter.put("/", async (req, res) => {
       iban: body.iban,
     };
 
-    console.log(user._id)
-    const updatedUser = await User.findOneAndUpdate({ _id: user._id }, item, { new: true, returnDocument: 'after' });
+    console.log(user._id);
+    const updatedUser = await User.findOneAndUpdate({_id: user._id}, item, {
+      new: true,
+      returnDocument: 'after',
+    });
 
     // No need to explicitly call save when using findOneAndUpdate with returnDocument: 'after'
-    console.log("Päivitetty", updatedUser); 
-    res.send("User updated successfully");
+    console.log('Päivitetty', updatedUser);
+    res.send('User updated successfully');
   } catch (error) {
-    console.log("Tänne :(");
+    console.log('Tänne :(');
     console.error(error);
-    return res.status(400).send({ error: "Error occurred while updating user" });
+    return res.status(400).send({error: 'Error occurred while updating user'});
   }
 });
 
-
-usersRouter.put("/password", async (req, res) => {
+usersRouter.put('/password', async (req, res) => {
   const body = req.body;
   try {
     const deCodedToken = jwt.verify(req.token, process.env.SECRET);
     if (!deCodedToken) {
-      return res.status(401).json({ error: "Invalid token" });
+      return res.status(401).json({error: 'Invalid token'});
     }
-    const user = await User.findOne({ email: deCodedToken.email });
+    const user = await User.findOne({email: deCodedToken.email});
     console.log(user);
     const passwordCorrect = await bcrypt.compare(
       body.password,
       user.passwordHash
     );
     if (passwordCorrect) {
-      return res
-        .status(401)
-        .json({ error: "You can not use your old password" });
+      return res.status(401).json({error: 'You can not use your old password'});
     }
     const passwordHash = await bcrypt.hash(body.password, 10);
     const item = {
@@ -224,24 +224,24 @@ usersRouter.put("/password", async (req, res) => {
     });
     console.log(updatedUser);
     await user.save();
-    res.send("Password updated successfully");
+    res.send('Password updated successfully');
   } catch (error) {
-    console.log("Tänne :(");
+    console.log('Tänne :(');
     console.error(error);
-    return res.status(400).send("Error occurred while updating user");
+    return res.status(400).send('Error occurred while updating user');
   }
 });
 
-usersRouter.delete("/", extractToken, async (req, res) => {
+usersRouter.delete('/', extractToken, async (req, res) => {
   try {
     const body = req.body;
     console.log(body);
     console.log(req.token);
     const deCodedToken = jwt.verify(req.token, process.env.SECRET);
     if (!deCodedToken) {
-      return res.status(401).json({ error: "Invalid token" });
+      return res.status(401).json({error: 'Invalid token'});
     }
-    const user = await User.findOne({ email: deCodedToken.email });
+    const user = await User.findOne({email: deCodedToken.email});
     const userListings = user.listings;
     const userCart = user.cart;
     const userStripeId = user.stripeId;
@@ -256,30 +256,32 @@ usersRouter.delete("/", extractToken, async (req, res) => {
     }
 
     const item = {
-      status: "Avialable",
+      status: 'Avialable',
     };
     if (userCart) {
       for (const id of userCart) {
-        await List.findByIdAndUpdate(id, item, { new: true });
+        await List.findByIdAndUpdate(id, item, {new: true});
       }
     }
     if (chats) {
       for (const id of chats) {
-        for (const id of chats.messages) {
-          await Message.findByIdAndRemove(id);
+        if (chats.messages) {
+          for (const id of chats.messages) {
+            await Message.findByIdAndRemove(id);
+          }
         }
         await Chat.findByIdAndRemove(id);
       }
     }
     const deletedStripeAccount = await stripe.accounts.del(userStripeId);
     if (!deletedStripeAccount || deletedStripeAccount.deleted !== true) {
-      return res.status(400).send("Error occurred while deleting account");
+      return res.status(400).send('Error occurred while deleting account');
     } else {
       await User.findByIdAndRemove(user._id);
       const options = {
-        from: "nordicexchange@outlook.com",
+        from: 'nordicexchange@outlook.com',
         to: user.email,
-        subject: "Account deleted",
+        subject: 'Account deleted',
         html: "<h1>We are sorry to see you go!</h1><p>We hope you enjoyed your stay!</p><p>Hopefully we'll see in the future agen</p><p>Best regards,</p><p>Nordic Exchange team</p>",
       };
       transporter.sendMail(options, function (err, info) {
@@ -287,26 +289,26 @@ usersRouter.delete("/", extractToken, async (req, res) => {
           console.log(err);
           return;
         }
-        console.log("Sent: " + info.response, "to: " + info.accepted);
+        console.log('Sent: ' + info.response, 'to: ' + info.accepted);
       });
-      res.status(204).send("User deleted Successfully");
+      res.status(204).send('User deleted Successfully');
     }
   } catch (error) {
     console.error(error);
-    return res.status(400).send("Error occurred while deleting user");
+    return res.status(400).send('Error occurred while deleting user');
   }
 });
 
-usersRouter.delete("/admin/:id", async (req, res) => {
-  console.log("Tultiin tänne");
+usersRouter.delete('/admin/:id', async (req, res) => {
+  console.log('Tultiin tänne');
   try {
-    console.log("Tultiin tänne");
+    console.log('Tultiin tänne');
     const deCodedToken = jwt.verify(req.token, process.env.SECRET);
     if (!deCodedToken) {
-      return res.status(401).json({ error: "Invalid token" });
+      return res.status(401).json({error: 'Invalid token'});
     }
-    const user = await User.findOne({ email: deCodedToken.email });
-    if (user.style === "admin") {
+    const user = await User.findOne({email: deCodedToken.email});
+    if (user.style === 'admin') {
       const userToDelete = await User.findById(req.params.id);
       console.log(userToDelete);
       const userListings = userToDelete.listings;
@@ -318,11 +320,11 @@ usersRouter.delete("/admin/:id", async (req, res) => {
       }
 
       const NewItem = {
-        status: "Avialable",
+        status: 'Avialable',
       };
       if (userCart) {
         for (const id of userCart) {
-          await List.findByIdAndUpdate(id, NewItem, { new: true });
+          await List.findByIdAndUpdate(id, NewItem, {new: true});
         }
       }
       if (chats) {
@@ -339,7 +341,7 @@ usersRouter.delete("/admin/:id", async (req, res) => {
         userToDelete.stripeId
       );
       if (!deletedStripeAccount || deletedStripeAccount.deleted !== true) {
-        return res.status(400).send("Error occurred while deleting account");
+        return res.status(400).send('Error occurred while deleting account');
       } else {
         await User.findByIdAndRemove(userToDelete._id);
         const restUsers = await User.find({});
@@ -348,11 +350,11 @@ usersRouter.delete("/admin/:id", async (req, res) => {
     }
   } catch (error) {
     console.error(error);
-    return res.status(400).send("Error occurred while deleting user");
+    return res.status(400).send('Error occurred while deleting user');
   }
 });
 
-usersRouter.put("/:id", async (req, res) => {
+usersRouter.put('/:id', async (req, res) => {
   const body = req.body;
   try {
     const user = await User.findById(req.params.id);
@@ -376,23 +378,21 @@ usersRouter.put("/:id", async (req, res) => {
     });
     console.log(updatedUser);
     await user.save();
-    res.send("User updated successfully");
+    res.send('User updated successfully');
   } catch (error) {
-    console.log("Tänne :(");
+    console.log('Tänne :(');
     console.error(error);
-    return res
-      .status(400)
-      .send({ error: "Error occurred while updating user" });
+    return res.status(400).send({error: 'Error occurred while updating user'});
   }
 });
 
-usersRouter.get("/listings", extractToken, async (req, res) => {
+usersRouter.get('/listings', extractToken, async (req, res) => {
   const deCodedToken = jwt.verify(req.token, process.env.SECRET);
   if (!deCodedToken) {
-    return res.status(401).send({ error: "Invalid Token" });
+    return res.status(401).send({error: 'Invalid Token'});
   }
-  const userData = await User.findOne({ email: deCodedToken.email })
-    .select("listings")
+  const userData = await User.findOne({email: deCodedToken.email})
+    .select('listings')
     .exec();
   if (userData) {
     const listings = await Promise.all(
@@ -402,28 +402,28 @@ usersRouter.get("/listings", extractToken, async (req, res) => {
     );
     res.json(listings);
   } else {
-    res.status(404).send({ error: "User not found" });
+    res.status(404).send({error: 'User not found'});
   }
 });
 
-usersRouter.delete("/stripe", (req, res) => {
+usersRouter.delete('/stripe', (req, res) => {
   req.body.stripeId;
   console.log(req.body.stripeId);
   stripe.accounts.del(req.body.stripeId);
-  return res.status(200).json({ message: "Stripe account deleted" });
+  return res.status(200).json({message: 'Stripe account deleted'});
 });
 
-usersRouter.get("/:id", async (req, res) => {
+usersRouter.get('/:id', async (req, res) => {
   try {
     const id = req.params.id;
     console.log(id);
     const user = await User.findById(id);
-    console.log("user", user);
+    console.log('user', user);
     res.json(user);
-    console.log("Lähetetty");
+    console.log('Lähetetty');
   } catch (error) {
     console.error(error);
-    res.status(500).json({ error: "Internal Server Error" });
+    res.status(500).json({error: 'Internal Server Error'});
   }
 });
 

@@ -64,23 +64,23 @@ export const getUserData = async () => {
   }
 };
 
-export const updateUserInfo = async ( newObject) => {
+export const updateUserInfo = async (newObject) => {
   const config = {
-    headers: { Authorization: token },
+    headers: {Authorization: token},
   };
   try {
-    console.log(newObject)
+    console.log(newObject);
     const response = await axios.put(
       `${baseURL}/api/users/`,
       newObject,
       config
     );
-    console.log(response)
+    console.log(response);
     return response.data;
   } catch (error) {
     console.log('Error', error);
     console.log('Data', error.response.data.error);
-    throw { error: error.response.data.error };
+    throw {error: error.response.data.error};
   }
 };
 
@@ -116,13 +116,13 @@ export const getUsersListings = async () => {
   }
 };
 
-export const userDelete = async (id) => {
+export const userDelete = async () => {
   try {
     const config = {
       headers: {Authorization: token},
     };
     console.log(token);
-    const response = await axios.delete(`${baseURL}/api/users/${id}`, config);
+    const response = await axios.delete(`${baseURL}/api/users/`, config);
     return response.data;
   } catch (error) {
     throw {error: error.response.data.error};
