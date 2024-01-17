@@ -253,8 +253,8 @@ const AuthorInspect = () => {
       setSpinTip('Updating user info...');
       const newObject = {
         email: email,
-        firstName: firstName,
-        lastName: lastName,
+        firstname: firstName,
+        lastname: lastName,
         style: style,
         country: country,
         city: city,
@@ -270,6 +270,9 @@ const AuthorInspect = () => {
     } catch (error) {
       console.error(error.error);
       dispatch(addNotification(error.error));
+    } finally {
+      setLoading(false);
+      setEdit(false)
     }
   };
 

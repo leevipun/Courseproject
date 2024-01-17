@@ -52,7 +52,8 @@ const ListingCard = ({listings, user, isAdmin}) => {
       
     const mappedFavorites = favorites.map((favorite) => {
       if(favorite.id === null || !favorite.id) {
-        return null;
+        dispatch(addNotification('One of your favorites has been bought and due to a technical issues we were not able to delete it working on the change'));
+        return;
       }
       return favorite.id;
     });

@@ -358,8 +358,8 @@ usersRouter.put("/:id", async (req, res) => {
     const user = await User.findById(req.params.id);
     const item = {
       email: body.email,
-      firstName: body.firstName,
-      lastName: body.lastName,
+      firstname: body.firstname,
+      lastname: body.lastname,
       password: body.password,
       style: body.style,
       country: body.country,
