@@ -139,9 +139,9 @@ listingRouter.delete("/:id", async (req, res) => {
       }
     );
     await User.findOneAndUpdate(
-      { favorite: listing._id}
+      { favorite: listing._id},
       {
-        $pull: { favorite: listing.id },
+        $pull: { favorite: listing._id },
       }
     )
     console.log("Poisto onnistui");
