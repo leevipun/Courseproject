@@ -138,6 +138,12 @@ listingRouter.delete("/:id", async (req, res) => {
         $pull: { listings: listing.id },
       }
     );
+    await User.findOneAndUpdate(
+      { favorite: listing._id}
+      {
+        $pull: { favorite: listing.id },
+      }
+    )
     console.log("Poisto onnistui");
     await List.findByIdAndDelete(req.params.id);
     console.log("Kaikki onnistui");
