@@ -48,10 +48,13 @@ const ListingCard = ({listings, user, isAdmin}) => {
 
   const userFavoriteId = useSelector((state) => {
     const favorites = state.favorite;
+    if(favorites || favorites.length > 0) {
     const mappedFavorites = favorites.map((favorite) => {
       return favorite.id;
     });
     return mappedFavorites;
+  }
+
   });
 
   const handleAddToFavorites = async (id) => {

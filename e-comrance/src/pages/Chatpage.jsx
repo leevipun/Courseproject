@@ -169,9 +169,12 @@ const Chatpage = () => {
           <div id='chat'>
             <h1>Chats</h1>
             {isAdmin ? (
+              <>
+              <Button type='primary' onClick={() => handleBack()}>Go back to admin panel</Button>
               <Button type='primary' onClick={() => getAdminChats()}>
                 Refresh Chats
               </Button>
+              </>
             ) : (
               <Button type='primary' onClick={() => getChats()}>
                 Refresh Chats
