@@ -1,10 +1,13 @@
 import {useEffect} from 'react';
 import {useState} from 'react';
 import {useDispatch} from 'react-redux';
-import {addNotification} from '../../reducer/notificationReducer';
-import PasswordChange from '../components/PasswordChangeCard';
-import Spinner from '../components/LoadSpinner';
-import {validateResetPasswordToken} from '../services/emailServices';
+import {addNotification} from '../../reducer/notificationReducer.js';
+import PasswordChange from '../components/PasswordChangeCard.jsx';
+import Spinner from '../components/LoadSpinner.jsx';
+import {
+  sendPasswordHasBeenChanged,
+  validateResetPasswordToken,
+} from '../services/emailServices.js';
 import {useNavigate} from 'react-router-dom';
 
 const PasswordResetpage = () => {
@@ -23,6 +26,7 @@ const PasswordResetpage = () => {
         setLoading(true);
         setSpinTip('Validating URL...');
         const response = await validateResetPasswordToken(email, token);
+        await sendPasswordHasBeenChanged(email);
         console.log('response', response);
         if (response === 'Valid reset password link') {
           setLoading(false);

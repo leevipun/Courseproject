@@ -1,6 +1,8 @@
 import {Button, Input} from 'antd';
 import React from 'react';
-import {sendForgotPasswordEmail} from '../services/emailServices';
+import {sendForgotPasswordEmail} from '../services/emailServices.js';
+import {useDispatch} from 'react-redux';
+import {addNotification} from '../../reducer/notificationReducer.js';
 
 const LoginForm = ({
   handleLogin,
@@ -10,9 +12,19 @@ const LoginForm = ({
   email,
   password,
 }) => {
+  const dispatch = useDispatch();
   const handleForgotPassword = async () => {
-    const response = await sendForgotPasswordEmail(email);
-    console.log(response);
+    try {
+      if (email === '') {
+        dispatch(addNotification('Please enter your email in the Email field'));
+        return;
+      }
+      const response = await sendForgotPasswordEmail(email);
+      dispatch(addNotification(response.message));
+    } catch (error) {
+      console.error(error);
+      dispatch(addNotification(error.error));
+    }
   };
 
   return (

@@ -226,4 +226,45 @@ emailRouter.post('/reset-password/', async (req, res) => {
   }
 });
 
+emailRouter.post('/password', async (req, res) => {
+  const {email} = req.body;
+  const options = {
+    from: 'nordicexchange@outlook.com',
+    to: email,
+    subject: 'Password Changed Notification',
+    html: `
+    <div style="max-width: 600px; margin: 0 auto; padding: 20px; background-color: #f4f4f4; border: 1px solid #ccc; border-radius: 10px; font-family: Arial, sans-serif;">
+
+      <h2 style="text-align: center; color: #333; margin-bottom: 20px;">Password Changed Notification</h2>
+
+      <p style="font-size: 16px; color: #555; text-align: center; margin-top: 20px;">
+        Dear User,
+      </p>
+
+      <p style="font-size: 16px; color: #555; text-align: center;">
+        We wanted to inform you that your password has been successfully changed.
+      </p>
+
+      <p style="font-size: 16px; color: #555; text-align: center;">
+        If you did not initiate this change or have any concerns about the security of your account, please contact us immediately at
+        <a href="mailto:nordicexchange@outlook.com" style="color: #007BFF; text-decoration: none; font-weight: bold;">nordicexchange@outlook.com</a>.
+      </p>
+
+      <p style="font-size: 16px; color: #555; text-align: center; margin-top: 20px;">
+        Thank you for choosing Nordic Exchange.
+      </p>
+
+    </div>
+  `,
+  };
+  transporter.sendMail(options, function (err, info) {
+    if (err) {
+      console.log(err);
+      return;
+    }
+    console.log('Sent Buyer: ' + info.response);
+  });
+  res.status(200).json({message: 'Email sent'});
+});
+
 module.exports = {transporter, emailRouter};

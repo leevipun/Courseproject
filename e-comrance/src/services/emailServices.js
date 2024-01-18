@@ -16,6 +16,18 @@ export const sendReceipt = async (email, sellerEmail, items) => {
   }
 };
 
+export const sendPasswordHasBeenChanged = async (email) => {
+  try {
+    console.log('Password has been changed', email);
+    const response = await axios.post(`${baseURL}/api/email/password`, {
+      email,
+    });
+    return response.data;
+  } catch (error) {
+    throw {error: error.response.data.error};
+  }
+};
+
 export const sendForgotPasswordEmail = async (email) => {
   try {
     console.log('Forgot password email', email);
