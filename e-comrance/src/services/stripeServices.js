@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const baseURL = 'http://localhost:3003';
+const baseURL = 'https://courseproject-backend-6lyy.onrender.com';
 
 export const createPaymentIntent = async (items, userId) => {
   try {
