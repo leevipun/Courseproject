@@ -6,8 +6,8 @@ const config = (env, argv) => {
   console.log('argv', argv.mode);
   const backend_url =
     argv.mode === 'production'
-      ? 'https://courseproject-backend-6lyy.onrender.com'
-      : 'https://courseproject-backend-6lyy.onrender.com';
+      ? 'http://localhost:3003'
+      : 'http://localhost:3003';
 
   return {
     entry: (__dirname, './src/main.jsx'),

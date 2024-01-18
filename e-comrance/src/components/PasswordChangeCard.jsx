@@ -17,7 +17,7 @@ const PasswordChange = ({setLoading, setSpinTip}) => {
       setLoading(false);
       dispatch(addNotification(response));
     } catch (error) {
-      console.error('Error occurred while changing password:', error.error);
+      console.error('Error occurred while changing passwordzz:', error.error);
       dispatch(addNotification(error.error));
       setLoading(false);
     } finally {
@@ -25,8 +25,32 @@ const PasswordChange = ({setLoading, setSpinTip}) => {
     }
   };
 
+  const handleNewPassword = async (values) => {
+    try {
+      console.log(values.password);
+      const token = window.location.search.split('=')[1];
+      console.log('token', token);
+      const response = await changePassword(values.password, token);
+      window.location.href = '/login';
+      dispatch(addNotification(response));
+    } catch (error) {
+      console.log('error', error);
+      console.error('Error occurred while changing password:', error.error);
+      dispatch(addNotification(error.error));
+    }
+  };
+
   return (
-    <Form form={form} onFinish={handlePasswordSave} style={{padding: '30px'}}>
+    <Form
+      form={form}
+      id='form'
+      onFinish={
+        window.location.pathname.split('/')[1] === 'reset-password'
+          ? handleNewPassword
+          : handlePasswordSave
+      }
+      style={{padding: '30px'}}
+    >
       <Form.Item
         name='password'
         label='Password'

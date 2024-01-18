@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const baseURL = 'https://courseproject-backend-6lyy.onrender.com';
+const baseURL = 'http://localhost:3003';
 
 export const sendReceipt = async (email, sellerEmail, items) => {
   try {
@@ -10,6 +10,29 @@ export const sendReceipt = async (email, sellerEmail, items) => {
       sellerEmail,
       items,
     });
+    return response.data;
+  } catch (error) {
+    throw {error: error.response.data.error};
+  }
+};
+
+export const sendForgotPasswordEmail = async (email) => {
+  try {
+    console.log('Forgot password email', email);
+    const response = await axios.post(`${baseURL}/api/email/reset`, {
+      email,
+    });
+    return response.data;
+  } catch (error) {
+    throw {error: error.response.data.error};
+  }
+};
+
+export const validateResetPasswordToken = async (email, token) => {
+  try {
+    const response = await axios.post(
+      `${baseURL}/api/email/reset-password/?email=${email}?token=${token}`
+    );
     return response.data;
   } catch (error) {
     throw {error: error.response.data.error};

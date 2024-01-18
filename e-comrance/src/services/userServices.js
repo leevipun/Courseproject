@@ -1,7 +1,7 @@
 import axios from 'axios';
 import {token} from './adminServices.js';
 
-const baseURL = 'https://courseproject-backend-6lyy.onrender.com';
+const baseURL = 'http://localhost:3003';
 
 export const Login = async (email, password) => {
   try {
@@ -168,11 +168,19 @@ export const getUsers = async () => {
   }
 };
 
-export const changePassword = async (password) => {
+export const changePassword = async (password, userToken) => {
   try {
-    const config = {
-      headers: {Authorization: token},
-    };
+    let config;
+    if (userToken) {
+      config = {
+        headers: {Authorization: `Bearer ${userToken}`},
+      };
+    } else {
+      config = {
+        headers: {Authorization: token},
+      };
+    }
+    console.log(config);
     const response = await axios.put(
       `${baseURL}/api/users/password`,
       {password},
@@ -180,6 +188,7 @@ export const changePassword = async (password) => {
     );
     return response.data;
   } catch (error) {
-    throw {error: error.response.data.error};
+    console.log('Error', error);
+    throw {error: error.response};
   }
 };

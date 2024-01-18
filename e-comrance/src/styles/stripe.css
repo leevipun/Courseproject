@@ -10,6 +10,10 @@
 }
 
 #form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
   width: 30vw;
   min-width: 500px;
   align-self: center;
@@ -107,7 +111,7 @@
 .spinner:before,
 .spinner:after {
   position: absolute;
-  content: "";
+  content: '';
 }
 
 .spinner:before {

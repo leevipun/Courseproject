@@ -47,8 +47,39 @@ usersRouter.post('/', async (req, res) => {
   const options = {
     from: 'nordicexchange@outlook.com',
     to: newObject.email,
-    subject: 'Welcome to Nordic Exchange!',
-    text: 'Thank you for registering to Nordic Exchange!\nAnd becoming a member of our community!\nWe hope you enjoy your stay!\nBest regards,\nNordic Exchange team',
+    subject: '🌟 Welcome to Nordic Exchange! 🌟',
+    html: `
+    <div style="max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #336699; border-radius: 10px; background-color: #1a1a1a; color: #fdfcfd; font-family: 'Arial', sans-serif;">
+      <h2 style="text-align: center; color: #66a3cc; margin-bottom: 20px;">Welcome to Nordic Exchange!</h2>
+      <p style="font-size: 16px; line-height: 1.6; color: #fdfcfd;">
+        <strong>🎉 Thank you for joining Nordic Exchange</strong> and becoming an esteemed member of our vibrant community. We're delighted to have you with us!
+      </p>
+      <div style="margin-top: 20px; padding: 20px; border: 1px solid #336699; border-radius: 10px; background-color: #66a3cc; color: #fff;">
+
+        <h2 style="text-align: center; color: #fff; margin-bottom: 20px;">About Nordic Exchange</h2>
+        <p style="font-size: 18px; line-height: 1.6; color: #fff; margin-bottom: 15px;">
+          Nordic Exchange is your gateway to a sustainable future! We are more than just a C2C marketplace; we are on a mission to revolutionize material usage and promote a greener, more sustainable world.
+        </p>
+        <p style="font-size: 18px; line-height: 1.6; color: #fff; margin-bottom: 15px;">
+          At Nordic Exchange, we believe in the power of conscious consumerism. Our platform connects individuals and businesses in a unique C2C model, fostering a circular economy where materials are reused, recycled, and repurposed to reduce waste and environmental impact.
+        </p>
+        <p style="font-size: 18px; line-height: 1.6; color: #fff; margin-bottom: 15px;">
+          What sets us apart is our unwavering commitment to sustainability. Every transaction on Nordic Exchange contributes to our vision of a world where resources are used responsibly, and waste is minimized.
+        </p>
+        <p style="font-size: 18px; line-height: 1.6; color: #fff; margin-bottom: 15px;">
+          Join us in building a community that values not only the products exchanged but also the impact those transactions have on the environment.
+        </p>
+        <p style="font-size: 18px; line-height: 1.6; color: #fff; margin-bottom: 15px;">
+          Nordic Exchange - Empowering Sustainable Material Usage, One Transaction at a Time.
+        </p>
+      </div>
+
+      <p style="font-size: 16px; line-height: 1.6; color: #fdfcfd; text-align: center; margin-top: 20px;">
+        Best regards,<br />
+        Nordic Exchange Team
+      </p>
+    </div>
+  `,
   };
 
   transporter.sendMail(options, function (err, info) {
@@ -281,9 +312,28 @@ usersRouter.delete('/', extractToken, async (req, res) => {
       const options = {
         from: 'nordicexchange@outlook.com',
         to: user.email,
-        subject: 'Account deleted',
-        html: "<h1>We are sorry to see you go!</h1><p>We hope you enjoyed your stay!</p><p>Hopefully we'll see in the future agen</p><p>Best regards,</p><p>Nordic Exchange team</p>",
+        subject: 'Farewell Message from Nordic Exchange 😢',
+        html: `
+    <div style="
+      font-family: 'Arial', sans-serif;
+      padding: 20px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      background-color: #336699;
+      background-image: linear-gradient(90deg, #336699 0%, #66a3cc 100%);
+      color: #fdfcfd;
+    ">
+      <h1>We're Sorry to See You Go!</h1>
+      <p style="font-size: 16px; line-height: 1.6;">Dear ${user.firstname} ${user.lastname},</p>
+      <p style="font-size: 16px; line-height: 1.6;">Thank you for being a part of the Nordic Exchange community. We hope you enjoyed your time with us.</p>
+      <p style="font-size: 16px; line-height: 1.6;">Although you're leaving, your presence will be missed. We appreciate the trust you placed in us.</p>
+      <p style="font-size: 16px; line-height: 1.6;">If you ever decide to return, we'll be here to welcome you back with open arms.</p>
+      <p style="font-size: 16px; line-height: 1.6;">Best regards,</p>
+      <p style="font-size: 16px; line-height: 1.6;">The Nordic Exchange Team</p>
+    </div>
+  `,
       };
+
       transporter.sendMail(options, function (err, info) {
         if (err) {
           console.log(err);

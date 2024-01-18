@@ -1,24 +1,25 @@
-const nodemailer = require("nodemailer");
-const User = require("../models/user");
+const nodemailer = require('nodemailer');
+const User = require('../models/user');
 const pass = process.env.EMAILPASS;
-const emailRouter = require("express").Router();
+const jwt = require('jsonwebtoken');
+const emailRouter = require('express').Router();
 
 const transporter = nodemailer.createTransport({
   maxConnections: 3,
-  service: "hotmail",
+  service: 'hotmail',
   auth: {
-    user: "nordicexchange@outlook.com",
+    user: 'nordicexchange@outlook.com',
     pass: pass,
   },
 });
 
-emailRouter.post("/seller", async (req, res) => {
-  const { email, sellerEmail, items } = req.body;
+emailRouter.post('/seller', async (req, res) => {
+  const {email, sellerEmail, items} = req.body;
 
-  const buyer = await User.findOne({ email: email });
+  const buyer = await User.findOne({email: email});
 
-  console.log("buyer", buyer);
-  console.log("sellerEmail", sellerEmail);
+  console.log('buyer', buyer);
+  console.log('sellerEmail', sellerEmail);
 
   const itemsPurchased = items
     .map(
@@ -28,7 +29,7 @@ emailRouter.post("/seller", async (req, res) => {
       </li>
     `
     )
-    .join("");
+    .join('');
 
   const totalAmount = items.reduce(
     (total, cartItem) => total + cartItem.price,
@@ -47,25 +48,32 @@ emailRouter.post("/seller", async (req, res) => {
 `;
 
   const emailToSeller = {
-    from: "nordicexchange@outlook.com",
+    from: 'nordicexchange@outlook.com',
     to: sellerEmail,
-    subject: "New Purchase Notification",
+    subject: 'New Purchase Notification 🛍️',
     html: `
-    <p>Hello,</p>
-    <p>
-      You have a new purchase! The following items have been sold:
-      <ul>
-        ${itemsPurchased}
-      </ul>
-      <strong>Total Amount:</strong> ${totalAmount} ${items[0].currency}
-    </p>
-    ${buyerInfo}
-    <p>
-      Please ship the items to the buyer's address as soon as possible. If you have any questions or concerns, feel free to contact the buyer at ${email}.
-    </p>
-    <p>Thank you for your prompt attention to this matter.</p>
-    <p>Best regards,<br />Nordic Exchange Team</p>
-  `,
+<div style="font-family: 'Arial', sans-serif; padding: 20px; border: 1px solid #ccc; border-radius: 5px; background-color: #336699; background-image: linear-gradient(90deg, #336699 0%, #66a3cc 100%); color: #fdfcfd;">
+  <p>Hello,</p>
+
+  <p>
+    Great news! You have a new purchase. The following items have been sold:
+    <ul style="color: #fdfcfd; margin: 10px 0;">
+      ${itemsPurchased}
+    </ul>
+    <strong>Total Amount:</strong> ${totalAmount} ${items[0].currency}
+  </p>
+
+  ${buyerInfo}
+
+  <p>
+    Please ship the items to the buyer's address as soon as possible. If you have any questions or concerns, feel free to contact the buyer at ${email}.
+  </p>
+
+  <p>Thank you for your prompt attention to this matter.</p>
+
+  <p>Best regards,<br />Nordic Exchange Team</p>
+</div>
+`,
   };
 
   // Send the email to the seller using your email sending logic
@@ -74,72 +82,63 @@ emailRouter.post("/seller", async (req, res) => {
       console.log(err);
       return;
     }
-    console.log("Sent Seller: " + info.response);
+    console.log('Sent Seller: ' + info.response);
   });
-  res.status(200).json({ message: "Email sent" });
+  res.status(200).json({message: 'Email sent'});
 });
 
-emailRouter.post("/buyer", async (req, res) => {
-  const { email, sellerEmail, items } = req.body;
+emailRouter.post('/buyer', async (req, res) => {
+  const {email, sellerEmail, items} = req.body;
 
-  console.log("items", items);
+  console.log('items', items);
 
-  console.log("email", email);
+  console.log('email', email);
+
+  function base64ToImage(base64Data, altText = 'Image') {
+    return `<img
+    src={base64Data}
+    alt="${altText}"
+    style="max-width: 100px; max-height: 100px; object-fit: cover; border-radius: 10px;"
+  />`;
+  }
 
   const itemHTML = items
     .map(
       (cartItem) => `
-    <div key=${
+    <div key="${
       cartItem.id
-    } id="Cartlisting" border: 1px solid #ccc; margin: 10px; padding: 10px; border-radius: 10px;">
-      <div>
-        <img
-          src=${
-            cartItem.pics ||
-            "https://hips.hearstapps.com/hmg-prod/images/dog-puppy-on-garden-royalty-free-image-1586966191.jpg?crop=0.752xw:1.00xh;0.175xw,0&resize=600:*"
-          }
-          alt=${cartItem.name}
-          style="
-            max-width: 100%;
-            max-height: 100%;
-            object-fit: cover;
-            border-radius: 10px;
-          "
-        />
-      </div>
-      <div>
-        <div style="margin: 5px; font-weight: bold;">Name: ${
-          cartItem.name
-        }</div>
-        <div style="margin: 5px;">Country: ${cartItem.country}</div>
-        <div style="margin: 5px;">
-          Price: ${cartItem.price} ${cartItem.currency}
-        </div>
-        <div style="margin: 5px;">
-          Description: ${cartItem.description}
+    }" style="border: 1px solid #ccc; margin: 10px; padding: 10px; border-radius: 10px; background-color: #fff;">
+      <div style="display: flex; align-items: center; justify-content: space-between;">
+        ${base64ToImage(cartItem.pics)}
+        <div style="flex-grow: 1; padding: 0 10px;">
+          <div style="font-weight: bold;">Name: ${cartItem.name}</div>
+          <div>Country: ${cartItem.country}</div>
+          <div>Price: ${cartItem.price} ${cartItem.currency}</div>
+          <div>Description: ${cartItem.description}</div>
         </div>
       </div>
     </div>
   `
     )
-    .join("");
-  // Join the array of HTML strings into a single string
+    .join('');
+
+  // Now you can use `itemHTML` as needed.
 
   const options = {
-    from: "nordicexchange@outlook.com",
+    from: 'nordicexchange@outlook.com',
     to: email,
-    subject: "Purchase Receipt",
+    subject: 'Purchase Receipt',
     html: `
-    <div style="max-width: 600px; margin: 0 auto; padding: 20px; background-color: #f4f4f4;">
-      <h2 style="text-align: center; color: #333;">Thank you for your purchase!</h2>
-      <div style="display: flex; justify-content: center; align-items: center; margin 5px;">
-        ${itemHTML}
-      </div>
-      <p style="text-align: center; margin-top: 20px; font-size: 16px; color: #555;">
-        If you have any questions or concerns, please contact us at nordicexchange@outlook.com or the seller at ${sellerEmail}.
-      </p>
+  <div style="max-width: 600px; margin: 0 auto; padding: 20px; background-color: #f4f4f4; border: 1px solid #ccc; border-radius: 10px;">
+    <h2 style="text-align: center; color: #336699;">Thank you for your purchase!</h2>
+    <div style="margin-top: 20px;">
+      ${itemHTML}
     </div>
-  `,
+    <p style="text-align: center; margin-top: 20px; font-size: 16px; color: #555;">
+      If you have any questions or concerns, please contact us at <a href="mailto:nordicexchange@outlook.com" style="color: #336699; text-decoration: none;">nordicexchange@outlook.com</a> or the seller at <a href="mailto:${sellerEmail}" style="color: #336699; text-decoration: none;">${sellerEmail}</a>.
+    </p>
+  </div>
+`,
   };
 
   transporter.sendMail(options, function (err, info) {
@@ -147,18 +146,18 @@ emailRouter.post("/buyer", async (req, res) => {
       console.log(err);
       return;
     }
-    console.log("Sent Buyer: " + info.response);
+    console.log('Sent Buyer: ' + info.response);
   });
-  res.status(200).json({ message: "Email sent" });
+  res.status(200).json({message: 'Email sent'});
 });
 
-emailRouter.post("/contact", async (req, res) => {
-  const { email, name, message } = req.body;
+emailRouter.post('/contact', async (req, res) => {
+  const {email, name, message} = req.body;
 
   const options = {
-    from: "nordicexchange@outlook.com",
-    to: "nordicexchange@outlook.com",
-    subject: "Contact Form Submission",
+    from: 'nordicexchange@outlook.com',
+    to: 'nordicexchange@outlook.com',
+    subject: 'Contact Form Submission',
     text: `Name: ${name}\nEmail: ${email}\nMessage: ${message}`,
   };
 
@@ -167,9 +166,64 @@ emailRouter.post("/contact", async (req, res) => {
       console.log(err);
       return;
     }
-    console.log("Sent: " + info.response);
+    console.log('Sent: ' + info.response);
   });
-  res.status(200).json({ message: "Email sent" });
+  res.status(200).json({message: 'Email sent'});
 });
 
-module.exports = { transporter, emailRouter };
+emailRouter.post('/reset', async (req, res) => {
+  const {email} = req.body;
+  const token = jwt.sign({email}, process.env.SECRET, {
+    expiresIn: 15 * 60,
+  });
+  console.log('token', token);
+  const url = `http://localhost:5173/reset-password/${email}?token=${token}`;
+  const options = {
+    from: 'nordicexchange@outlook.com',
+    to: email,
+    subject: 'Reset Password',
+    html: `
+  <div style="max-width: 600px; margin: 0 auto; padding: 20px; background-color: #f4f4f4; border: 1px solid #ccc; border-radius: 10px;">
+    <h2 style="text-align: center; color: #336699;">Reset Password</h2>
+    <p style="text-align: center; margin-top: 20px; font-size: 16px; color: #555;">
+      Please click the link below to reset your password.
+    </p>
+    <p style="text-align: center; margin-top: 20px; font-size: 16px; color: #555;">
+      <a href="${url}" style="color: #336699; text-decoration: none;">Reset Password</a>
+    </p>
+  </div>
+`,
+  };
+  transporter.sendMail(options, function (err, info) {
+    if (err) {
+      console.log(err);
+      return;
+    }
+    console.log('Sent Buyer: ' + info.response);
+  });
+  res.status(200).json({message: 'Email sent'});
+});
+
+emailRouter.post('/reset-password/', async (req, res) => {
+  const query = req.query;
+  const email = query.email.split('?token=')[0];
+  const token = `${query.email.split('?token=')[1]}`;
+  console.log('email', email);
+  console.log('token', token);
+
+  try {
+    const decoded = jwt.verify(token, process.env.SECRET);
+    if (!decoded) {
+      console.log('Invalid token');
+      res.status(400).send('Invalid or expired reset password link');
+      return;
+    }
+    // Token is valid, allow the user to reset the password
+    res.status(200).send('Valid reset password link');
+  } catch (error) {
+    console.log('Invalid token');
+    res.status(400).send('Invalid or expired reset password link');
+  }
+});
+
+module.exports = {transporter, emailRouter};
