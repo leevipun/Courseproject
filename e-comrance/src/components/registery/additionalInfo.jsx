@@ -96,6 +96,7 @@ const AdditionalInfo = ({props}) => {
       </Form.Item>
       <Form.Item label='Birthday' required>
         <Input
+          style={{minWidth: 200}}
           type='date'
           id='personalInfoInput'
           value={formattedDate()}

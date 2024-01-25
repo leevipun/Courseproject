@@ -70,7 +70,7 @@ const Registerypage = () => {
     } catch (error) {
       setLoading(false);
       console.error('Registration failed:', error.error);
-      dispatch(addNotification(error.error));
+      dispatch(addNotification(`${error.error} please check following, Age: over 13y, Country: Finland, Phonenumber: starts with +358...`));
     }
   };
 

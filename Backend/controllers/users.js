@@ -167,7 +167,7 @@ usersRouter.patch('/stripe', extractToken, async (req, res) => {
   } catch (error) {
     console.error(error);
     await User.findOneAndDelete({email: req.body.email});
-    return res.status(500).json({error: 'Internal server error'});
+    return res.status(500).json({error: 'Adding stripeID failed'});
   }
 });
 
