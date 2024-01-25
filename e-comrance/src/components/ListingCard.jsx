@@ -25,7 +25,7 @@ const ListingCard = ({listings, user, isAdmin}) => {
       setSpinTip('Adding to cart...');
       if (user.length === 0) {
         dispatch(
-          addNotification('Please login first your session has expired')
+          addNotification('Please login first. You must have user to proceed.')
         );
         return;
       }
