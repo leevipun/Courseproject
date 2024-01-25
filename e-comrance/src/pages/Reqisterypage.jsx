@@ -39,7 +39,10 @@ const Registerypage = () => {
 
   const handleRegistery = async (e) => {
     e.preventDefault();
-
+    if (!email || !password || !firstName || !lastName || !city || !address || !postalCode || !phone || !iban || !dob) {
+      dispatch(addNotification('Please fill in all the required fields.'));
+      return;
+    }
     try {
       const id = uuidv4();
       const splitBirthday = dob.split('-');
