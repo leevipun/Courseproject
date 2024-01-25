@@ -43,6 +43,8 @@ Register
 
 ![Näyttökuva 2024-01-15 161619](https://github.com/leevipun/Courseproject/assets/117685613/deca2cdc-e8a8-4c96-9fd3-00ecb524440e)
 
+    You can not use made up addresses due to limatitions from Stripe
+
 ![Näyttökuva 2024-01-15 161642](https://github.com/leevipun/Courseproject/assets/117685613/e88a510e-55a5-4f15-84d1-02ba64fef0a4)
 
     As IBAN use "FI2112345600000785"
