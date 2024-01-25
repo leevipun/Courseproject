@@ -37,6 +37,7 @@ const PersonalInfo = ({ props }) => {
     >
       <Form.Item label="First name" required>
         <Input
+        style={{minWidth: 200}}
           id="personalInfoInput"
           type="text"
           placeholder="First name"
@@ -47,6 +48,7 @@ const PersonalInfo = ({ props }) => {
       </Form.Item>
       <Form.Item label="Last name" required>
         <Input
+        style={{minWidth: 200}}
           id="personalInfoInput"
           type="text"
           placeholder="Last name"
