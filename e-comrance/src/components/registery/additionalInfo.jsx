@@ -104,7 +104,7 @@ const AdditionalInfo = ({props}) => {
           required
         />
       </Form.Item>
-      <Form.Item label='What role do you want to take?' required>
+      <Form.Item label='What role do you want to take?' required tooltip='Seller, you can only sell. Buyer, You can only buy, Both, Both'>
         <Radio.Group
           id='input'
           options={options}
